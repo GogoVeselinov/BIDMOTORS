@@ -1,9 +1,256 @@
 @{
-    ViewData["Title"] = "Create Service Request";
+    ViewData["Title"] = "Нова заявка";
+    Layout = "_Layout";
 }
 
-<div class="container">
-    <h1>Create Service Request</h1>
-    
-    <partial name="_CreateRequestFormPartial" />
+<div class="wizard-fullpage">
+
+    <!-- Progress Bar -->
+    <div class="wizard-progress">
+        <div class="step-indicator active" data-step="1">1</div>
+        <div class="progress-line"></div>
+        <div class="step-indicator" data-step="2">2</div>
+        <div class="progress-line"></div>
+        <div class="step-indicator" data-step="3">3</div>
+    </div>
+
+    <form id="wizardForm" method="post" asp-action="Create" asp-controller="ServiceRequests">
+        <div class="wizard-steps">
+
+            <div class="wizard-step active" data-step="1">
+                @await Html.PartialAsync("Partials/_Step1")
+            </div>
+
+            <div class="wizard-step" data-step="2">
+                @await Html.PartialAsync("Partials/_Step2")
+            </div>
+
+            <div class="wizard-step" data-step="3">
+                @await Html.PartialAsync("Partials/_Step3")
+            </div>
+
+        </div>
+
+        <div class="wizard-buttons">
+            <button type="button" id="prevBtn" class="wizard-btn hidden">Назад</button>
+            <button type="button" id="nextBtn" class="wizard-btn">Напред</button>
+            <button type="submit" id="submitBtn" class="wizard-btn hidden">Изпрати заявката</button>
+        </div>
+    </form>
 </div>
+
+@section Scripts {
+    <script>
+        let currentStep = 1;
+
+        const steps = document.querySelectorAll(".wizard-step");
+        const indicators = document.querySelectorAll(".step-indicator");
+
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+        const submitBtn = document.getElementById("submitBtn");
+
+        function showStep(step) {
+            // Скриваме всички стъпки
+            steps.forEach(s => s.classList.remove("active"));
+            indicators.forEach(i => i.classList.remove("active"));
+
+            // Показваме текущата стъпка
+            const currentStepElement = document.querySelector(`.wizard-step[data-step="${step}"]`);
+            const currentIndicatorElement = document.querySelector(`.step-indicator[data-step="${step}"]`);
+
+            if (currentStepElement && currentIndicatorElement) {
+                currentStepElement.classList.add("active");
+                currentIndicatorElement.classList.add("active");
+            }
+
+            // Управление на бутоните
+            prevBtn.classList.toggle("hidden", step === 1);
+            nextBtn.classList.toggle("hidden", step === 3);
+            submitBtn.classList.toggle("hidden", step !== 3);
+        }
+
+        nextBtn.addEventListener("click", () => {
+            if (currentStep < 3) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        prevBtn.addEventListener("click", () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+    </script>
+}
+
+<style>
+    body {
+        background: #111;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 100 100'%3E%3Ccircle fill='%23222222' cx='3' cy='3' r='1'/%3E%3C/svg%3E");
+    }
+
+    /* FULL-PAGE WIZARD */
+    .wizard-fullpage {
+        width: 100%;
+        padding: 40px 5%;
+        color: white;
+    }
+
+    /* PROGRESS BAR – full width */
+    .wizard-progress {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto 50px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .step-indicator {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #333;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
+        transition: 0.3s ease;
+        border: 3px solid #333;
+    }
+
+    .step-indicator.active {
+        background: var(--yellow);
+        color: black;
+        border-color: var(--yellow);
+        transform: scale(1.15);
+    }
+
+    .progress-line {
+        height: 4px;
+        background: #555;
+        width: 160px;
+        margin: 0 15px;
+    }
+
+    /* STEPS FULL WIDTH */
+    .wizard-step {
+        display: none;
+        max-width: 1100px;
+        margin: 0 auto;
+        animation: fadeStep 0.3s ease;
+    }
+
+    .wizard-step.active {
+        display: block;
+    }
+
+    /* TITLES */
+    .wizard-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--yellow);
+        margin-bottom: 25px;
+    }
+
+    /* FORM GROUPS – wider */
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
+        color: #ddd;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid #444;
+        background: #1a1a1a;
+        color: white;
+        font-size: 17px;
+        transition: 0.25s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: var(--yellow);
+        box-shadow: 0 0 2px rgba(246, 210, 1, 0.226);
+    }
+
+    /* BUTTON SECTION */
+    .wizard-buttons {
+        max-width: 1100px;
+        margin: 40px auto 0 auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .wizard-btn {
+        padding: 14px 36px;
+        font-size: 18px;
+        border-radius: 6px;
+        background: var(--yellow);
+        color: black;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.25s;
+    }
+
+    .wizard-btn:hover {
+        background: black;
+        color: var(--yellow);
+        border: 2px solid var(--yellow);
+    }
+
+    /* HIDDEN */
+    .hidden {
+        display: none !important;
+    }
+
+    /* ANIMATION */
+    @@keyframes fadeStep {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* RESPONSIVE */
+    @@media (max-width: 768px) {
+        .wizard-fullpage {
+            padding: 20px;
+        }
+
+        .wizard-progress {
+            flex-direction: column;
+        }
+
+        .progress-line {
+            display: none;
+        }
+
+        .wizard-buttons {
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
+</style>

@@ -1,0 +1,122 @@
+<section class="hero-section">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-left">
+        <h1>Професионален автосервиз и диагностика</h1>
+
+        <p>
+            Качествени ремонти, модерна диагностика и пълна грижа за Вашия автомобил.
+            Бързо, професионално и надеждно обслужване.
+        </p>
+
+        <a asp-controller="ServiceRequests" asp-action="Create" class="hero-cta">
+            Други услуги
+        </a>
+    </div>
+
+    <div class="hero-right">
+        <div class="hero-form-wrapper">
+            <h3>Остави заявка</h3>
+            <div id="hero-error" class="hero-error"></div>
+
+            <form id="heroRequestForm" asp-controller="ServiceRequests" asp-action="QuickCreate" method="post">
+
+                <div class="form-group">
+                    <label>Име *</label>
+                    <input type="text" name="Name" required placeholder="Вашето име">
+                </div>
+
+                <div class="form-group">
+                    <label>Телефон *</label>
+                    <input type="tel" name="Phone" required placeholder="+359 88 812 3456">
+                </div>
+
+                <div class="form-group">
+                    <label>Имейл (по желание)</label>
+                    <input type="email" name="Email" placeholder="example@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Вид услуга *</label>
+                    <select name="ServiceType" required>
+                        <option value="">-- Изберете услуга --</option>
+                        <option value="Ремонт">Ремонт</option>
+                        <option value="Диагностика">Диагностика</option>
+                        <option value="Безопасност">Проверка на безопасност</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Част *</label>
+                    <input type="text" name="PartName" placeholder="Например: Антифриз, Филтър, Накладки">
+                </div>
+
+                <div class="form-group">
+                    <label>Номер на част</label>
+                    <input type="text" name="PartNumber" placeholder="OEM/Артикулен номер">
+                </div>
+
+                <div class="form-group">
+                    <label>VIN</label>
+                    <input type="text" name="VIN" placeholder="4Y1SL65848Z411439">
+                </div>
+
+                <button type="submit" class="hero-submit">
+                    Изпрати заявка
+                </button>
+
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("heroRequestForm");
+        const errorBox = document.getElementById("hero-error");
+
+        form.addEventListener("submit", function (e) {
+
+            let isValid = true;
+            errorBox.style.display = "none";
+            errorBox.innerHTML = "";
+
+            // Clear old errors
+            form.querySelectorAll(".input-error")
+                .forEach(el => el.classList.remove("input-error"));
+
+            const name = form.querySelector("input[name='Name']");
+            const phone = form.querySelector("input[name='Phone']");
+            const service = form.querySelector("select[name='ServiceType']");
+            const partName = form.querySelector("input[name='PartName']");
+
+            // Validation
+            if (name.value.trim() === "") {
+                isValid = false;
+                name.classList.add("input-error");
+            }
+
+            if (phone.value.trim() === "") {
+                isValid = false;
+                phone.classList.add("input-error");
+            }
+
+            if (service.value.trim() === "") {
+                isValid = false;
+                service.classList.add("input-error");
+            }
+
+            if (partName.value.trim() === "") {
+                isValid = false;
+                partName.classList.add("input-error");
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                errorBox.innerHTML = "Моля, попълнете всички задължителни полета.";
+                errorBox.style.display = "block";
+            }
+        });
+    });
+</script>

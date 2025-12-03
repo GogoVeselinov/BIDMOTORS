@@ -120,16 +120,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Home/Partials/_Hero.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsc1xfSGVyby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Home/Partials/_PartsSectionPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsc1xfUGFydHNTZWN0aW9uUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Home/Partials/_ServicesSectionPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsc1xfU2VydmljZXNTZWN0aW9uUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Home/_PartsSectionPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfUGFydHNTZWN0aW9uUGFydGlhbC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Home/_ServicesSectionPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfU2VydmljZXNTZWN0aW9uUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Parts/Index.cshtml]
@@ -176,32 +180,44 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/_CreateRequestFormPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXF9DcmVhdGVSZXF1ZXN0Rm9ybVBhcnRpYWwuY3NodG1s
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_CreateRequestFormPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9DcmVhdGVSZXF1ZXN0Rm9ybVBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/_DetailsInfoPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXF9EZXRhaWxzSW5mb1BhcnRpYWwuY3NodG1s
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_DetailsInfoPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9EZXRhaWxzSW5mb1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/_DetailsNotesPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXF9EZXRhaWxzTm90ZXNQYXJ0aWFsLmNzaHRtbA==
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_DetailsNotesPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9EZXRhaWxzTm90ZXNQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/_DetailsPartsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXF9EZXRhaWxzUGFydHNQYXJ0aWFsLmNzaHRtbA==
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_DetailsPartsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9EZXRhaWxzUGFydHNQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/_FiltersPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXF9GaWx0ZXJzUGFydGlhbC5jc2h0bWw=
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_FiltersPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9GaWx0ZXJzUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/_RequestsTablePartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXF9SZXF1ZXN0c1RhYmxlUGFydGlhbC5jc2h0bWw=
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_RequestsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9SZXF1ZXN0c1RhYmxlUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/_RequestStatusBadgePartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXF9SZXF1ZXN0U3RhdHVzQmFkZ2VQYXJ0aWFsLmNzaHRtbA==
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_RequestStatusBadgePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9SZXF1ZXN0U3RhdHVzQmFkZ2VQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_Step1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9TdGVwMS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_Step2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9TdGVwMi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Partials/_Step3.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVJlcXVlc3RzXFBhcnRpYWxzXF9TdGVwMy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Shared/Error.cshtml]

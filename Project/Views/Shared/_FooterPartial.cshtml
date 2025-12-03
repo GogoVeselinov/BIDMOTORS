@@ -1,5 +1,42 @@
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2025 - BidMotors - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-section">
+            <h4>BIDMOTORS</h4>
+            <p>
+                Професионален автосервиз, диагностика, безопасност и висококачествени авточасти.
+                Надеждност и качество във всяка услуга.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h4>Меню</h4>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Начало</a></li>
+                <li><a asp-controller="Services" asp-action="Index">Услуги</a></li>
+                <li><a asp-controller="PartsPublic" asp-action="Index">Части</a></li>
+                <li><a asp-controller="About" asp-action="Index">За нас</a></li>
+                <li><a asp-controller="Contact" asp-action="Index">Контакт</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Контакти</h4>
+            <p>Телефон: <a href="tel:+35900000000">+359 00 000 000</a></p>
+            <p>Email: <a href="mailto:info@bidmotors.bg">info@bidmotors.bg</a></p>
+            <p>Адрес: бул. Пример 123, София</p>
+        </div>
+
+        <div class="footer-section">
+            <h4>Работно време</h4>
+            <p>Понеделник – Петък: 09:00 – 18:00</p>
+            <p>Събота: 10:00 – 15:00</p>
+            <p>Неделя: Почивен ден</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © @DateTime.Now.Year BIDMOTORS — Всички права запазени.
     </div>
 </footer>
