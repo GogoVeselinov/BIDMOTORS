@@ -1,23 +1,44 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Project.Models.Entities
 {
     public class Repair : BaseEntity
     {
-        public string Description { get; set; } = string.Empty;
-        public decimal LaborCost { get; set; }
-        public decimal TotalCost { get; set; }
-        public string Status { get; set; } = string.Empty; // InProgress, Completed
-        public DateTime StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-
-        // Foreign keys
-        public int ServiceRequestId { get; set; }
-        public int CarId { get; set; }
-        public int EmployeeId { get; set; }
+        [Required]
+        public Guid ClientId { get; set; }
+        
+        [Required]
+        public Guid CarId { get; set; }
+        
+        [Required]
+        public Guid RequestId { get; set; }
+        
+        [Required]
+        [StringLength(2000)]
+        public string WorkDescription { get; set; } = string.Empty;
+        
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [Range(0, 999999.99)]
+        public decimal Price { get; set; }
+        
+        [Required]
+        [StringLength(50)]
+        public string Status { get; set; } = "Active"; // Active, Completed, Archived
+        
+        public DateTime? FinishedOn { get; set; }
 
         // Navigation properties
-        public ServiceRequest ServiceRequest { get; set; } = null!;
+        [ForeignKey(nameof(ClientId))]
+        public Client Client { get; set; } = null!;
+        
+        [ForeignKey(nameof(CarId))]
         public Car Car { get; set; } = null!;
-        public Employee Employee { get; set; } = null!;
+        
+        [ForeignKey(nameof(RequestId))]
+        public ServiceRequest ServiceRequest { get; set; } = null!;
+        
         public ICollection<UsedPart> UsedParts { get; set; } = new List<UsedPart>();
     }
 }

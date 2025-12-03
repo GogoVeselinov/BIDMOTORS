@@ -16,11 +16,6 @@ namespace Project.Data.Configurations
 
             builder.Property(st => st.Description)
                 .HasMaxLength(500);
-
-            builder.HasMany(st => st.ServiceRequests)
-                .WithOne(sr => sr.ServiceType)
-                .HasForeignKey(sr => sr.ServiceTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

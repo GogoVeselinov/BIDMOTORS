@@ -10,13 +10,9 @@ namespace Project.Data.Configurations
         {
             builder.HasKey(e => e.Id);
 
-            builder.Property(e => e.FirstName)
+            builder.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(100);
-
-            builder.Property(e => e.LastName)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(200);
 
             builder.Property(e => e.Email)
                 .IsRequired()
@@ -26,19 +22,21 @@ namespace Project.Data.Configurations
                 .IsUnique();
 
             builder.Property(e => e.Phone)
+                .IsRequired()
                 .HasMaxLength(20);
 
-            builder.Property(e => e.Position)
+            builder.Property(e => e.Role)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(50);
 
             builder.Property(e => e.PasswordHash)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(500);
 
-            builder.HasMany(e => e.Repairs)
-                .WithOne(r => r.Employee)
-                .HasForeignKey(r => r.EmployeeId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(e => e.Notifications)
+                .WithOne(n => n.Employee)
+                .HasForeignKey(n => n.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

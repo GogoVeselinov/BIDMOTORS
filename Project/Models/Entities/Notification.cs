@@ -1,16 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Project.Models.Entities
 {
     public class Notification : BaseEntity
     {
-        public string Title { get; set; } = string.Empty;
+        [Required]
+        public Guid EmployeeId { get; set; }
+        
+        [Required]
+        [StringLength(1000)]
         public string Message { get; set; } = string.Empty;
-        public bool IsRead { get; set; }
-        public DateTime SentDate { get; set; }
-
-        // Foreign keys
-        public int ClientId { get; set; }
+        
+        [Required]
+        public bool IsRead { get; set; } = false;
 
         // Navigation properties
-        public Client Client { get; set; } = null!;
+        [ForeignKey(nameof(EmployeeId))]
+        public Employee Employee { get; set; } = null!;
     }
 }

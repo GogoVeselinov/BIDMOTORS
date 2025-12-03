@@ -10,36 +10,31 @@ namespace Project.Data.Configurations
         {
             builder.HasKey(r => r.Id);
 
-            builder.Property(r => r.Description)
+            builder.Property(r => r.WorkDescription)
                 .IsRequired()
-                .HasMaxLength(1000);
+                .HasMaxLength(2000);
 
-            builder.Property(r => r.LaborCost)
-                .HasPrecision(18, 2);
-
-            builder.Property(r => r.TotalCost)
+            builder.Property(r => r.Price)
                 .HasPrecision(18, 2);
 
             builder.Property(r => r.Status)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .HasDefaultValue("Active");
 
-            builder.Property(r => r.StartDate)
-                .IsRequired();
-
-            builder.HasOne(r => r.ServiceRequest)
-                .WithMany(sr => sr.Repairs)
-                .HasForeignKey(r => r.ServiceRequestId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(r => r.Client)
+                .WithMany(c => c.Repairs)
+                .HasForeignKey(r => r.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(r => r.Car)
                 .WithMany(car => car.Repairs)
                 .HasForeignKey(r => r.CarId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(r => r.Employee)
-                .WithMany(e => e.Repairs)
-                .HasForeignKey(r => r.EmployeeId)
+            builder.HasOne(r => r.ServiceRequest)
+                .WithOne(sr => sr.LinkedRepair)
+                .HasForeignKey<Repair>(r => r.RequestId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(r => r.UsedParts)

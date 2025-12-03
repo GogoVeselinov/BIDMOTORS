@@ -10,7 +10,7 @@ namespace Project.Data.Configurations
         {
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Make)
+            builder.Property(c => c.Brand)
                 .IsRequired()
                 .HasMaxLength(100);
 
@@ -24,13 +24,10 @@ namespace Project.Data.Configurations
             builder.Property(c => c.VIN)
                 .HasMaxLength(17);
 
-            builder.Property(c => c.LicensePlate)
-                .HasMaxLength(20);
-
             builder.HasOne(c => c.Client)
                 .WithMany(client => client.Cars)
                 .HasForeignKey(c => c.ClientId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(c => c.ServiceRequests)
                 .WithOne(sr => sr.Car)

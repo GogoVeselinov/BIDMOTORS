@@ -10,16 +10,24 @@ namespace Project.Data.Configurations
         {
             builder.HasKey(sr => sr.Id);
 
+            builder.Property(sr => sr.ServiceType)
+                .IsRequired()
+                .HasMaxLength(50);
+
             builder.Property(sr => sr.Description)
                 .IsRequired()
+                .HasMaxLength(2000);
+
+            builder.Property(sr => sr.Comment)
                 .HasMaxLength(1000);
 
             builder.Property(sr => sr.Status)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .HasDefaultValue("Pending");
 
-            builder.Property(sr => sr.RequestDate)
-                .IsRequired();
+            builder.Property(sr => sr.InternalNotes)
+                .HasMaxLength(2000);
 
             builder.HasOne(sr => sr.Client)
                 .WithMany(c => c.ServiceRequests)
@@ -31,15 +39,10 @@ namespace Project.Data.Configurations
                 .HasForeignKey(sr => sr.CarId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(sr => sr.ServiceType)
-                .WithMany(st => st.ServiceRequests)
-                .HasForeignKey(sr => sr.ServiceTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasMany(sr => sr.Repairs)
+            builder.HasOne(sr => sr.LinkedRepair)
                 .WithOne(r => r.ServiceRequest)
-                .HasForeignKey(r => r.ServiceRequestId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey<ServiceRequest>(sr => sr.LinkedRepairId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

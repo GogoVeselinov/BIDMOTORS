@@ -1,15 +1,32 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Project.Models.Entities
 {
     public class Employee : BaseEntity
     {
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
+        [Required]
+        [StringLength(200)]
+        public string Name { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(255)]
+        [EmailAddress]
         public string Email { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(20)]
+        [Phone]
         public string Phone { get; set; } = string.Empty;
-        public string Position { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(500)]
         public string PasswordHash { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(50)]
+        public string Role { get; set; } = string.Empty; // Admin, Manager
 
         // Navigation properties
-        public ICollection<Repair> Repairs { get; set; } = new List<Repair>();
+        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

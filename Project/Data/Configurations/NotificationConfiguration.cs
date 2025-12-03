@@ -10,23 +10,17 @@ namespace Project.Data.Configurations
         {
             builder.HasKey(n => n.Id);
 
-            builder.Property(n => n.Title)
-                .IsRequired()
-                .HasMaxLength(200);
-
             builder.Property(n => n.Message)
                 .IsRequired()
                 .HasMaxLength(1000);
 
             builder.Property(n => n.IsRead)
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue(false);
 
-            builder.Property(n => n.SentDate)
-                .IsRequired();
-
-            builder.HasOne(n => n.Client)
-                .WithMany(c => c.Notifications)
-                .HasForeignKey(n => n.ClientId)
+            builder.HasOne(n => n.Employee)
+                .WithMany(e => e.Notifications)
+                .HasForeignKey(n => n.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

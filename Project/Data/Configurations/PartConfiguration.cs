@@ -14,21 +14,18 @@ namespace Project.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(p => p.Description)
-                .HasMaxLength(500);
-
-            builder.Property(p => p.PartNumber)
-                .IsRequired()
+            builder.Property(p => p.Category)
                 .HasMaxLength(100);
 
-            builder.HasIndex(p => p.PartNumber)
-                .IsUnique();
-
             builder.Property(p => p.Price)
+                .IsRequired()
                 .HasPrecision(18, 2);
 
             builder.Property(p => p.QuantityInStock)
                 .IsRequired();
+
+            builder.Property(p => p.Supplier)
+                .HasMaxLength(200);
 
             builder.HasMany(p => p.UsedParts)
                 .WithOne(up => up.Part)

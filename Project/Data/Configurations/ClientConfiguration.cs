@@ -10,13 +10,9 @@ namespace Project.Data.Configurations
         {
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.FirstName)
+            builder.Property(c => c.Name)
                 .IsRequired()
-                .HasMaxLength(100);
-
-            builder.Property(c => c.LastName)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(200);
 
             builder.Property(c => c.Email)
                 .IsRequired()
@@ -26,25 +22,26 @@ namespace Project.Data.Configurations
                 .IsUnique();
 
             builder.Property(c => c.Phone)
+                .IsRequired()
                 .HasMaxLength(20);
 
             builder.Property(c => c.PasswordHash)
-                .IsRequired();
+                .HasMaxLength(500);
 
             builder.HasMany(c => c.Cars)
                 .WithOne(car => car.Client)
                 .HasForeignKey(car => car.ClientId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(c => c.ServiceRequests)
                 .WithOne(sr => sr.Client)
                 .HasForeignKey(sr => sr.ClientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(c => c.Notifications)
-                .WithOne(n => n.Client)
-                .HasForeignKey(n => n.ClientId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(c => c.Repairs)
+                .WithOne(r => r.Client)
+                .HasForeignKey(r => r.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
