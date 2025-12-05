@@ -142,10 +142,13 @@ namespace Project.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("EmployeeId")
+                    b.Property<Guid?>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsRead")
@@ -158,7 +161,16 @@ namespace Project.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<Guid?>("RelatedEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("EmployeeId");
 
@@ -399,11 +411,17 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Models.Entities.Notification", b =>
                 {
+                    b.HasOne("Project.Models.Entities.Client", "Client")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Project.Models.Entities.Employee", "Employee")
                         .WithMany("Notifications")
                         .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Client");
 
                     b.Navigation("Employee");
                 });
@@ -482,6 +500,8 @@ namespace Project.Migrations
             modelBuilder.Entity("Project.Models.Entities.Client", b =>
                 {
                     b.Navigation("Cars");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("Repairs");
 

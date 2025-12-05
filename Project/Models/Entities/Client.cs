@@ -25,5 +25,6 @@ namespace Project.Models.Entities
         public ICollection<Car> Cars { get; set; } = new List<Car>();
         public ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
         public ICollection<Repair> Repairs { get; set; } = new List<Repair>();
+        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

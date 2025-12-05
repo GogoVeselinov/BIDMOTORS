@@ -30,9 +30,11 @@ builder.Services.AddScoped<RepairService>();
 builder.Services.AddScoped<ServiceRequestService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
+app.MapHub<NotificationHub>("/notifyHub");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

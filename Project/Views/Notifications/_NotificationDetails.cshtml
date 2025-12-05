@@ -1,0 +1,36 @@
+@model Project.Models.Entities.Notification
+
+<div class="notif-details">
+
+    <h2 class="notif-details-title">Известие</h2>
+
+    <p class="notif-details-date">
+        @Model.CreatedOn.ToString("dd.MM.yyyy HH:mm")
+    </p>
+
+    <div class="notif-details-message">
+        @Model.Message
+    </div>
+
+</div>
+<style>
+    .notif-details {
+        padding: 20px;
+    }
+
+    .notif-details-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .notif-details-date {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 20px;
+    }
+
+    .notif-details-message {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+</style>

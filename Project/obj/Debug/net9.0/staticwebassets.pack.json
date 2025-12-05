@@ -1,0 +1,473 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\Project.bundle.scp.css",
+      "PackagePath": "staticwebassets\\Project.652sibzhpw.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\Opel.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\Opel.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\alfa romeo.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\alfa romeo.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\aston martin.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\aston martin.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\audi.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\audi.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\bentley.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\bentley.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\bmw.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\bmw.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\bugatti.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\bugatti.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\cadillac.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\cadillac.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\chevrolet.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\chevrolet.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\citroen.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\citroen.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\cupra.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\cupra.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\dacia.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\dacia.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\daewoo.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\daewoo.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\ferrari.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\ferrari.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\fiat.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\fiat.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\ford.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\ford.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\honda.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\honda.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\hyundai.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\hyundai.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\infiniti.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\infiniti.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\isuzu.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\isuzu.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\iveco.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\iveco.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\jeep.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\jeep.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\kia.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\kia.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\koenigsegg.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\koenigsegg.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\lada.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\lada.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\lamborghini.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\lamborghini.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\land rover.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\land rover.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\lexus.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\lexus.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\man.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\man.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\maserati.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\maserati.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\mazda.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\mazda.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\mclaren.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\mclaren.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\mercedes.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\mercedes.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\mg.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\mg.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\mitsubishi.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\mitsubishi.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\nissan.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\nissan.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\peugeot.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\peugeot.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\pontiac.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\pontiac.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\porsche.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\porsche.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\rolls royce.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\rolls royce.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\skoda.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\skoda.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\subaru.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\subaru.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\suzuki.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\suzuki.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\tesla.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\tesla.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\toyota.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\toyota.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\volkswagen.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\volkswagen.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\volvo.svg",
+      "PackagePath": "staticwebassets\\img\\CarLogos\\volvo.svg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\Hero.jpg",
+      "PackagePath": "staticwebassets\\img\\Hero.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery\\dist\\jquery.slim.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.js"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.Project.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.Project.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.Project.props",
+      "PackagePath": "build\\Project.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.Project.props",
+      "PackagePath": "buildMultiTargeting\\Project.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.Project.props",
+      "PackagePath": "buildTransitive\\Project.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

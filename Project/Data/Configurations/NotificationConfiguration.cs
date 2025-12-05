@@ -18,6 +18,15 @@ namespace Project.Data.Configurations
                 .IsRequired()
                 .HasDefaultValue(false);
 
+            builder.Property(n => n.Type)
+                .HasMaxLength(50);
+
+            // Notification може да е за Client ИЛИ Employee (но не и за двамата едновременно)
+            builder.HasOne(n => n.Client)
+                .WithMany(c => c.Notifications)
+                .HasForeignKey(n => n.ClientId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasOne(n => n.Employee)
                 .WithMany(e => e.Notifications)
                 .HasForeignKey(n => n.EmployeeId)

@@ -1,0 +1,169 @@
+@model List<Project.Models.Entities.Notification>
+
+@{
+    ViewData["Title"] = "Известия";
+}
+
+<section class="notifications-page">
+
+    <!-- LEFT SIDEBAR / INBOX -->
+    <aside class="notif-sidebar">
+
+        <h2 class="notif-title">Известия</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="notif-empty">Няма известия</p>
+        }
+        else
+        {
+            <ul class="notif-list">
+                @foreach (var n in Model)
+                {
+                    <li class="notif-item @(n.IsRead ? "" : "unread")">
+
+                        <a href="javascript:void(0);" 
+                           onclick="loadNotif('@n.Id')">
+
+                            <span class="notif-message">@n.Message</span>
+                            <span class="notif-date">@n.CreatedOn.ToString("dd.MM HH:mm")</span>
+
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+
+    </aside>
+
+    <!-- RIGHT SIDE (DETAILS PANEL) -->
+    <div class="notif-content" id="notifContent">
+        <div class="notif-placeholder">
+            <h3>Изберете известие</h3>
+            <p>Отляво се показват всички получени уведомления.</p>
+        </div>
+    </div>
+
+</section>
+
+
+@section Scripts {
+    <script>
+        function loadNotif(id) {
+            fetch(`/Notifications/View/${id}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("notifContent").innerHTML = html;
+                })
+                .catch(err => console.error("Error loading notification:", err));
+        }
+    </script>
+}
+
+<style>
+    .notifications-page {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background: #121212;
+        color: white;
+    }
+
+    /* LEFT SIDEBAR */
+    .notif-sidebar {
+        width: 30%;
+        min-width: 280px;
+        max-width: 380px;
+        background: #1a1a1a;
+        border-right: 2px solid var(--yellow);
+        padding: 25px;
+        overflow-y: auto;
+    }
+
+    .notif-title {
+        font-size: 24px;
+        color: var(--yellow);
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .notif-empty {
+        opacity: 0.7;
+    }
+
+    /* LIST */
+    .notif-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .notif-item {
+        margin-bottom: 6px;
+        border-bottom: 1px solid #333;
+    }
+
+    .notif-item.unread {
+        background: rgba(255, 217, 0, 0.08);
+        border-left: 3px solid var(--yellow);
+    }
+
+    .notif-item a {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 5px;
+        color: white;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .notif-item a:hover {
+        background: #292929;
+    }
+
+    .notif-message {
+        max-width: 70%;
+        font-weight: 500;
+    }
+
+    .notif-date {
+        opacity: 0.7;
+        font-size: 13px;
+    }
+
+    /* RIGHT CONTENT AREA */
+    .notif-content {
+        flex: 1;
+        padding: 50px;
+        overflow-y: auto;
+    }
+
+    .notif-placeholder {
+        text-align: center;
+        margin-top: 120px;
+        opacity: 0.7;
+    }
+
+    /* DETAILS PARTIAL STYLE */
+    .notif-details-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--yellow);
+        margin-bottom: 10px;
+    }
+
+    .notif-details-date {
+        font-size: 14px;
+        opacity: 0.7;
+        margin-bottom: 20px;
+    }
+
+    .notif-details-message {
+        font-size: 18px;
+        line-height: 1.6;
+        background: #1a1a1a;
+        padding: 20px;
+        border-left: 3px solid var(--yellow);
+        border-radius: 4px;
+    }
+</style>

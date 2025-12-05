@@ -5,8 +5,9 @@ namespace Project.Models.Entities
 {
     public class Notification : BaseEntity
     {
-        [Required]
-        public Guid EmployeeId { get; set; }
+        // User can be either Client or Employee
+        public Guid? ClientId { get; set; }
+        public Guid? EmployeeId { get; set; }
         
         [Required]
         [StringLength(1000)]
@@ -15,8 +16,16 @@ namespace Project.Models.Entities
         [Required]
         public bool IsRead { get; set; } = false;
 
+        [StringLength(50)]
+        public string? Type { get; set; } // "ServiceRequest", "Repair", "Part", etc.
+
+        public Guid? RelatedEntityId { get; set; } // ID на свързаната заявка/ремонт
+
         // Navigation properties
+        [ForeignKey(nameof(ClientId))]
+        public Client? Client { get; set; }
+        
         [ForeignKey(nameof(EmployeeId))]
-        public Employee Employee { get; set; } = null!;
+        public Employee? Employee { get; set; }
     }
 }

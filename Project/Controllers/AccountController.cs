@@ -125,6 +125,17 @@ namespace Project.Controllers
             return View(model);
         }
 
+        public IActionResult Profile()
+        {
+            // Ако не е логнат, пренасочи към Login
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View();
+        }
+
         // GET: /Account/Logout
         public IActionResult Logout()
         {

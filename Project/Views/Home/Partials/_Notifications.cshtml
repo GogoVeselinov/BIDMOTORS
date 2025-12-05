@@ -1,0 +1,184 @@
+<section class="profile-page">
+
+    <!-- LEFT TEXT / USER INFO -->
+    <div class="profile-left">
+        <h1>Моят профил</h1>
+        <div class="profile-underline"></div>
+
+        <p class="profile-sub">
+            Преглед и редакция на личната ви информация.
+        </p>
+
+        <div class="profile-meta">
+            <p><strong>Регистриран на:</strong> @Model.CreatedOn.ToString("dd.MM.yyyy")</p>
+            <p><strong>Последно влизане:</strong> @Model.LastLogin</p>
+            <p><strong>Роля:</strong> @Model.Role</p>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE FORM -->
+    <div class="profile-right">
+
+        <form asp-action="UpdateProfile" method="post" class="profile-form">
+
+            <div class="profile-field">
+                <label>Име и фамилия</label>
+                <input type="text" name="FullName" value="@Model.FullName" required />
+            </div>
+
+            <div class="profile-field">
+                <label>Имейл</label>
+                <input type="email" name="Email" value="@Model.Email" required />
+            </div>
+
+            <div class="profile-field">
+                <label>Телефон</label>
+                <input type="tel" name="Phone" value="@Model.Phone" />
+            </div>
+
+            <h2 class="profile-section-title">Смяна на парола</h2>
+
+            <div class="profile-field">
+                <label>Нова парола</label>
+                <input type="password" name="NewPassword" />
+            </div>
+
+            <div class="profile-field">
+                <label>Потвърди парола</label>
+                <input type="password" name="ConfirmPassword" />
+            </div>
+
+            <button class="profile-save-btn" type="submit">Запази промените</button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<style>
+    /* FULL PAGE WRAPPER */
+    .profile-page {
+        display: flex;
+        width: 100%;
+        padding: 60px 6%;
+        background: #121212;
+        color: white;
+        gap: 80px;
+    }
+
+    /* LEFT SIDE */
+    .profile-left {
+        width: 40%;
+        padding-top: 20px;
+    }
+
+    .profile-left h1 {
+        font-size: 42px;
+        font-weight: 800;
+        color: var(--yellow);
+    }
+
+    .profile-underline {
+        width: 140px;
+        height: 4px;
+        background: var(--yellow);
+        margin: 10px 0 25px 0;
+    }
+
+    .profile-sub {
+        font-size: 17px;
+        opacity: 0.85;
+        margin-bottom: 30px;
+    }
+
+    .profile-meta p {
+        font-size: 15px;
+        opacity: 0.8;
+        margin-bottom: 6px;
+    }
+
+    /* RIGHT SIDE FORM */
+    .profile-right {
+        width: 60%;
+        padding-right: 4%;
+    }
+
+    .profile-form {
+        width: 100%;
+    }
+
+    .profile-section-title {
+        margin-top: 40px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--yellow);
+    }
+
+    /* FIELDS */
+    .profile-field {
+        margin-bottom: 22px;
+    }
+
+    .profile-field label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 15px;
+        opacity: 0.85;
+    }
+
+    .profile-field input {
+        width: 100%;
+        padding: 12px;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid #444;
+        color: white;
+        font-size: 16px;
+        transition: 0.25s ease;
+    }
+
+    .profile-field input:focus {
+        border-bottom-color: var(--yellow);
+        outline: none;
+    }
+
+    /* SAVE BUTTON */
+    .profile-save-btn {
+        padding: 14px 36px;
+        background: var(--yellow);
+        border: none;
+        border-radius: 6px;
+        font-size: 18px;
+        font-weight: 700;
+        color: black;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .profile-save-btn:hover {
+        background: black;
+        color: var(--yellow);
+        border: 2px solid var(--yellow);
+    }
+
+    /* RESPONSIVE */
+    @@media
+    (max-width: 900px) {
+
+        .profile-page {
+            flex-direction: column;
+            gap: 40px;
+            padding: 40px 6%;
+        }
+
+        .profile-left,
+        .profile-right {
+            width: 100%;
+        }
+
+        .profile-left h1 {
+            font-size: 34px;
+        }
+    }
+</style>
