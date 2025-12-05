@@ -1,7 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using Project.Data;
+using Project.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Database
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Services
+builder.Services.AddScoped<PartService>();
+builder.Services.AddScoped<CarService>();
+builder.Services.AddScoped<RepairService>();
+builder.Services.AddScoped<ServiceRequestService>();
+builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 

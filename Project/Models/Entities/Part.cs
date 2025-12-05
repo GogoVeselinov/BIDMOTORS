@@ -9,8 +9,26 @@ namespace Project.Models.Entities
         [StringLength(200)]
         public string Name { get; set; } = string.Empty;
         
+        [StringLength(500)]
+        public string? Description { get; set; }
+        
         [StringLength(100)]
         public string? Category { get; set; }
+        
+        [StringLength(100)]
+        public string? PartType { get; set; }
+        
+        [StringLength(100)]
+        public string? CarBrand { get; set; }
+        
+        [StringLength(100)]
+        public string? CarModel { get; set; }
+        
+        [Range(1900, 2100)]
+        public int? CarYear { get; set; }
+        
+        [StringLength(100)]
+        public string? OEM { get; set; }
         
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -23,6 +41,9 @@ namespace Project.Models.Entities
         
         [StringLength(200)]
         public string? Supplier { get; set; }
+        
+        [StringLength(500)]
+        public string? ImageUrl { get; set; }
 
         // Navigation properties
         public ICollection<UsedPart> UsedParts { get; set; } = new List<UsedPart>();

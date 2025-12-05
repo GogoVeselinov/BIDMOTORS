@@ -1,9 +1,426 @@
+@model Project.Models.ViewModels.Parts.PartsPageViewModel
+
 @{
-    ViewData["Title"] = "Parts";
+    ViewData["Title"] = "Части";
+    Layout = "_Layout";
 }
 
-<div class="container">
-    <h1>Available Parts</h1>
-    
-    <partial name="_PublicPartsTablePartial" />
+<div class="parts-page">
+
+    <!-- LEFT FILTER -->
+    <aside class="parts-filter">
+        <form method="get">
+
+            <h3>Филтриране на части</h3>
+
+            <div class="filter-group">
+                <label>Марка автомобил</label>
+                <input name="CarBrand" value="@Model.Filters.CarBrand" placeholder="Например: BMW" />
+            </div>
+
+            <div class="filter-group">
+                <label>Модел</label>
+                <input name="CarModel" value="@Model.Filters.CarModel" placeholder="Например: 320i" />
+            </div>
+
+            <div class="filter-group">
+                <label>Година</label>
+                <input type="number" name="CarYear" value="@Model.Filters.CarYear" placeholder="Например: 2015" min="1900" max="2100" />
+            </div>
+
+            <div class="filter-group">
+                <label>Тип част</label>
+                <input name="PartType" value="@Model.Filters.PartType" placeholder="Например: Филтър" />
+            </div>
+
+            <div class="filter-group">
+                <label>OEM</label>
+                <input name="OEM" value="@Model.Filters.OEM" placeholder="OEM номер" />
+            </div>
+
+            <div class="filter-group">
+                <label>VIN (опц.)</label>
+                <input name="VIN" value="@Model.Filters.VIN" placeholder="VIN номер" />
+            </div>
+
+            <button class="filter-btn" type="submit">Филтрирай</button>
+        </form>
+    </aside>
+
+    <!-- RIGHT GRID -->
+    <section class="parts-grid">
+
+        <div class="parts-header">
+            <h1>Налични авточасти</h1>
+            <div class="parts-search">
+                <input type="text" placeholder="Търси част..." name="Search" value="@Model.Filters.Search" />
+            </div>
+        </div>
+
+        <div class="grid">
+            @if (Model.Parts.Any())
+            {
+                @foreach (var part in Model.Parts)
+                {
+                    <div class="part-card">
+                        <div class="part-image">
+                            <img src="/img/part-placeholder.jpg" alt="@part.Name" onerror="this.src='/img/default-part.png'" />
+                            @if (part.IsInStock)
+                            {
+                                <span class="stock-badge in-stock">В наличност</span>
+                            }
+                            else
+                            {
+                                <span class="stock-badge out-of-stock">Изчерпана</span>
+                            }
+                        </div>
+                        <div class="part-info">
+                            <h4>@part.Name</h4>
+                            <p class="part-description">@part.Description</p>
+                            <div class="part-details">
+                                <span class="part-price">@part.Price.ToString("F2") лв.</span>
+                                <span class="part-stock">Налични: @part.QuantityInStock</span>
+                            </div>
+                        </div>
+                        <a asp-controller="ServiceRequests" asp-action="Create" asp-route-partId="@part.Id"
+                            class="part-btn">Заяви част</a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-parts">
+                    <p>Няма намерени части. Опитайте с други критерии за търсене.</p>
+                </div>
+            }
+        </div>
+
+    </section>
+
 </div>
+
+<style>
+    /* PAGE LAYOUT - Responsive & Scalable */
+    .parts-page {
+        display: flex;
+        width: 100%;
+        background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+        min-height: 90vh;
+    }
+
+    /* LEFT FILTER SIDEBAR */
+    .parts-filter {
+        width: clamp(260px, 20vw, 320px);
+        padding: clamp(25px, 3vw, 35px) clamp(20px, 2.5vw, 25px);
+        background: rgba(26, 26, 26, 0.95);
+        border-right: 3px solid var(--yellow);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        backdrop-filter: blur(10px);
+    }
+
+    .parts-filter h3 {
+        color: var(--yellow);
+        margin-bottom: clamp(20px, 2.5vw, 25px);
+        font-size: clamp(18px, 2vw, 22px);
+        font-weight: 600;
+    }
+
+    .filter-group {
+        margin-bottom: clamp(16px, 2vw, 20px);
+    }
+
+    .filter-group label {
+        color: white;
+        font-size: clamp(13px, 1.4vw, 14px);
+        margin-bottom: 6px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        padding: clamp(10px, 1.2vw, 12px);
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 6px;
+        color: white;
+        font-size: clamp(13px, 1.4vw, 14px);
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+        outline: none;
+        border-color: var(--yellow);
+        background: #333;
+    }
+
+    .filter-btn {
+        width: 100%;
+        padding: clamp(12px, 1.5vw, 14px);
+        border-radius: 6px;
+        background: var(--yellow);
+        border: 2px solid var(--yellow);
+        color: black;
+        font-weight: bold;
+        font-size: clamp(14px, 1.5vw, 16px);
+        cursor: pointer;
+        transition: all 0.25s ease;
+        margin-top: 10px;
+    }
+
+    .filter-btn:hover {
+        background: transparent;
+        color: var(--yellow);
+        transform: translateY(-2px);
+    }
+
+    /* RIGHT GRID SECTION */
+    .parts-grid {
+        flex: 1;
+        padding: clamp(30px, 4vw, 50px) clamp(25px, 3vw, 40px);
+        color: white;
+    }
+
+    .parts-header {
+        margin-bottom: clamp(30px, 4vw, 40px);
+    }
+
+    .parts-header h1 {
+        font-size: clamp(28px, 4vw, 42px);
+        color: var(--yellow);
+        margin-bottom: clamp(20px, 2.5vw, 25px);
+        font-weight: 700;
+    }
+
+    /* SEARCH BAR */
+    .parts-search input {
+        width: 100%;
+        padding: clamp(12px, 1.5vw, 16px);
+        border-radius: 8px;
+        background: rgba(31, 31, 31, 0.8);
+        border: 1px solid #444;
+        color: white;
+        font-size: clamp(14px, 1.5vw, 16px);
+        transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .parts-search input:focus {
+        outline: none;
+        border-color: var(--yellow);
+        background: #2a2a2a;
+    }
+
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(clamp(220px, 25vw, 280px), 1fr));
+        gap: clamp(20px, 2.5vw, 30px);
+    }
+
+    /* PART CARD */
+    .part-card {
+        background: rgba(28, 28, 28, 0.9);
+        border: 1px solid #333;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .part-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--yellow);
+        box-shadow: 0 8px 20px rgba(255, 195, 0, 0.2);
+    }
+
+    .part-image {
+        position: relative;
+        width: 100%;
+        height: clamp(150px, 20vw, 200px);
+        overflow: hidden;
+    }
+
+    .part-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .part-card:hover .part-image img {
+        transform: scale(1.1);
+    }
+
+    .stock-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: clamp(11px, 1.2vw, 12px);
+        font-weight: bold;
+    }
+
+    .stock-badge.in-stock {
+        background: #28a745;
+        color: white;
+    }
+
+    .stock-badge.out-of-stock {
+        background: var(--red);
+        color: white;
+    }
+
+    .part-info {
+        padding: clamp(15px, 2vw, 20px);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .part-info h4 {
+        font-size: clamp(16px, 1.8vw, 20px);
+        margin-bottom: clamp(8px, 1vw, 10px);
+        color: white;
+        font-weight: 600;
+    }
+
+    .part-description {
+        font-size: clamp(13px, 1.4vw, 14px);
+        opacity: 0.8;
+        margin-bottom: clamp(12px, 1.5vw, 15px);
+        flex: 1;
+        color: #ccc;
+    }
+
+    .part-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: clamp(12px, 1.5vw, 15px);
+        padding-top: clamp(10px, 1.2vw, 12px);
+        border-top: 1px solid #333;
+    }
+
+    .part-price {
+        font-size: clamp(18px, 2vw, 22px);
+        color: var(--yellow);
+        font-weight: bold;
+    }
+
+    .part-stock {
+        font-size: clamp(12px, 1.3vw, 13px);
+        color: #999;
+    }
+
+    .part-btn {
+        display: block;
+        text-align: center;
+        background: var(--yellow);
+        color: black;
+        text-decoration: none;
+        padding: clamp(10px, 1.3vw, 14px);
+        margin: 0 clamp(15px, 2vw, 20px) clamp(15px, 2vw, 20px);
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: clamp(14px, 1.5vw, 16px);
+        transition: all 0.25s ease;
+        border: 2px solid var(--yellow);
+    }
+
+    .part-btn:hover {
+        background: transparent;
+        color: var(--yellow);
+        transform: translateY(-2px);
+    }
+
+    .no-parts {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: clamp(40px, 6vw, 60px);
+        color: #999;
+        font-size: clamp(16px, 2vw, 18px);
+    }
+
+    /* RESPONSIVE - Tablet */
+    @@media (max-width: 992px) {
+        .parts-page {
+            flex-direction: column;
+        }
+
+        .parts-filter {
+            width: 100%;
+            height: auto;
+            position: relative;
+            border-right: none;
+            border-bottom: 3px solid var(--yellow);
+        }
+
+        .grid {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+    }
+
+    /* RESPONSIVE - Mobile */
+    @@media (max-width: 768px) {
+        .parts-grid {
+            padding: 25px 15px;
+        }
+
+        .parts-filter {
+            padding: 25px 15px;
+        }
+
+        .grid {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .part-image {
+            height: 140px;
+        }
+    }
+
+    /* RESPONSIVE - Small Mobile */
+    @@media (max-width: 480px) {
+        .parts-page {
+            background: #1a1a1a;
+        }
+
+        .parts-grid {
+            padding: 20px 10px;
+        }
+
+        .parts-filter {
+            padding: 20px 15px;
+        }
+
+        .parts-header h1 {
+            font-size: 24px;
+        }
+
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .part-image {
+            height: 160px;
+        }
+
+        .part-info {
+            padding: 15px;
+        }
+
+        .part-btn {
+            margin: 0 15px 15px;
+            padding: 12px;
+        }
+    }
+</style>
