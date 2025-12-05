@@ -1,10 +1,3 @@
-<section class="services-hero">
-    <div class="services-hero-overlay"></div>
-    <h1>Други услуги</h1>
-    <p>Премиум сервиз, диагностика и поддръжка за вашия автомобил.</p>
-</section>
-
-<!-- GRID 3x3 -->
 <section class="services-grid-section">
     <h2 class="section-title">Нашите услуги</h2>
 
@@ -142,7 +135,7 @@
         <div class="brand-card"><img src="/img/carLogos/honda.svg" alt="Honda"></div>
         <div class="brand-card"><img src="/img/carLogos/ford.svg" alt="Ford"></div>
         <div class="brand-card"><img src="/img/carLogos/Opel.svg" alt="Opel"></div>
-        
+
         <div class="brand-card"><img src="/img/carLogos/peugeot.svg" alt="Peugeot"></div>
         <div class="brand-card"><img src="/img/carLogos/citroen.svg" alt="Citroën"></div>
         <div class="brand-card"><img src="/img/carLogos/skoda.svg" alt="Škoda"></div>
@@ -151,7 +144,7 @@
         <div class="brand-card"><img src="/img/carLogos/hyundai.svg" alt="Hyundai"></div>
         <div class="brand-card"><img src="/img/carLogos/kia.svg" alt="Kia"></div>
         <div class="brand-card"><img src="/img/carLogos/volvo.svg" alt="Volvo"></div>
-        
+
         <div class="brand-card"><img src="/img/carLogos/fiat.svg" alt="Fiat"></div>
         <div class="brand-card"><img src="/img/carLogos/alfa romeo.svg" alt="Alfa Romeo"></div>
         <div class="brand-card"><img src="/img/carLogos/jeep.svg" alt="Jeep"></div>
@@ -160,7 +153,7 @@
         <div class="brand-card"><img src="/img/carLogos/chevrolet.svg" alt="Chevrolet"></div>
         <div class="brand-card"><img src="/img/carLogos/subaru.svg" alt="Subaru"></div>
         <div class="brand-card"><img src="/img/carLogos/mitsubishi.svg" alt="Mitsubishi"></div>
-        
+
         <div class="brand-card"><img src="/img/carLogos/suzuki.svg" alt="Suzuki"></div>
         <div class="brand-card"><img src="/img/carLogos/lexus.svg" alt="Lexus"></div>
         <div class="brand-card"><img src="/img/carLogos/dacia.svg" alt="Dacia"></div>
@@ -169,7 +162,7 @@
         <div class="brand-card"><img src="/img/carLogos/infiniti.svg" alt="Infiniti"></div>
         <div class="brand-card"><img src="/img/carLogos/lada.svg" alt="Lada"></div>
         <div class="brand-card"><img src="/img/carLogos/isuzu.svg" alt="Isuzu"></div>
-        
+
         <div class="brand-card"><img src="/img/carLogos/mg.svg" alt="MG"></div>
         <div class="brand-card"><img src="/img/carLogos/cupra.svg" alt="Cupra"></div>
         <div class="brand-card"><img src="/img/carLogos/maserati.svg" alt="Maserati"></div>
@@ -178,7 +171,7 @@
         <div class="brand-card"><img src="/img/carLogos/aston martin.svg" alt="Aston Martin"></div>
         <div class="brand-card"><img src="/img/carLogos/ferrari.svg" alt="Ferrari"></div>
         <div class="brand-card"><img src="/img/carLogos/lamborghini.svg" alt="Lamborghini"></div>
-        
+
         <div class="brand-card"><img src="/img/carLogos/mclaren.svg" alt="McLaren"></div>
         <div class="brand-card"><img src="/img/carLogos/bugatti.svg" alt="Bugatti"></div>
         <div class="brand-card"><img src="/img/carLogos/koenigsegg.svg" alt="Koenigsegg"></div>
@@ -186,25 +179,12 @@
         <div class="brand-card"><img src="/img/carLogos/daewoo.svg" alt="Daewoo"></div>
         <div class="brand-card"><img src="/img/carLogos/iveco.svg" alt="Iveco"></div>
         <div class="brand-card"><img src="/img/carLogos/man.svg" alt="MAN"></div>
-        <div class="brand-card"><span>Smart</span></div>
-        
-        <div class="brand-card"><span>Renault</span></div>
-        <div class="brand-card"><span>Seat</span></div>
-        <div class="brand-card"><span>Mini</span></div>
-        <div class="brand-card"><span>Jaguar</span></div>
-        <div class="brand-card"><span>Chrysler</span></div>
-        <div class="brand-card"><span>Dodge</span></div>
-        <div class="brand-card"><span>Lincoln</span></div>
-        <div class="brand-card"><span>Acura</span></div>
-        
-        <div class="brand-card"><span>Genesis</span></div>
-        <div class="brand-card"><span>Saab</span></div>
-        <div class="brand-card"><span>GAZ</span></div>
-        <div class="brand-card"><span>UAZ</span></div>
-        <div class="brand-card"><span>Moskvitch</span></div>
-        <div class="brand-card"><span>Lancia</span></div>
-        <div class="brand-card"><span>DS</span></div>
-        <div class="brand-card"><span>SsangYong</span></div>
+    </div>
+    <div class="brands-note">
+        <p>И още много други марки и модели автомобили</p>
+        <a asp-controller="ServiceRequests" asp-action="Create" class="brands-note-btn">
+            Вижте тук
+        </a>
     </div>
 </section>
 
@@ -465,14 +445,16 @@
         width: 70%;
         height: 70%;
         object-fit: contain;
-        filter: brightness(0) invert(1);
+        filter: brightness(1);
         opacity: 0.8;
         transition: all 0.3s ease;
         z-index: 1;
     }
 
     .brand-card:hover img {
-        filter: brightness(0) invert(1);
+        background: var(--yellow);
+        background-blend-mode: multiply;
+        border-radius: 100px;
         opacity: 1;
         transform: scale(1.15);
     }
@@ -491,6 +473,45 @@
     .brand-card:hover span {
         color: var(--yellow);
         transform: scale(1.1);
+    }
+
+    /* Brands Note Section */
+    .brands-note {
+        margin-top: clamp(40px, 6vw, 60px);
+        text-align: center;
+        padding: clamp(30px, 4vw, 40px);
+        background: rgba(28, 28, 28, 0.6);
+        border-radius: 12px;
+        border: 2px solid #333;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .brands-note p {
+        font-size: clamp(16px, 2vw, 18px);
+        color: #fff;
+        margin-bottom: clamp(20px, 3vw, 25px);
+        opacity: 0.9;
+    }
+
+    .brands-note-btn {
+        display: inline-block;
+        background: var(--yellow);
+        color: var(--black);
+        padding: clamp(14px, 1.8vw, 16px) clamp(32px, 4vw, 40px);
+        font-size: clamp(16px, 1.8vw, 18px);
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border: 2px solid var(--yellow);
+    }
+
+    .brands-note-btn:hover {
+        background: transparent;
+        color: var(--yellow);
+        transform: translateY(-3px);
     }
 
     /* Responsive - Tablet */
@@ -590,8 +611,7 @@
     /* ===== RESPONSIVE ===== */
 
     /* Средни екрани (таблет / малък лаптоп) */
-    @@media
-    (max-width: 992px) {
+    @@media (max-width: 992px) {
 
         .services-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -615,8 +635,7 @@
     }
 
     /* Малки екрани (телефони) */
-    @@media
-    (max-width: 600px) {
+    @@media (max-width: 600px) {
 
         .services-hero {
             padding: 0 4%;

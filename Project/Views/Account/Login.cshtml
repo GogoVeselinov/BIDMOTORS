@@ -2,9 +2,208 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="container">
-    <h2>Login</h2>
-    <form>
-        <!-- Login form -->
-    </form>
+<div class="login-wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="login-left">
+        <h1>BIDMOTORS</h1>
+        <div class="login-underline"></div>
+
+        <p class="login-info">
+            Добре дошли в системата за управление на BIDMOTORS.<br>
+            Моля, влезте с вашия акаунт за да продължите.
+        </p>
+
+        <p class="login-small">
+            Системата е достъпна само за оторизиран персонал.
+        </p>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="login-right">
+        <form asp-action="Login" asp-controller="Auth" method="post" class="login-form">
+
+            <h2>Вход</h2>
+
+            <div class="form-group">
+                <label>Имейл</label>
+                <input type="email" name="Email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Парола</label>
+                <input type="password" name="Password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Вход</button>
+
+            <div class="login-register-link">
+                <p>Нямате акаунт? <a asp-controller="Account" asp-action="Register">Регистрирайте се тук</a></p>
+            </div>
+
+        </form>
+    </div>
+
 </div>
+
+<style>
+    .login-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        background: #121212;
+        color: white;
+    }
+
+    /* LEFT SIDE */
+    .login-left {
+        width: 60%;
+        padding: 80px 6%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .login-left h1 {
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--yellow);
+    }
+
+    .login-underline {
+        width: 140px;
+        height: 4px;
+        background: var(--yellow);
+        margin: 12px 0 30px 0;
+    }
+
+    .login-info {
+        font-size: 18px;
+        line-height: 1.6;
+        opacity: 0.9;
+        max-width: 600px;
+    }
+
+    .login-small {
+        margin-top: 30px;
+        opacity: 0.7;
+    }
+
+    /* RIGHT SIDE */
+    .login-right {
+        width: 40%;
+        padding: 80px 6%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        /* subtle background panel */
+        backdrop-filter: blur(4px);
+        background: rgba(255, 217, 0, 0.03);
+        /* много лек жълт нюанс */
+    }
+
+    /* FORM */
+    .login-form {
+        width: 100%;
+    }
+
+    .login-form h2 {
+        font-size: 32px;
+        margin-bottom: 25px;
+        color: var(--yellow);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
+        opacity: 0.9;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-bottom: 2px solid #444;
+        background: transparent;
+        color: white;
+        transition: 0.25s ease;
+    }
+
+    .form-group input:focus {
+        border-bottom-color: var(--yellow);
+        outline: none;
+    }
+
+    /* BUTTON */
+    .login-btn {
+        width: 100%;
+        background: var(--yellow);
+        color: black;
+        padding: 14px;
+        font-size: 18px;
+        font-weight: 700;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.25s ease;
+    }
+
+    .login-btn:hover {
+        background: black;
+        color: var(--yellow);
+        border: 2px solid var(--yellow);
+    }
+
+    /* REGISTER LINK */
+    .login-register-link {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .login-register-link p {
+        font-size: 15px;
+        opacity: 0.85;
+    }
+
+    .login-register-link a {
+        color: var(--yellow);
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.25s ease;
+    }
+
+    .login-register-link a:hover {
+        text-decoration: underline;
+        opacity: 0.8;
+    }
+
+    /* RESPONSIVE */
+    @@media
+    (max-width: 900px) {
+        .login-wrapper {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .login-left,
+        .login-right {
+            width: 100%;
+            padding: 50px 6%;
+        }
+
+        .login-left h1 {
+            font-size: 38px;
+        }
+
+        .login-btn {
+            margin-top: 10px;
+        }
+    }
+</style>

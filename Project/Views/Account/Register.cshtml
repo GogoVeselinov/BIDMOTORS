@@ -2,9 +2,206 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="container">
-    <h2>Register</h2>
-    <form>
-        <!-- Registration form -->
-    </form>
+<div class="register-wrapper">
+
+    <!-- LEFT SIDE (text) -->
+    <div class="register-left">
+        <h1>Създай акаунт</h1>
+        <div class="register-underline"></div>
+
+        <p class="register-info">
+            Регистрацията е достъпна само за служители и мениджъри на BIDMOTORS.
+            След създаване на акаунт, администратор ще го потвърди.
+        </p>
+
+        <p class="register-small">
+            Моля, въведете истински данни. Неправилна информация няма да бъде одобрявана.
+        </p>
+    </div>
+
+    <!-- RIGHT SIDE (form) -->
+    <div class="register-right">
+        <form asp-action="Register" asp-controller="Auth" method="post" class="register-form">
+
+            <h2>Регистрация</h2>
+
+            <div class="form-group">
+                <label>Име и фамилия</label>
+                <input type="text" name="FullName" required>
+            </div>
+
+            <div class="form-group">
+                <label>Имейл</label>
+                <input type="email" name="Email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Парола</label>
+                <input type="password" name="Password" required>
+            </div>
+
+            <div class="form-group">
+                <label>Повтори паролата</label>
+                <input type="password" name="ConfirmPassword" required>
+            </div>
+
+            <button type="submit" class="register-btn">Създай акаунт</button>
+
+            <p class="register-login-link">
+                Вече имате акаунт?
+                <a asp-action="Login" asp-controller="Auth">Вход</a>
+            </p>
+
+        </form>
+    </div>
+
 </div>
+
+<style>
+    .register-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        background: #121212;
+        color: white;
+    }
+
+    /* LEFT SIDE */
+    .register-left {
+        width: 50%;
+        padding: 80px 6%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .register-left h1 {
+        font-size: 46px;
+        font-weight: 800;
+        color: var(--yellow);
+    }
+
+    .register-underline {
+        width: 160px;
+        height: 4px;
+        background: var(--yellow);
+        margin: 12px 0 30px 0;
+    }
+
+    .register-info {
+        font-size: 18px;
+        line-height: 1.6;
+        opacity: 0.9;
+        max-width: 600px;
+    }
+
+    .register-small {
+        margin-top: 30px;
+        opacity: 0.7;
+    }
+
+    /* RIGHT SIDE */
+    .register-right {
+        width: 50%;
+        padding: 80px 6%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        backdrop-filter: blur(4px);
+        background: rgba(255, 217, 0, 0.03);
+    }
+
+    /* FORM */
+    .register-form {
+        width: 100%;
+    }
+
+    .register-form h2 {
+        font-size: 32px;
+        margin-bottom: 25px;
+        color: var(--yellow);
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
+        opacity: 0.9;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-bottom: 2px solid #444;
+        background: transparent;
+        color: white;
+        transition: 0.25s ease;
+    }
+
+    .form-group input:focus {
+        border-bottom-color: var(--yellow);
+        outline: none;
+    }
+
+    .register-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+        background: var(--yellow);
+        color: black;
+        font-weight: 700;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.25s ease;
+        margin-top: 10px;
+    }
+
+    .register-btn:hover {
+        background: black;
+        color: var(--yellow);
+        border: 2px solid var(--yellow);
+    }
+
+    /* LOGIN LINK */
+    .register-login-link {
+        margin-top: 20px;
+        font-size: 15px;
+    }
+
+    .register-login-link a {
+        color: var(--yellow);
+        text-decoration: none;
+    }
+
+    .register-login-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* RESPONSIVE */
+    @@media
+    (max-width: 900px) {
+
+        .register-wrapper {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .register-left,
+        .register-right {
+            width: 100%;
+            padding: 50px 6%;
+        }
+
+        .register-left h1 {
+            font-size: 36px;
+        }
+    }
+</style>
