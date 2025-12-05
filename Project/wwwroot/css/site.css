@@ -102,6 +102,33 @@ body {
     width: 100%;
 }
 
+/* User greeting in nav */
+.nav-user span {
+    color: var(--yellow);
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.nav-login a {
+    background: var(--yellow);
+    color: var(--black);
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.nav-login a:hover {
+    background: var(--white);
+    color: var(--black);
+    transform: translateY(-2px);
+}
+
+.nav-login a::after {
+    display: none;
+}
+
 /* CONTENT */
 .content-wrapper {
     min-height: 70vh;

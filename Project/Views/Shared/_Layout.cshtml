@@ -29,14 +29,31 @@
                     </li>
                     <li>
                         <a asp-controller="Home" asp-action="About">За нас</a>
-                    <li class="nav-login">
-                        <a asp-controller="Account" asp-action="Login">Вход</a>
                     </li>
+
+                    @if (Context.Session.GetString("UserId") != null)
+                    {
+                        <li class="nav-user">
+                            <span>Здравей, @Context.Session.GetString("UserName")!</span>
+                        </li>
+                        <li ">
+                            <a asp-controller="Account" asp-action="Logout">Изход</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-controller="Account" asp-action="Login">Вход</a>
+                        </li>
+                    }
                 </ul>
 
             </div>
         </nav>
     </header>
+
+    <!-- Notifications -->
+    @await Html.PartialAsync("_NotificationPartial")
 
     <main class="content-wrapper">
         @RenderBody()

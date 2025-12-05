@@ -218,7 +218,6 @@ C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\nqgvok87ge-
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\15locjm7gs-2z0ns9nrw6.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\lznwks8323-muycvpuwrr.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\staticwebassets.build.json.cache
-C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\ydb8vxti1i-b2z359i50t.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\b6vn2r804p-kyimr70xc7.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\tcw00zwfq1-zpdx3zfiju.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\y0xttlxyfy-ghelf43qi6.gz
@@ -266,3 +265,5 @@ C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\6jw4ln5g32-
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\rtjhl6qh3k-zg6imeymbx.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\xrxq3gh70k-dwpjfr6jqq.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\ol0hhcxfpb-1taeetuqk3.gz
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\ydb8vxti1i-cvy3iabvtx.gz

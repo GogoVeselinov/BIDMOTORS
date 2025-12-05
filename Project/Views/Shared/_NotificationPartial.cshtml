@@ -1,0 +1,84 @@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="notification notification-success">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>@TempData["SuccessMessage"]</span>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="notification notification-error">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <span>@TempData["ErrorMessage"]</span>
+    </div>
+}
+
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="notification notification-info">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>@TempData["InfoMessage"]</span>
+    </div>
+}
+
+<style>
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 24px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        font-weight: 500;
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+    }
+
+    .notification i {
+        font-size: 20px;
+    }
+
+    .notification-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .notification-error {
+        background: #dc3545;
+        color: white;
+    }
+
+    .notification-info {
+        background: #17a2b8;
+        color: white;
+    }
+
+    @@keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Auto-hide after 5 seconds */
+    @@keyframes fadeOut {
+        to {
+            opacity: 0;
+            transform: translateX(400px);
+        }
+    }
+
+    .notification {
+        animation: slideIn 0.3s ease-out, fadeOut 0.3s ease-in 4.7s forwards;
+    }
+</style>
