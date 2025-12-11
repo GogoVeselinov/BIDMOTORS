@@ -8,6 +8,8 @@ namespace Project.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Car> builder)
         {
+            // Уникален ключ за регистрационния номер
+            builder.HasIndex(c => c.RegistrationNumber).IsUnique();
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Brand)

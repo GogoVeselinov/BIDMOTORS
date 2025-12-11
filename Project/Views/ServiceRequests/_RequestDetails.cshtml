@@ -1,0 +1,292 @@
+@model Project.Models.ViewModels.ServiceRequests.RequestDetailsViewModel
+
+<div class="request-details">
+    
+    <!-- Основна информация -->
+    <div class="detail-section">
+        <h4 class="section-title">
+            <i class="bi bi-info-circle"></i> Основна информация
+        </h4>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Номер на заявка:</span>
+                <span class="detail-value">@Model.Id.ToString().Substring(0, 8).ToUpper()</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Дата на създаване:</span>
+                <span class="detail-value">@Model.CreatedOn.ToString("dd.MM.yyyy HH:mm")</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Услуга:</span>
+                <span class="detail-value">@Model.ServiceTypeName</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Статус:</span>
+                @{
+                    var statusClass = Model.Status switch
+                    {
+                        "Pending" => "status-pending",
+                        "InProgress" => "status-in-progress",
+                        "Completed" => "status-completed",
+                        "Cancelled" => "status-cancelled",
+                        _ => "status-pending"
+                    };
+
+                    var statusText = Model.Status switch
+                    {
+                        "Pending" => "Чакаща",
+                        "InProgress" => "В процес",
+                        "Completed" => "Завършена",
+                        "Cancelled" => "Отказана",
+                        _ => Model.Status
+                    };
+                }
+                <span class="status-badge @statusClass">@statusText</span>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div class="detail-item full-width mt-3">
+                <span class="detail-label">Описание:</span>
+                <p class="detail-description">@Model.Description</p>
+            </div>
+        }
+    </div>
+
+    <!-- Информация за автомобила -->
+    <div class="detail-section">
+        <h4 class="section-title">
+            <i class="bi bi-car-front"></i> Информация за автомобила
+        </h4>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Марка:</span>
+                <span class="detail-value">@Model.CarMake</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Модел:</span>
+                <span class="detail-value">@Model.CarModel</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Година:</span>
+                <span class="detail-value">@Model.CarYear</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Рег. номер:</span>
+                <span class="detail-value license-plate">@Model.LicensePlate</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Информация за клиента -->
+    <div class="detail-section">
+        <h4 class="section-title">
+            <i class="bi bi-person"></i> Вашите данни
+        </h4>
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Име:</span>
+                <span class="detail-value">@Model.ClientName</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Телефон:</span>
+                <span class="detail-value">
+                    <a href="tel:@Model.ClientPhone" class="contact-link">
+                        <i class="bi bi-telephone"></i> @Model.ClientPhone
+                    </a>
+                </span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Имейл:</span>
+                <span class="detail-value">
+                    <a href="mailto:@Model.ClientEmail" class="contact-link">
+                        <i class="bi bi-envelope"></i> @Model.ClientEmail
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Информация за ремонта (ако има) -->
+    @if (Model.HasRepair)
+    {
+        <div class="detail-section repair-section">
+            <h4 class="section-title">
+                <i class="bi bi-tools"></i> Информация за ремонта
+            </h4>
+            <div class="detail-grid">
+                @if (Model.RepairPrice.HasValue)
+                {
+                    <div class="detail-item">
+                        <span class="detail-label">Цена:</span>
+                        <span class="detail-value price-value">@Model.RepairPrice.Value.ToString("F2") лв.</span>
+                    </div>
+                }
+                @if (Model.RepairFinishedOn.HasValue)
+                {
+                    <div class="detail-item">
+                        <span class="detail-label">Завършен на:</span>
+                        <span class="detail-value">@Model.RepairFinishedOn.Value.ToString("dd.MM.yyyy HH:mm")</span>
+                    </div>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.RepairWorkDescription))
+            {
+                <div class="detail-item full-width mt-3">
+                    <span class="detail-label">Описание на работата:</span>
+                    <p class="detail-description">@Model.RepairWorkDescription</p>
+                </div>
+            }
+        </div>
+    }
+    else if (Model.Status == "InProgress")
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            Заявката е в процес на обработка. Ремонтът все още не е започнал.
+        </div>
+    }
+
+</div>
+
+<style>
+    .request-details {
+        padding: 10px;
+    }
+
+    .detail-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid var(--yellow);
+    }
+
+    .repair-section {
+        border-left-color: #4caf50;
+    }
+
+    .section-title {
+        color: var(--yellow);
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .detail-item.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .detail-label {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+        font-size: 1rem;
+        color: white;
+        font-weight: 500;
+    }
+
+    .license-plate {
+        background: var(--yellow);
+        color: black;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: 700;
+        display: inline-block;
+        font-family: monospace;
+        letter-spacing: 2px;
+    }
+
+    .price-value {
+        color: #4caf50;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .contact-link {
+        color: #2196F3;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .contact-link:hover {
+        color: var(--yellow);
+        text-decoration: underline;
+    }
+
+    .detail-description {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 15px;
+        border-radius: 6px;
+        margin: 0;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background: rgba(255, 193, 7, 0.2);
+        color: #ffc107;
+        border: 1px solid #ffc107;
+    }
+
+    .status-in-progress {
+        background: rgba(33, 150, 243, 0.2);
+        color: #2196F3;
+        border: 1px solid #2196F3;
+    }
+
+    .status-completed {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4caf50;
+        border: 1px solid #4caf50;
+    }
+
+    .status-cancelled {
+        background: rgba(244, 67, 54, 0.2);
+        color: #f44336;
+        border: 1px solid #f44336;
+    }
+
+    .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .alert-info {
+        background: rgba(33, 150, 243, 0.15);
+        color: #2196F3;
+        border: 1px solid #2196F3;
+    }
+</style>

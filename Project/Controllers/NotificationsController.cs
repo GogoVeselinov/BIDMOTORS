@@ -21,7 +21,7 @@ namespace Project.Controllers
             var userIdString = HttpContext.Session.GetString("UserId");
             var userType = HttpContext.Session.GetString("UserType");
 
-            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            if (string.IsNullOrEmpty(userIdString) || string.IsNullOrEmpty(userType) || !Guid.TryParse(userIdString, out var userId))
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -36,7 +36,7 @@ namespace Project.Controllers
             var userIdString = HttpContext.Session.GetString("UserId");
             var userType = HttpContext.Session.GetString("UserType");
 
-            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            if (string.IsNullOrEmpty(userIdString) || string.IsNullOrEmpty(userType) || !Guid.TryParse(userIdString, out var userId))
             {
                 return RedirectToAction("Login", "Account");
             }
@@ -51,7 +51,7 @@ namespace Project.Controllers
             var userIdString = HttpContext.Session.GetString("UserId");
             var userType = HttpContext.Session.GetString("UserType");
 
-            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            if (string.IsNullOrEmpty(userIdString) || string.IsNullOrEmpty(userType) || !Guid.TryParse(userIdString, out var userId))
             {
                 return Json(new { count = 0 });
             }
@@ -66,7 +66,7 @@ namespace Project.Controllers
             var userIdString = HttpContext.Session.GetString("UserId");
             var userType = HttpContext.Session.GetString("UserType");
 
-            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            if (string.IsNullOrEmpty(userIdString) || string.IsNullOrEmpty(userType) || !Guid.TryParse(userIdString, out var userId))
             {
                 return Json(new { notifications = new List<object>() });
             }
@@ -100,7 +100,7 @@ namespace Project.Controllers
             var userIdString = HttpContext.Session.GetString("UserId");
             var userType = HttpContext.Session.GetString("UserType");
 
-            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            if (string.IsNullOrEmpty(userIdString) || string.IsNullOrEmpty(userType) || !Guid.TryParse(userIdString, out var userId))
             {
                 return Json(new { success = false });
             }

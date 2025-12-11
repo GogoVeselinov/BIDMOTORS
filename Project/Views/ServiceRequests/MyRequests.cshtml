@@ -1,0 +1,330 @@
+@model List<Project.Models.ViewModels.ServiceRequests.MyRequestsViewModel>
+
+@{
+    ViewData["Title"] = "Моите заявки";
+}
+
+<div class="my-requests-page">
+    <div class="container-fluid px-4 py-5">
+
+        <div class="page-header mb-4">
+            <h1 class="page-title">Моите заявки</h1>
+            <p class="page-subtitle">Преглед на всички подадени заявки за обслужване</p>
+        </div>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <i class="bi bi-inbox" style="font-size: 4rem; opacity: 0.3;"></i>
+                <h3>Все още нямате заявки</h3>
+                <p>Подайте първата си заявка за обслужване</p>
+                <a asp-controller="ServiceRequests" asp-action="Create" class="btn mt-3">
+                    <i class="bi bi-plus-circle"></i> Нова заявка
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="requests-table-wrapper">
+                <table class="table requests-table">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Услуга</th>
+                            <th>Автомобил</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="date-display">
+                                        @request.CreatedOn.ToString("dd.MM.yyyy")
+                                    </span>
+                                    <small class="text-muted d-block">
+                                        @request.CreatedOn.ToString("HH:mm")
+                                    </small>
+                                </td>
+                                <td>
+                                    <strong>@request.ServiceTypeName</strong>
+                                    @if (!string.IsNullOrEmpty(request.Description))
+                                    {
+                                        <small class="text-muted d-block">
+                                            @(request.Description.Length > 50 ? request.Description.Substring(0, 50) + "..." :
+                                                                            request.Description)
+                                        </small>
+                                    }
+                                </td>
+                                <td>
+                                    <i class="bi bi-car-front"></i>
+                                    @request.CarInfo
+                                </td>
+                                <td>
+                                    @{
+                                        var statusClass = request.Status switch
+                                        {
+                                            "Pending" => "status-pending",
+                                            "InProgress" => "status-in-progress",
+                                            "Completed" => "status-completed",
+                                            "Cancelled" => "status-cancelled",
+                                            _ => "status-pending"
+                                        };
+
+                                        var statusText = request.Status switch
+                                        {
+                                            "Pending" => "Чакаща",
+                                            "InProgress" => "В процес",
+                                            "Completed" => "Завършена",
+                                            "Cancelled" => "Отказана",
+                                            _ => request.Status
+                                        };
+                                    }
+                                    <span class="status-badge @statusClass">
+                                        @statusText
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-info view-details-btn" data-request-id="@request.Id"
+                                        data-bs-toggle="modal" data-bs-target="#requestDetailsModal">
+                                        <i class="bi bi-eye"></i> Детайли
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+    </div>
+</div>
+
+<!-- Modal за детайли -->
+<div class="modal fade" id="requestDetailsModal" tabindex="-1" aria-labelledby="requestDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestDetailsModalLabel">Детайли за заявката</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="requestDetailsContent">
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Зареждане...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --yellow: #f6d201;
+        --dark: #111;
+        --gray-dark: #1e1e1e;
+        --gray-mid: #2d2d2d;
+        --white: #ffffff;
+        --red: #ff4444;
+        --green: #4caf50;
+        --orange: #ff9800;
+    }
+
+    .my-requests-page {
+        min-height: 100vh;
+        background: linear-gradient(135deg, var(--dark) 0%, var(--gray-mid) 100%);
+        padding: 40px 0;
+    }
+
+    /* GENERAL BUTTONS */
+    .btn,
+    .view-details-btn {
+        background-color: var(--yellow) !important;
+        color: black !important;
+        border: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover,
+    .view-details-btn:hover {
+        background-color: black !important;
+        color: var(--yellow) !important;
+        border: 1px solid var(--yellow) !important;
+    }
+
+    /* TABLE */
+    .requests-table-wrapper {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+    }
+
+    .requests-table thead th {
+        background: transparent;
+        color: var(--yellow);
+        font-weight: 700;
+        padding: 15px;
+        border: none;
+    }
+
+    .requests-table tbody td {
+        background-color: var(--gray-dark) !important;
+        color: white !important;
+        padding: 20px 15px;
+        border: none;
+    }
+
+    .requests-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* STATUS BADGES (CUSTOM THEME) */
+    .status-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    /* Pending (Жълто) */
+    .status-pending {
+        background: rgba(246, 210, 1, 0.15);
+        color: var(--yellow);
+        border: 1px solid var(--yellow);
+    }
+
+    /* In Progress (Оранжево) */
+    .status-in-progress {
+        background: rgba(255, 152, 0, 0.15);
+        color: var(--orange);
+        border: 1px solid var(--orange);
+    }
+
+    /* Completed (Зелен тон, по-тъмен) */
+    .status-completed {
+        background: rgba(76, 175, 80, 0.15);
+        color: var(--green);
+        border: 1px solid var(--green);
+    }
+
+    /* Cancelled (Червено) */
+    .status-cancelled {
+        background: rgba(255, 68, 68, 0.15);
+        color: var(--red);
+        border: 1px solid var(--red);
+    }
+
+    /* MODALS */
+    .modal-content {
+        background: var(--gray-mid);
+        color: white;
+        border: 2px solid var(--yellow);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .modal-title {
+        color: var(--yellow);
+        font-weight: 700;
+    }
+
+    /* BOOTSTRAP FIX: Spinner becomes yellow */
+    .spinner-border {
+        color: var(--yellow) !important;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .empty-state h3 {
+        margin-top: 20px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--yellow);
+    }
+
+    .page-subtitle {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* MOBILE */
+    @@media (max-width: 768px) {
+        .page-title {
+            font-size: 2rem;
+        }
+
+        .requests-table thead th,
+        .requests-table tbody td {
+            padding: 10px 8px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const detailsButtons = document.querySelectorAll('.view-details-btn');
+
+        detailsButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const requestId = this.getAttribute('data-request-id');
+                loadRequestDetails(requestId);
+            });
+        });
+    });
+
+    function loadRequestDetails(requestId) {
+        const contentDiv = document.getElementById('requestDetailsContent');
+
+        // Показваме loader
+        contentDiv.innerHTML = `
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Зареждане...</span>
+                </div>
+            </div>
+        `;
+
+        // Зареждаме детайлите
+        fetch(`/ServiceRequests/Details/${requestId}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(html => {
+                contentDiv.innerHTML = html;
+            })
+            .catch(error => {
+                contentDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Грешка при зареждане на детайлите. Моля опитайте отново.
+                    </div>
+                `;
+                console.error('Error loading details:', error);
+            });
+    }
+</script>

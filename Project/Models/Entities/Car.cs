@@ -14,11 +14,15 @@ namespace Project.Models.Entities
         public string Model { get; set; } = string.Empty;
         
         [Required]
-        [Range(1900, 2100)]
-        public int Year { get; set; }
+        [StringLength(4)]
+        public string Year { get; set; } = string.Empty;
         
         [StringLength(17)]
         public string? VIN { get; set; }
+        
+        [Required]
+        [StringLength(20)]
+        public string RegistrationNumber { get; set; } = string.Empty;
 
         // Foreign keys
         [Required]

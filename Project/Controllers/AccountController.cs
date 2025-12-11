@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Models.ViewModels.Account;
 using Project.Services.Interfaces;
+using Project.Data;
 
 namespace Project.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly ApplicationDbContext _db;
 
-        public AccountController(IAuthService authService)
+        public AccountController(IAuthService authService, ApplicationDbContext db)
         {
             _authService = authService;
+            _db = db;
         }
 
         // GET: /Account/Login
@@ -127,13 +130,110 @@ namespace Project.Controllers
 
         public IActionResult Profile()
         {
-            // Ако не е логнат, пренасочи към Login
-            if (HttpContext.Session.GetString("UserId") == null)
+            var userIdString = HttpContext.Session.GetString("UserId");
+            var userType = HttpContext.Session.GetString("UserType");
+
+            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            return View();
+            ProfileViewModel model;
+
+            if (userType == "Client")
+            {
+                var client = _db.Clients.FirstOrDefault(c => c.Id == userId);
+                if (client == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                model = new ProfileViewModel
+                {
+                    FullName = client.Name,
+                    Email = client.Email,
+                    Phone = client.Phone,
+                    CreatedOn = client.CreatedOn,
+                    Role = "Клиент",
+                    LastLogin = "Днес"
+                };
+            }
+            else // Employee
+            {
+                var employee = _db.Employees.FirstOrDefault(e => e.Id == userId);
+                if (employee == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                model = new ProfileViewModel
+                {
+                    FullName = employee.Name,
+                    Email = employee.Email,
+                    Phone = employee.Phone,
+                    CreatedOn = employee.CreatedOn,
+                    Role = employee.Role,
+                    LastLogin = "Днес"
+                };
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(ProfileViewModel model)
+        {
+            var userIdString = HttpContext.Session.GetString("UserId");
+            var userType = HttpContext.Session.GetString("UserType");
+
+            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View("Profile", model);
+            }
+
+            if (userType == "Client")
+            {
+                var client = _db.Clients.FirstOrDefault(c => c.Id == userId);
+                if (client != null)
+                {
+                    client.Name = model.FullName;
+                    client.Email = model.Email;
+                    client.Phone = model.Phone ?? string.Empty;
+
+                    if (!string.IsNullOrEmpty(model.NewPassword))
+                    {
+                        client.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+                    }
+
+                    await _db.SaveChangesAsync();
+                }
+            }
+            else // Employee
+            {
+                var employee = _db.Employees.FirstOrDefault(e => e.Id == userId);
+                if (employee != null)
+                {
+                    employee.Name = model.FullName;
+                    employee.Email = model.Email;
+                    employee.Phone = model.Phone ?? string.Empty;
+
+                    if (!string.IsNullOrEmpty(model.NewPassword))
+                    {
+                        employee.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+                    }
+
+                    await _db.SaveChangesAsync();
+                }
+            }
+
+            TempData["SuccessMessage"] = "Профилът е обновен успешно!";
+            return RedirectToAction("Profile");
         }
 
         // GET: /Account/Logout

@@ -3,85 +3,156 @@
     Layout = "_Layout";
 }
 
-<div class="wizard-fullpage">
-
-    <!-- Progress Bar -->
-    <div class="wizard-progress">
-        <div class="step-indicator active" data-step="1">1</div>
-        <div class="progress-line"></div>
-        <div class="step-indicator" data-step="2">2</div>
-        <div class="progress-line"></div>
-        <div class="step-indicator" data-step="3">3</div>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" style="margin: 20px auto; max-width: 800px; padding: 15px; background: #ff4444; color: white; border-radius: 8px;">
+        @TempData["ErrorMessage"]
     </div>
+}
 
-    <form id="wizardForm" method="post" asp-action="Create" asp-controller="ServiceRequests">
-        <div class="wizard-steps">
-
-            <div class="wizard-step active" data-step="1">
-                @await Html.PartialAsync("Partials/_Step1")
+<div class="request-form-container">
+    <h1 class="form-main-title">Нова заявка за услуга</h1>
+    
+    <form id="serviceRequestForm" method="post" asp-action="Create" asp-controller="ServiceRequests">
+        @Html.AntiForgeryToken()
+        
+        <!-- Секция 1: Данни за клиента -->
+        <div class="form-section">
+            <h2 class="section-title">Данни за клиента</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="ClientName">Име *</label>
+                    <input type="text" name="ClientName" id="ClientName" class="form-control" required />
+                    <span class="text-danger field-validation-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="Phone">Телефон *</label>
+                    <input type="text" name="Phone" id="Phone" class="form-control" required />
+                    <span class="text-danger field-validation-error"></span>
+                </div>
             </div>
-
-            <div class="wizard-step" data-step="2">
-                @await Html.PartialAsync("Partials/_Step2")
+            
+            <div class="form-group">
+                <label for="Email">Имейл (по желание)</label>
+                <input type="email" name="Email" id="Email" class="form-control" />
             </div>
-
-            <div class="wizard-step" data-step="3">
-                @await Html.PartialAsync("Partials/_Step3")
-            </div>
-
         </div>
 
-        <div class="wizard-buttons">
-            <button type="button" id="prevBtn" class="wizard-btn hidden">Назад</button>
-            <button type="button" id="nextBtn" class="wizard-btn">Напред</button>
-            <button type="submit" id="submitBtn" class="wizard-btn hidden">Изпрати заявката</button>
+        <!-- Секция 2: Данни за автомобила -->
+        <div class="form-section">
+            <h2 class="section-title">Данни за автомобила</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="Brand">Марка *</label>
+                    <input type="text" name="Brand" id="Brand" class="form-control" required />
+                    <span class="text-danger field-validation-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="Model">Модел *</label>
+                    <input type="text" name="Model" id="Model" class="form-control" required />
+                    <span class="text-danger field-validation-error"></span>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="Year">Година *</label>
+                    <input type="number" name="Year" id="Year" class="form-control" min="1900" max="2100" required />
+                    <span class="text-danger field-validation-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="RegistrationNumber">Регистрационен номер *</label>
+                    <input type="text" name="RegistrationNumber" id="RegistrationNumber" class="form-control" maxlength="20" required />
+                    <span class="text-danger field-validation-error"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="VIN">VIN (по желание)</label>
+                <input type="text" name="VIN" id="VIN" class="form-control" maxlength="17" />
+            </div>
+        </div>
+
+        <!-- Секция 3: Услуга -->
+        <div class="form-section">
+            <h2 class="section-title">Услуга</h2>
+            
+            <div class="form-group">
+                <label for="ServiceType">Вид услуга *</label>
+                <select name="ServiceType" id="ServiceType" class="form-control" required>
+                    <option value="">-- Изберете услуга --</option>
+                    <option value="Ремонт">Ремонт</option>
+                    <option value="Диагностика">Диагностика</option>
+                    <option value="Безопасност">Проверка на безопасност</option>
+                </select>
+                <span class="text-danger field-validation-error"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="Description">Описание *</label>
+                <textarea name="Description" id="Description" class="form-control" rows="4" required></textarea>
+                <span class="text-danger field-validation-error"></span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Изпрати заявката</button>
+            <a href="@Url.Action("Index", "Home")" class="btn-cancel">Отказ</a>
         </div>
     </form>
 </div>
 
 @section Scripts {
     <script>
-        let currentStep = 1;
-
-        const steps = document.querySelectorAll(".wizard-step");
-        const indicators = document.querySelectorAll(".step-indicator");
-
-        const nextBtn = document.getElementById("nextBtn");
-        const prevBtn = document.getElementById("prevBtn");
-        const submitBtn = document.getElementById("submitBtn");
-
-        function showStep(step) {
-            // Скриваме всички стъпки
-            steps.forEach(s => s.classList.remove("active"));
-            indicators.forEach(i => i.classList.remove("active"));
-
-            // Показваме текущата стъпка
-            const currentStepElement = document.querySelector(`.wizard-step[data-step="${step}"]`);
-            const currentIndicatorElement = document.querySelector(`.step-indicator[data-step="${step}"]`);
-
-            if (currentStepElement && currentIndicatorElement) {
-                currentStepElement.classList.add("active");
-                currentIndicatorElement.classList.add("active");
+        // Проста валидация на формата
+        document.getElementById('serviceRequestForm').addEventListener('submit', function(e) {
+            let isValid = true;
+            const form = this;
+            
+            // Изчистваме предишни грешки
+            form.querySelectorAll('.field-validation-error').forEach(span => {
+                span.textContent = '';
+            });
+            form.querySelectorAll('.form-control').forEach(input => {
+                input.style.borderColor = '';
+            });
+            
+            // Проверяваме всички задължителни полета
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                const value = field.value.trim();
+                const errorSpan = field.nextElementSibling;
+                
+                if (!value) {
+                    isValid = false;
+                    field.style.borderColor = '#ff4444';
+                    if (errorSpan && errorSpan.classList.contains('field-validation-error')) {
+                        errorSpan.textContent = 'Това поле е задължително';
+                    }
+                } else if (field.type === 'number') {
+                    const year = parseInt(value);
+                    if (year < 1900 || year > 2100) {
+                        isValid = false;
+                        field.style.borderColor = '#ff4444';
+                        if (errorSpan && errorSpan.classList.contains('field-validation-error')) {
+                            errorSpan.textContent = 'Годината трябва да е между 1900 и 2100';
+                        }
+                    }
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return false;
             }
-
-            // Управление на бутоните
-            prevBtn.classList.toggle("hidden", step === 1);
-            nextBtn.classList.toggle("hidden", step === 3);
-            submitBtn.classList.toggle("hidden", step !== 3);
-        }
-
-        nextBtn.addEventListener("click", () => {
-            if (currentStep < 3) {
-                currentStep++;
-                showStep(currentStep);
-            }
-        });
-
-        prevBtn.addEventListener("click", () => {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep(currentStep);
-            }
+            
+            console.log('Form is valid, submitting...');
         });
     </script>
 }
@@ -92,165 +163,150 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 100 100'%3E%3Ccircle fill='%23222222' cx='3' cy='3' r='1'/%3E%3C/svg%3E");
     }
 
-    /* FULL-PAGE WIZARD */
-    .wizard-fullpage {
-        width: 100%;
-        padding: 40px 5%;
-        color: white;
+    .request-form-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 40px;
+        background: #1a1a1a;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
 
-    /* PROGRESS BAR – full width */
-    .wizard-progress {
-        width: 100%;
-        max-width: 1100px;
-        margin: 0 auto 50px auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .step-indicator {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: #333;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 20px;
-        transition: 0.3s ease;
-        border: 3px solid #333;
-    }
-
-    .step-indicator.active {
-        background: var(--yellow);
-        color: black;
-        border-color: var(--yellow);
-        transform: scale(1.15);
-    }
-
-    .progress-line {
-        height: 4px;
-        background: #555;
-        width: 160px;
-        margin: 0 15px;
-    }
-
-    /* STEPS FULL WIDTH */
-    .wizard-step {
-        display: none;
-        max-width: 1100px;
-        margin: 0 auto;
-        animation: fadeStep 0.3s ease;
-    }
-
-    .wizard-step.active {
-        display: block;
-    }
-
-    /* TITLES */
-    .wizard-title {
-        font-size: 32px;
+    .form-main-title {
+        font-size: 36px;
         font-weight: 700;
         color: var(--yellow);
-        margin-bottom: 25px;
+        margin-bottom: 40px;
+        text-align: center;
     }
 
-    /* FORM GROUPS – wider */
+    .form-section {
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+        border-bottom: 2px solid #333;
+    }
+
+    .form-section:last-of-type {
+        border-bottom: none;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--yellow);
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
     .form-group {
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
 
     .form-group label {
         display: block;
         font-size: 15px;
-        margin-bottom: 6px;
+        font-weight: 500;
+        margin-bottom: 8px;
         color: #ddd;
     }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
+    .form-control {
         width: 100%;
-        padding: 15px;
-        border-radius: 8px;
+        padding: 12px 16px;
+        border-radius: 6px;
         border: 2px solid #444;
-        background: #1a1a1a;
+        background: #0a0a0a;
         color: white;
-        font-size: 17px;
+        font-size: 16px;
         transition: 0.25s ease;
+        box-sizing: border-box;
     }
 
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
+    .form-control:focus {
+        outline: none;
         border-color: var(--yellow);
-        box-shadow: 0 0 2px rgba(246, 210, 1, 0.226);
+        box-shadow: 0 0 8px rgba(246, 210, 1, 0.3);
     }
 
-    /* BUTTON SECTION */
-    .wizard-buttons {
-        max-width: 1100px;
-        margin: 40px auto 0 auto;
+    .form-control:invalid:not(:placeholder-shown) {
+        border-color: #ff4444;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .field-validation-error {
+        display: block;
+        color: #ff4444;
+        font-size: 13px;
+        margin-top: 5px;
+        min-height: 18px;
+    }
+
+    .form-actions {
         display: flex;
-        justify-content: space-between;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 40px;
     }
 
-    .wizard-btn {
-        padding: 14px 36px;
+    .btn-submit {
+        padding: 14px 40px;
         font-size: 18px;
+        font-weight: 600;
         border-radius: 6px;
         background: var(--yellow);
         color: black;
         border: none;
         cursor: pointer;
-        font-weight: bold;
-        transition: 0.25s;
+        transition: 0.3s;
     }
 
-    .wizard-btn:hover {
-        background: black;
+    .btn-submit:hover {
+        background: #ffd700;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(246, 210, 1, 0.4);
+    }
+
+    .btn-cancel {
+        padding: 14px 40px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 6px;
+        background: transparent;
+        color: #ddd;
+        border: 2px solid #444;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-cancel:hover {
+        border-color: var(--yellow);
         color: var(--yellow);
-        border: 2px solid var(--yellow);
     }
 
-    /* HIDDEN */
-    .hidden {
-        display: none !important;
-    }
-
-    /* ANIMATION */
-    @@keyframes fadeStep {
-        from {
-            opacity: 0;
-            transform: translateY(18px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* RESPONSIVE */
     @@media (max-width: 768px) {
-        .wizard-fullpage {
+        .request-form-container {
             padding: 20px;
+            margin: 20px;
         }
 
-        .wizard-progress {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .form-actions {
             flex-direction: column;
-        }
-
-        .progress-line {
-            display: none;
-        }
-
-        .wizard-buttons {
-            flex-direction: column;
-            gap: 12px;
         }
     }
 </style>
