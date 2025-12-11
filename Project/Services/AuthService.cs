@@ -41,6 +41,7 @@ namespace Project.Services
                 Email = model.Email,
                 Phone = string.Empty, // Телефонът се добавя след регистрация
                 PasswordHash = HashPassword(model.Password),
+                IsGuest = false, // Регистрираните потребители не са гости
                 CreatedOn = DateTime.UtcNow
             };
 
@@ -59,10 +60,16 @@ namespace Project.Services
             {
                 return (false, "Невалиден имейл или парола", null);
             }
+            
+            // Проверка дали е гост акаунт
+            if (client.IsGuest)
+            {
+                return (false, "Този акаунт е създаден като гост. Моля, регистрирайте се за да влезете.", null);
+            }
 
             if (string.IsNullOrEmpty(client.PasswordHash))
             {
-                return (false, "Този акаунт няма зададена парола", null);
+                return (false, "Този акаунт няма зададена парола. Моля, регистрирайте се.", null);
             }
 
             if (!VerifyPassword(model.Password, client.PasswordHash))

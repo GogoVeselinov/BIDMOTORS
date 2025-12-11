@@ -90,47 +90,80 @@ namespace Project.Controllers
 
             try
             {
-                // Проверка дали имейлът вече съществува при друг клиент
+                // Проверяваме дали потребителят е логнат и вземаме неговото ID
+                var userIdString = HttpContext.Session.GetString("UserId");
+                Guid currentUserId = Guid.Empty;
+                var userIsAuthenticated = !string.IsNullOrEmpty(userIdString) && Guid.TryParse(userIdString, out currentUserId);
+                
+                // Проверка дали имейлът вече съществува при ДРУГ клиент
+                // Игнорираме проверката ако имейлът принадлежи на логнатия потребител
                 if (!string.IsNullOrEmpty(viewModel.Email))
                 {
-                    var clientWithEmail = _context.Clients.FirstOrDefault(c => c.Email == viewModel.Email && c.Phone != viewModel.Phone);
+                    var clientWithEmail = _context.Clients
+                        .FirstOrDefault(c => c.Email == viewModel.Email && c.Phone != viewModel.Phone);
+                    
+                    // Ако намерим клиент с този имейл и различен телефон
                     if (clientWithEmail != null)
                     {
-                        Console.WriteLine($"Email {viewModel.Email} already exists for different client {clientWithEmail.Id}");
-                        TempData["ErrorMessage"] = "Този имейл адрес вече е регистриран с друг телефонен номер. Моля, използвайте друг имейл или се свържете с нас.";
-                        
-                        // Ако сме от бърза форма, редиректваме към Home
-                        if (Request.Headers["Referer"].ToString().Contains("/Home") || 
-                            Request.Headers["Referer"].ToString().Contains("/#"))
+                        // Проверяваме дали това НЕ Е логнатият потребител
+                        if (!userIsAuthenticated || clientWithEmail.Id != currentUserId)
                         {
-                            return RedirectToAction("Index", "Home");
+                            Console.WriteLine($"Email {viewModel.Email} already exists for different client {clientWithEmail.Id}");
+                            TempData["ErrorMessage"] = "Този имейл адрес вече е регистриран с друг телефонен номер. Моля, използвайте друг имейл или се свържете с нас.";
+                            
+                            // Ако сме от бърза форма, редиректваме към Home
+                            if (Request.Headers["Referer"].ToString().Contains("/Home") || 
+                                Request.Headers["Referer"].ToString().Contains("/#"))
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                            
+                            return View(viewModel);
                         }
-                        
-                        return View(viewModel);
                     }
                 }
 
-                // Проверка дали клиент с този телефон вече съществува
-                var existingClient = _context.Clients.FirstOrDefault(c => c.Phone == viewModel.Phone);
+                // Проверка дали клиент с този телефон или имейл вече съществува
+                var existingClient = _context.Clients.FirstOrDefault(c => 
+                    c.Phone == viewModel.Phone || 
+                    (!string.IsNullOrEmpty(viewModel.Email) && c.Email == viewModel.Email));
                 Client client;
 
                 if (existingClient != null)
                 {
-                    Console.WriteLine($"Found existing client: {existingClient.Id}");
+                    Console.WriteLine($"Found existing client: {existingClient.Id} (Phone: {existingClient.Phone}, Email: {existingClient.Email})");
                     client = existingClient;
                     
-                    // Актуализираме имейла само ако е различен (и не е празен)
-                    if (!string.IsNullOrEmpty(viewModel.Email) && 
-                        client.Email != viewModel.Email)
+                    // Актуализираме имейла ако е различен и не е празен
+                    if (!string.IsNullOrEmpty(viewModel.Email) && client.Email != viewModel.Email)
                     {
                         Console.WriteLine($"Updating email from '{client.Email}' to '{viewModel.Email}'");
                         client.Email = viewModel.Email;
-                        await _context.SaveChangesAsync();
-                        Console.WriteLine("Email updated successfully");
                     }
+                    
+                    // Актуализираме телефона ако е различен
+                    if (client.Phone != viewModel.Phone)
+                    {
+                        Console.WriteLine($"Updating phone from '{client.Phone}' to '{viewModel.Phone}'");
+                        client.Phone = viewModel.Phone;
+                    }
+                    
+                    // Актуализираме името ако е различно
+                    if (client.Name != viewModel.ClientName)
+                    {
+                        Console.WriteLine($"Updating name from '{client.Name}' to '{viewModel.ClientName}'");
+                        client.Name = viewModel.ClientName;
+                    }
+                    
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine("Client updated successfully");
                 }
                 else
                 {
+                    // Проверяваме дали потребителят е логнат
+                    var sessionUserId = HttpContext.Session.GetString("UserId");
+                    var isUserLoggedIn = !string.IsNullOrEmpty(sessionUserId);
+                    
                     // Създаваме нов клиент
                     Console.WriteLine("Creating new client...");
                     client = new Client
@@ -138,11 +171,12 @@ namespace Project.Controllers
                         Name = viewModel.ClientName,
                         Phone = viewModel.Phone,
                         Email = viewModel.Email ?? string.Empty,
-                        PasswordHash = null // За гост клиенти
+                        PasswordHash = null,
+                        IsGuest = !isUserLoggedIn // Маркираме като гост ако не е логнат
                     };
                     _context.Clients.Add(client);
                     await _context.SaveChangesAsync();
-                    Console.WriteLine($"New client created with ID: {client.Id}");
+                    Console.WriteLine($"New client created with ID: {client.Id} (IsGuest: {client.IsGuest})");
                 }
 
                 // Проверка дали кола с този рег. номер вече съществува
@@ -304,14 +338,24 @@ namespace Project.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"======== ERROR ========");
                 Console.WriteLine($"ERROR: {ex.Message}");
                 Console.WriteLine($"STACK TRACE: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"INNER EXCEPTION: {ex.InnerException.Message}");
-                }
                 
-                TempData["ErrorMessage"] = $"Възникна грешка при обработката на заявката: {ex.Message}";
+                var innerEx = ex.InnerException;
+                var level = 1;
+                while (innerEx != null)
+                {
+                    Console.WriteLine($"INNER EXCEPTION {level}: {innerEx.Message}");
+                    Console.WriteLine($"INNER STACK TRACE {level}: {innerEx.StackTrace}");
+                    innerEx = innerEx.InnerException;
+                    level++;
+                }
+                Console.WriteLine($"======================");
+                
+                // Показваме по-детайлна грешка на потребителя
+                var errorMessage = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? ex.Message;
+                TempData["ErrorMessage"] = $"Възникна грешка: {errorMessage}";
                 
                 // Ако сме от бърза форма (няма View за Hero), редиректваме към Home
                 if (Request.Headers["Referer"].ToString().Contains("/Home") || 

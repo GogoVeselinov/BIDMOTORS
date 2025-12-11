@@ -20,6 +20,8 @@ namespace Project.Models.Entities
         
         [StringLength(500)]
         public string? PasswordHash { get; set; }
+        
+        public bool IsGuest { get; set; } = false;
 
         // Navigation properties
         public ICollection<Car> Cars { get; set; } = new List<Car>();
