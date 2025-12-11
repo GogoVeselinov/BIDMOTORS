@@ -11,15 +11,18 @@ namespace Project.Controllers
         private readonly ServiceRequestService _serviceRequestService;
         private readonly ApplicationDbContext _context;
         private readonly NotificationService _notificationService;
+        private readonly EmailService _emailService;
 
         public ServiceRequestsController(
             ServiceRequestService serviceRequestService,
             ApplicationDbContext context,
-            NotificationService notificationService)
+            NotificationService notificationService,
+            EmailService emailService)
         {
             _serviceRequestService = serviceRequestService;
             _context = context;
             _notificationService = notificationService;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -29,7 +32,25 @@ namespace Project.Controllers
 
         public IActionResult Create()
         {
-            return View(new CreateServiceRequestViewModel());
+            var viewModel = new CreateServiceRequestViewModel();
+            
+            // Ако потребителят е логнат, попълваме данните му автоматично
+            var userIdString = HttpContext.Session.GetString("UserId");
+            var userType = HttpContext.Session.GetString("UserType");
+            
+            if (!string.IsNullOrEmpty(userIdString) && userType == "Client" && Guid.TryParse(userIdString, out var userId))
+            {
+                var client = _context.Clients.FirstOrDefault(c => c.Id == userId);
+                if (client != null)
+                {
+                    viewModel.ClientName = client.Name;
+                    viewModel.Phone = client.Phone;
+                    viewModel.Email = client.Email;
+                    Console.WriteLine($"Pre-filled form for logged client: {client.Name}");
+                }
+            }
+            
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -69,6 +90,26 @@ namespace Project.Controllers
 
             try
             {
+                // Проверка дали имейлът вече съществува при друг клиент
+                if (!string.IsNullOrEmpty(viewModel.Email))
+                {
+                    var clientWithEmail = _context.Clients.FirstOrDefault(c => c.Email == viewModel.Email && c.Phone != viewModel.Phone);
+                    if (clientWithEmail != null)
+                    {
+                        Console.WriteLine($"Email {viewModel.Email} already exists for different client {clientWithEmail.Id}");
+                        TempData["ErrorMessage"] = "Този имейл адрес вече е регистриран с друг телефонен номер. Моля, използвайте друг имейл или се свържете с нас.";
+                        
+                        // Ако сме от бърза форма, редиректваме към Home
+                        if (Request.Headers["Referer"].ToString().Contains("/Home") || 
+                            Request.Headers["Referer"].ToString().Contains("/#"))
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        
+                        return View(viewModel);
+                    }
+                }
+
                 // Проверка дали клиент с този телефон вече съществува
                 var existingClient = _context.Clients.FirstOrDefault(c => c.Phone == viewModel.Phone);
                 Client client;
@@ -77,11 +118,15 @@ namespace Project.Controllers
                 {
                     Console.WriteLine($"Found existing client: {existingClient.Id}");
                     client = existingClient;
-                    // Актуализираме имейла, ако е променен
-                    if (!string.IsNullOrEmpty(viewModel.Email) && client.Email != viewModel.Email)
+                    
+                    // Актуализираме имейла само ако е различен (и не е празен)
+                    if (!string.IsNullOrEmpty(viewModel.Email) && 
+                        client.Email != viewModel.Email)
                     {
+                        Console.WriteLine($"Updating email from '{client.Email}' to '{viewModel.Email}'");
                         client.Email = viewModel.Email;
                         await _context.SaveChangesAsync();
+                        Console.WriteLine("Email updated successfully");
                     }
                 }
                 else
@@ -226,17 +271,55 @@ namespace Project.Controllers
                     );
                 }
 
-                // Автоматично "логваме" клиента за да може да вижда заявките си
-                HttpContext.Session.SetString("UserId", client.Id.ToString());
-                HttpContext.Session.SetString("UserType", "Client");
-                Console.WriteLine($"Client auto-logged in with ID: {client.Id}");
+                // Изпращаме имейл ако е посочен
+                if (!string.IsNullOrEmpty(viewModel.Email))
+                {
+                    await _emailService.SendServiceRequestConfirmationAsync(
+                        viewModel.Email,
+                        client.Name,
+                        serviceRequest.Id,
+                        viewModel.ServiceType,
+                        serviceRequest.CreatedOn
+                    );
+                    Console.WriteLine($"Confirmation email sent to {viewModel.Email}");
+                }
 
-                TempData["SuccessMessage"] = "Вашата заявка е изпратена успешно! Можете да проследите статуса й от Моите заявки.";
-                return RedirectToAction("MyRequests");
+                // Проверяваме дали клиентът вече е логнат
+                var isLoggedIn = !string.IsNullOrEmpty(HttpContext.Session.GetString("UserId"));
+                
+                if (isLoggedIn)
+                {
+                    // Ако е логнат, го пращаме към неговите заявки
+                    TempData["SuccessMessage"] = "Вашата заявка е изпратена успешно!";
+                    return RedirectToAction("MyRequests");
+                }
+                else
+                {
+                    // Ако НЕ е логнат (гост), го пращаме към потвърдителна страница
+                    TempData["SuccessMessage"] = "Вашата заявка е изпратена успешно! Ще се свържем с вас скоро.";
+                    TempData["RequestId"] = serviceRequest.Id.ToString();
+                    TempData["ClientEmail"] = viewModel.Email;
+                    return RedirectToAction("Confirmation");
+                }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"ERROR: {ex.Message}");
+                Console.WriteLine($"STACK TRACE: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"INNER EXCEPTION: {ex.InnerException.Message}");
+                }
+                
                 TempData["ErrorMessage"] = $"Възникна грешка при обработката на заявката: {ex.Message}";
+                
+                // Ако сме от бърза форма (няма View за Hero), редиректваме към Home
+                if (Request.Headers["Referer"].ToString().Contains("/Home") || 
+                    Request.Headers["Referer"].ToString().Contains("/#"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                
                 return View(viewModel);
             }
         }
@@ -244,22 +327,36 @@ namespace Project.Controllers
         // Моите заявки
         public IActionResult MyRequests()
         {
+            Console.WriteLine("=== MY REQUESTS DEBUG ===");
             var userIdString = HttpContext.Session.GetString("UserId");
             var userType = HttpContext.Session.GetString("UserType");
+            
+            Console.WriteLine($"UserId from session: {userIdString}");
+            Console.WriteLine($"UserType from session: {userType}");
 
             if (string.IsNullOrEmpty(userIdString) || string.IsNullOrEmpty(userType) || !Guid.TryParse(userIdString, out var userId))
             {
+                Console.WriteLine("No session found, redirecting to Login");
                 return RedirectToAction("Login", "Account");
             }
 
             // Само клиенти могат да виждат своите заявки
             if (userType != "Client")
             {
+                Console.WriteLine($"User type is {userType}, not Client");
                 TempData["ErrorMessage"] = "Само клиенти имат достъп до заявките";
                 return RedirectToAction("Index", "Home");
             }
 
+            Console.WriteLine($"Fetching requests for client: {userId}");
             var requests = _serviceRequestService.GetClientRequests(userId);
+            Console.WriteLine($"Found {requests.Count} requests");
+            
+            foreach (var req in requests)
+            {
+                Console.WriteLine($"Request: {req.Id}, Type: {req.ServiceTypeName}, Car: {req.CarInfo}, Created: {req.CreatedOn}");
+            }
+            
             return View(requests);
         }
 
@@ -287,6 +384,18 @@ namespace Project.Controllers
             }
 
             return PartialView("_RequestDetails", details);
+        }
+
+        // Потвърждение за гост заявка
+        public IActionResult Confirmation()
+        {
+            var requestId = TempData["RequestId"]?.ToString();
+            var clientEmail = TempData["ClientEmail"]?.ToString();
+            
+            ViewBag.RequestId = requestId;
+            ViewBag.ClientEmail = clientEmail;
+            
+            return View();
         }
     }
 }

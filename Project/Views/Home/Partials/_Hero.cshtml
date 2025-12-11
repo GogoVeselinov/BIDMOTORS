@@ -17,30 +17,55 @@
 
     <div class="hero-right">
         <div class="hero-form-wrapper">
-            <h3>Остави заявка</h3>
+            <h3>Бърза заявка</h3>
             <div id="hero-error" class="hero-error"></div>
 
-            <form id="heroRequestForm" asp-controller="ServiceRequests" asp-action="QuickCreate" method="post">
+            <form id="heroRequestForm" asp-controller="ServiceRequests" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
 
                 <div class="form-group">
                     <label>Име *</label>
-                    <input type="text" name="Name" required placeholder="Вашето име">
+                    <input type="text" name="ClientName" required placeholder="Вашето име">
                 </div>
 
                 <div class="form-group">
                     <label>Телефон *</label>
-                    <input type="tel" name="Phone" required placeholder="+359 88 812 3456">
+                    <input type="tel" name="Phone" required placeholder="+359 88 123 4567">
                 </div>
 
                 <div class="form-group">
-                    <label>Имейл (по желание)</label>
-                    <input type="email" name="Email" placeholder="example@example.com">
+                    <label>Имейл</label>
+                    <input type="email" name="Email" placeholder="email@example.com">
+                    <small style="color: #999; font-size: 12px;">Ще получите потвърждение на този имейл</small>
                 </div>
+
+                <div class="form-group">
+                    <label>Марка *</label>
+                    <input type="text" name="Brand" required placeholder="BMW, Mercedes, VW...">
+                </div>
+
+                <div class="form-group">
+                    <label>Модел *</label>
+                    <input type="text" name="Model" required placeholder="E60, C-Class, Golf...">
+                </div>
+
+                <div class="form-group">
+                    <label>Година *</label>
+                    <input type="text" name="Year" required placeholder="2015" maxlength="4">
+                </div>
+
+                <div class="form-group">
+                    <label>Рег. номер *</label>
+                    <input type="text" name="RegistrationNumber" required placeholder="CA1234AB" maxlength="20">
+                </div>
+
+                <!-- Скрито VIN поле (не е задължително в бърза форма) -->
+                <input type="hidden" name="VIN" value="">
 
                 <div class="form-group">
                     <label>Вид услуга *</label>
                     <select name="ServiceType" required>
-                        <option value="">-- Изберете услуга --</option>
+                        <option value="">-- Изберете --</option>
                         <option value="Ремонт">Ремонт</option>
                         <option value="Диагностика">Диагностика</option>
                         <option value="Безопасност">Проверка на безопасност</option>
@@ -48,18 +73,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Част *</label>
-                    <input type="text" name="PartName" placeholder="Например: Антифриз, Филтър, Накладки">
-                </div>
-
-                <div class="form-group">
-                    <label>Номер на част</label>
-                    <input type="text" name="PartNumber" placeholder="OEM/Артикулен номер">
-                </div>
-
-                <div class="form-group">
-                    <label>VIN</label>
-                    <input type="text" name="VIN" placeholder="4Y1SL65848Z411439">
+                    <label>Кратко описание *</label>
+                    <textarea name="Description" required placeholder="Например: спукана гума, странен шум при спиране..." rows="2"></textarea>
                 </div>
 
                 <button type="submit" class="hero-submit">

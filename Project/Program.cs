@@ -28,6 +28,7 @@ builder.Services.AddScoped<PartService>();
 builder.Services.AddScoped<CarService>();
 builder.Services.AddScoped<RepairService>();
 builder.Services.AddScoped<ServiceRequestService>();
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddSignalR();
