@@ -10,11 +10,12 @@ namespace Project.Models.ViewModels.Parts
         public string? CarBrand { get; set; }
         public string? CarModel { get; set; }
         public int? CarYear { get; set; }
-        public string? OEM { get; set; }
+        public string? OemNumber { get; set; }
+        public string? Manufacturer { get; set; }
         public decimal Price { get; set; }
-        public int QuantityInStock { get; set; }
+        public int StockQuantity { get; set; }
         public string? Supplier { get; set; }
         public string? ImageUrl { get; set; }
-        public bool IsInStock => QuantityInStock > 0;
+        public bool IsInStock => StockQuantity > 0;
     }
 }

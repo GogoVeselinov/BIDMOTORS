@@ -36,13 +36,13 @@ namespace Project.Services
         }
 
         // Създаване на известие за служител
-        public async Task CreateNotificationForEmployee(Guid employeeId, string message, string? type = null, Guid? relatedEntityId = null)
+        public async Task CreateNotificationForEmployee(Guid employeeId, string title, string message, Guid? relatedEntityId = null)
         {
             var notification = new Notification
             {
                 EmployeeId = employeeId,
-                Message = message,
-                Type = type,
+                Message = $"{title}: {message}",
+                Type = "ServiceRequest",
                 RelatedEntityId = relatedEntityId,
                 IsRead = false,
                 CreatedOn = DateTime.Now
@@ -52,7 +52,7 @@ namespace Project.Services
             await _db.SaveChangesAsync();
 
             // Изпращане на real-time известие
-            await _hub.Clients.User(employeeId.ToString()).SendAsync("ReceiveNotification", message);
+            await _hub.Clients.User(employeeId.ToString()).SendAsync("ReceiveNotification", notification.Message);
         }
 
         // Известие при промяна на статус на заявка
@@ -84,6 +84,21 @@ namespace Project.Services
         public async Task NotifyManagers(string message)
         {
             await _hub.Clients.Group("Managers").SendAsync("ReceiveNotification", message);
+        }
+
+        // Известие за всички админи
+        public async Task NotifyAdmins(string message, string? type = null, Guid? relatedEntityId = null)
+        {
+            // Изпращане на real-time известие към всички в групата Admins
+            await _hub.Clients.Group("Admins").SendAsync("ReceiveNotification", new 
+            { 
+                message = message, 
+                type = type, 
+                relatedEntityId = relatedEntityId,
+                timestamp = DateTime.Now 
+            });
+            
+            Console.WriteLine($"Notification sent to Admins group: {message}");
         }
 
         public async Task NotifyUser(string userId, string message)

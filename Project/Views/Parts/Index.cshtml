@@ -63,27 +63,40 @@
                 @foreach (var part in Model.Parts)
                 {
                     <div class="part-card">
-                        <div class="part-image">
-                            <img src="/img/part-placeholder.jpg" alt="@part.Name" onerror="this.src='/img/default-part.png'" />
-                            @if (part.IsInStock)
-                            {
-                                <span class="stock-badge in-stock">В наличност</span>
-                            }
-                            else
-                            {
-                                <span class="stock-badge out-of-stock">Изчерпана</span>
-                            }
-                        </div>
-                        <div class="part-info">
-                            <h4>@part.Name</h4>
-                            <p class="part-description">@part.Description</p>
-                            <div class="part-details">
-                                <span class="part-price">@part.Price.ToString("F2") лв.</span>
-                                <span class="part-stock">Налични: @part.QuantityInStock</span>
+                        <a asp-controller="PartsPublic" asp-action="Details" asp-route-id="@part.Id" class="part-card-link">
+                            <div class="part-image">
+                                @if (!string.IsNullOrEmpty(part.ImageUrl))
+                                {
+                                    <img src="@part.ImageUrl" alt="@part.Name" onerror="this.src='/img/default-part.png'" />
+                                }
+                                else
+                                {
+                                    <img src="/img/part-placeholder.jpg" alt="@part.Name" onerror="this.src='/img/default-part.png'" />
+                                }
+                                @if (part.IsInStock)
+                                {
+                                    <span class="stock-badge in-stock">В наличност</span>
+                                }
+                                else
+                                {
+                                    <span class="stock-badge out-of-stock">Изчерпана</span>
+                                }
                             </div>
+                            <div class="part-info">
+                                <h4>@part.Name</h4>
+                                <p class="part-description">@part.Description</p>
+                                <div class="part-details">
+                                    <span class="part-price">@part.Price.ToString("F2") лв.</span>
+                                    <span class="part-stock">Налични: @part.StockQuantity</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="part-actions">
+                            <a asp-controller="PartsPublic" asp-action="Details" asp-route-id="@part.Id"
+                                class="part-btn part-btn-details">Детайли</a>
+                            <a asp-controller="ServiceRequests" asp-action="Create" asp-route-partId="@part.Id"
+                                class="part-btn part-btn-order">Заяви част</a>
                         </div>
-                        <a asp-controller="ServiceRequests" asp-action="Create" asp-route-partId="@part.Id"
-                            class="part-btn">Заяви част</a>
                     </div>
                 }
             }

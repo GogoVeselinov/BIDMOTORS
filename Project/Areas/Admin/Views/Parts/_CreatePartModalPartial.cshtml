@@ -1,13 +1,243 @@
-<div class="modal fade" id="createPartModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create Part</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Form content -->
-            </div>
+@model Project.Models.Entities.Part
+
+<div class="modal fade" id="createPartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content bg-dark text-white border border-warning">
+
+            <form asp-area="Admin" asp-controller="Parts" asp-action="Create" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <!-- HEADER -->
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title text-warning">
+                        <i class="bi bi-plus-circle"></i> Добавяне на част
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <!-- SECTION: Основна информация -->
+                    <div class="mb-4">
+                        <h6 class="text-warning mb-3">Основна информация</h6>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Име на част *</label>
+                                <input asp-for="Name" class="form-control" required />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Категория *</label>
+                                <input asp-for="Category" class="form-control" required />
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Производител *</label>
+                                <input asp-for="Manufacturer" class="form-control" required />
+                                <span asp-validation-for="Manufacturer" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">OEM номер</label>
+                                <input asp-for="OemNumber" class="form-control" />
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">URL на снимка</label>
+                                <input asp-for="ImageUrl" class="form-control" type="url"
+                                    placeholder="https://example.com/image.jpg" />
+                                <small class="text-muted">Пълен URL адрес към изображението на частта</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: Цена и наличност -->
+                    <div class="mb-4">
+                        <h6 class="text-warning mb-3">Цена и наличност</h6>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Цена (лв.) *</label>
+                                <input asp-for="Price" type="number" step="0.01" min="0" class="form-control"
+                                    required />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Наличност *</label>
+                                <input asp-for="StockQuantity" type="number" min="0" class="form-control" required />
+                                <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: Видимост -->
+                    <div class="mb-3">
+                        <h6 class="text-warning mb-3">Видимост</h6>
+
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="IsPublic" class="form-check-input" />
+                            <label class="form-check-label">
+                                Показвай в публичния сайт
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label class="form-check-label">
+                                Активна част
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: Описание -->
+                    <div>
+                        <label class="form-label">Описание</label>
+                        <textarea asp-for="Description" rows="3" class="form-control"
+                            placeholder="Кратко описание (по желание)">
+                        </textarea>
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer border-top border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                        Отказ
+                    </button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-check-circle"></i> Запази
+                    </button>
+                </div>
+
+            </form>
+
         </div>
     </div>
 </div>
+
+<style>
+    /* MODAL BASE */
+    .modal-content {
+        background: #151515 !important;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    /* HEADER */
+    .modal-header {
+        padding: 18px 24px;
+    }
+
+    .modal-title {
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    /* BODY */
+    .modal-body {
+        padding: 24px;
+    }
+
+    /* SECTION TITLES */
+    .modal-body h6 {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+    }
+
+    /* FORM LABELS */
+    .form-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #ddd;
+    }
+
+    /* INPUTS */
+    .form-control {
+        background: #0f0f0f;
+        border: 1px solid #333;
+        color: white;
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 6px;
+        transition: 0.2s ease;
+    }
+
+    .form-control::placeholder {
+        color: #777;
+    }
+
+    .form-control:focus {
+        background: #0f0f0f;
+        color: white;
+        border-color: var(--yellow);
+        box-shadow: 0 0 0 1px rgba(246, 210, 1, 0.35);
+    }
+
+    /* TEXTAREA */
+    textarea.form-control {
+        resize: vertical;
+    }
+
+    /* SMALL HELPER TEXT */
+    .modal-body small {
+        display: block;
+        font-size: 12px;
+        color: #aaa !important;
+        margin-top: 4px;
+    }
+
+    /* SWITCHES */
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--yellow);
+        border-color: var(--yellow);
+    }
+
+    .form-check-label {
+        font-size: 14px;
+        color: #ddd;
+    }
+
+    /* FOOTER */
+    .modal-footer {
+        padding: 16px 24px;
+    }
+
+    /* BUTTONS */
+    .modal-footer .btn {
+        padding: 10px 18px;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: 0.2s ease;
+    }
+
+    .modal-footer .btn-warning {
+        color: black;
+    }
+
+    .modal-footer .btn-warning:hover {
+        background: #ffd700;
+        transform: translateY(-1px);
+    }
+
+    .modal-footer .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+</style>

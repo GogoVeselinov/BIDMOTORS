@@ -21,7 +21,7 @@ namespace Project.Data.Configurations
                 .IsRequired()
                 .HasPrecision(18, 2);
 
-            builder.Property(p => p.QuantityInStock)
+            builder.Property(p => p.StockQuantity)
                 .IsRequired();
 
             builder.Property(p => p.Supplier)

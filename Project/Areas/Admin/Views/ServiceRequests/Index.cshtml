@@ -7,16 +7,115 @@
     
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Заявки за сервиз</h2>
+        <button class="btn btn-outline-warning" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+            <i class="bi bi-funnel"></i> Филтри
+        </button>
     </div>
 
     <!-- Alert Messages -->
     <div id="alert-container"></div>
+
+    <!-- Filters Section -->
+    <div class="collapse mb-4" id="filterCollapse">
+        <div class="card bg-dark border-warning">
+            <div class="card-body">
+                <h5 class="text-warning mb-3"><i class="bi bi-funnel"></i> Филтриране на заявки</h5>
+                <form id="filter-form">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Номер заявка</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-request-id" placeholder="Първи 8 символа" maxlength="8">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Клиент</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-client" placeholder="Име на клиент">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Телефон</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-phone" placeholder="Телефон">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Имейл</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-email" placeholder="Email адрес">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Марка</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-brand" placeholder="Марка автомобил">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Модел</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-model" placeholder="Модел">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Рег. номер</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-registration" placeholder="СА1234ВН">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Вид услуга</label>
+                            <select class="form-select bg-dark text-white border-secondary" id="filter-service">
+                                <option value="">Всички</option>
+                                <option value="Диагностика">Диагностика</option>
+                                <option value="Ремонт на двигател">Ремонт на двигател</option>
+                                <option value="Ремонт на спирачна система">Ремонт на спирачна система</option>
+                                <option value="Смяна на масло">Смяна на масло</option>
+                                <option value="Смяна на гуми">Смяна на гуми</option>
+                                <option value="Електрически ремонти">Електрически ремонти</option>
+                                <option value="Годишен преглед">Годишен преглед</option>
+                                <option value="Друго">Друго</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Статус</label>
+                            <select class="form-select bg-dark text-white border-secondary" id="filter-status">
+                                <option value="">Всички</option>
+                                <option value="Pending">Чакаща</option>
+                                <option value="InReview">В преглед</option>
+                                <option value="InProgress">В процес</option>
+                                <option value="WaitingForParts">Чака части</option>
+                                <option value="Completed">Завършена</option>
+                                <option value="Canceled">Отказана</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Дата от</label>
+                            <input type="date" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-date-from">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-white">Дата до</label>
+                            <input type="date" class="form-control bg-dark text-white border-secondary" 
+                                   id="filter-date-to">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-white">&nbsp;</label>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-warning flex-fill">
+                                    <i class="bi bi-search"></i> Търси
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary flex-fill" id="clear-filters">
+                                    <i class="bi bi-x-circle"></i> Изчисти
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="crm-section">
         <div class="table-responsive">
             <table class="table table-dark table-hover" id="requests-table">
                 <thead>
                     <tr>
+                        <th>Заявка</th>
                         <th>Клиент</th>
                         <th>Телефон</th>
                         <th>Автомобил</th>
@@ -43,9 +142,16 @@
 
 @section Scripts {
     <script>
-        async function loadRequests() {
+        async function loadRequests(filters = {}) {
             try {
-                const response = await fetch('/api/admin/servicerequests');
+                // Build query string from filters
+                const params = new URLSearchParams();
+                for (const [key, value] of Object.entries(filters)) {
+                    if (value) params.append(key, value);
+                }
+                
+                const url = '/api/admin/servicerequests' + (params.toString() ? '?' + params.toString() : '');
+                const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to load');
                 
                 const data = await response.json();
@@ -69,6 +175,7 @@
                 const statusBadge = getStatusBadge(request.status);
                 const row = `
                     <tr>
+                        <td># ${request.id.substring(0, 8)}</td>
                         <td>${request.clientName}</td>
                         <td>${request.clientPhone}</td>
                         <td>${request.carInfo}</td>
@@ -110,6 +217,33 @@
                 document.getElementById('alert-container').innerHTML = '';
             }, 5000);
         }
+
+        // Filter form submission
+        document.getElementById('filter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const filters = {
+                requestId: document.getElementById('filter-request-id').value,
+                client: document.getElementById('filter-client').value,
+                phone: document.getElementById('filter-phone').value,
+                email: document.getElementById('filter-email').value,
+                brand: document.getElementById('filter-brand').value,
+                model: document.getElementById('filter-model').value,
+                registration: document.getElementById('filter-registration').value,
+                serviceType: document.getElementById('filter-service').value,
+                status: document.getElementById('filter-status').value,
+                dateFrom: document.getElementById('filter-date-from').value,
+                dateTo: document.getElementById('filter-date-to').value
+            };
+            
+            loadRequests(filters);
+        });
+
+        // Clear filters
+        document.getElementById('clear-filters').addEventListener('click', () => {
+            document.getElementById('filter-form').reset();
+            loadRequests();
+        });
 
         // Load on page ready
         document.addEventListener('DOMContentLoaded', loadRequests);

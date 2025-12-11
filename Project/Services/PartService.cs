@@ -17,14 +17,16 @@ namespace Project.Services
 
         public async Task<List<PartListViewModel>> GetFilteredPartsAsync(PartFilterModel filters)
         {
-            var query = _context.Parts.AsQueryable();
+            var query = _context.Parts
+                .Where(p => p.IsPublic && p.IsActive)
+                .AsQueryable();
 
             // Apply filters
             if (!string.IsNullOrWhiteSpace(filters.Search))
             {
                 query = query.Where(p => p.Name.Contains(filters.Search) ||
                                         (p.Description != null && p.Description.Contains(filters.Search)) ||
-                                        (p.OEM != null && p.OEM.Contains(filters.Search)));
+                                        (p.OemNumber != null && p.OemNumber.Contains(filters.Search)));
             }
 
             if (!string.IsNullOrWhiteSpace(filters.CarBrand))
@@ -49,7 +51,7 @@ namespace Project.Services
 
             if (!string.IsNullOrWhiteSpace(filters.OEM))
             {
-                query = query.Where(p => p.OEM != null && p.OEM.Contains(filters.OEM));
+                query = query.Where(p => p.OemNumber != null && p.OemNumber.Contains(filters.OEM));
             }
 
             var parts = await query
@@ -63,9 +65,9 @@ namespace Project.Services
                     CarBrand = p.CarBrand,
                     CarModel = p.CarModel,
                     CarYear = p.CarYear,
-                    OEM = p.OEM,
+                    OemNumber = p.OemNumber,
                     Price = p.Price,
-                    QuantityInStock = p.QuantityInStock,
+                    StockQuantity = p.StockQuantity,
                     Supplier = p.Supplier,
                     ImageUrl = p.ImageUrl
                 })
@@ -76,7 +78,8 @@ namespace Project.Services
 
         public async Task<PartListViewModel?> GetPartByIdAsync(Guid id)
         {
-            var part = await _context.Parts.FindAsync(id);
+            var part = await _context.Parts
+                .FirstOrDefaultAsync(p => p.Id == id && p.IsPublic && p.IsActive);
             if (part == null) return null;
 
             return new PartListViewModel
@@ -89,9 +92,10 @@ namespace Project.Services
                 CarBrand = part.CarBrand,
                 CarModel = part.CarModel,
                 CarYear = part.CarYear,
-                OEM = part.OEM,
+                OemNumber = part.OemNumber,
+                Manufacturer = part.Manufacturer,
                 Price = part.Price,
-                QuantityInStock = part.QuantityInStock,
+                StockQuantity = part.StockQuantity,
                 Supplier = part.Supplier,
                 ImageUrl = part.ImageUrl
             };
@@ -102,7 +106,7 @@ namespace Project.Services
             var part = await _context.Parts.FindAsync(partId);
             if (part == null) return false;
 
-            part.QuantityInStock = quantity;
+            part.StockQuantity = quantity;
             await _context.SaveChangesAsync();
             return true;
         }

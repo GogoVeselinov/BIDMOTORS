@@ -293,6 +293,13 @@ namespace Project.Controllers
                 await _context.SaveChangesAsync();
                 Console.WriteLine($"Service request created with ID: {serviceRequest.Id}");
 
+                // Изпращаме real-time известие към всички админи
+                await _notificationService.NotifyAdmins(
+                    $"Нова заявка от {client.Name} за {viewModel.ServiceType}",
+                    "NewServiceRequest",
+                    serviceRequest.Id
+                );
+
                 // Създаваме известие за всички служители
                 var employees = _context.Employees.ToList();
                 foreach (var employee in employees)
@@ -317,6 +324,18 @@ namespace Project.Controllers
                     );
                     Console.WriteLine($"Confirmation email sent to {viewModel.Email}");
                 }
+
+                // Изпращаме имейл към админа за нова заявка
+                var carInfo = $"{viewModel.Brand} {viewModel.Model} ({viewModel.Year}) - {viewModel.RegistrationNumber}";
+                await _emailService.SendAdminNotificationEmailAsync(
+                    client.Name,
+                    client.Phone,
+                    viewModel.ServiceType,
+                    carInfo,
+                    serviceRequest.Id,
+                    serviceRequest.CreatedOn
+                );
+                Console.WriteLine("Admin notification email sent");
 
                 // Проверяваме дали клиентът вече е логнат
                 var isLoggedIn = !string.IsNullOrEmpty(HttpContext.Session.GetString("UserId"));

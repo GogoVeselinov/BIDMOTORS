@@ -134,3 +134,39 @@
 .admin-content h1, .admin-content h2, .admin-content h3, .admin-content h4, .admin-content h5, .admin-content h6 {
     color: var(--yellow);
 }
+
+/* FILTERS */
+.card.bg-dark {
+    border-radius: 8px;
+}
+
+.card.bg-dark .form-control:focus,
+.card.bg-dark .form-select:focus {
+    background: #1a1a1a;
+    border-color: var(--yellow);
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(246, 210, 1, 0.15);
+}
+
+.card.bg-dark .form-control::placeholder {
+    color: #666;
+}
+
+.btn-outline-warning:hover {
+    background: var(--yellow);
+    border-color: var(--yellow);
+    color: black;
+}
+
+/* TABLE RESPONSIVE */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.crm-section {
+    background: var(--dark-2);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+}

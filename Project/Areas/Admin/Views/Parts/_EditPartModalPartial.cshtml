@@ -1,13 +1,162 @@
-<div class="modal fade" id="editPartModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Part</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Form content -->
-            </div>
+@model Project.Models.Entities.Part
+
+<div class="modal fade" id="editPartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content bg-dark text-white border border-warning">
+
+            <form asp-area="Admin"
+                  asp-controller="Parts"
+                  asp-action="Edit"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="edit-part-id" asp-for="Id" />
+
+                <!-- HEADER -->
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title text-warning">
+                        <i class="bi bi-pencil"></i> Редакция на част
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <!-- SECTION: Основна информация -->
+                    <div class="mb-4">
+                        <h6 class="text-warning mb-3">Основна информация</h6>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Име на част *</label>
+                                <input id="edit-name" asp-for="Name" class="form-control" required />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Категория *</label>
+                                <input id="edit-category" asp-for="Category" class="form-control" required />
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Производител *</label>
+                                <input id="edit-manufacturer" asp-for="Manufacturer" class="form-control" required />
+                                <span asp-validation-for="Manufacturer" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">OEM номер</label>
+                                <input id="edit-oem-number" asp-for="OemNumber" class="form-control" />
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label class="form-label">URL на снимка</label>
+                                <input id="edit-image-url" asp-for="ImageUrl" class="form-control" type="url" placeholder="https://example.com/image.jpg" />
+                                <small class="">Пълен URL адрес към изображението на частта</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: Цена и наличност -->
+                    <div class="mb-4">
+                        <h6 class="text-warning mb-3">Цена и наличност</h6>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Цена (лв.) *</label>
+                                <input id="edit-price" asp-for="Price" type="number" step="0.01" min="0" class="form-control" required />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Наличност *</label>
+                                <input id="edit-stock-quantity" asp-for="StockQuantity" type="number" min="0" class="form-control" required />
+                                <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: Видимост -->
+                    <div class="mb-4">
+                        <h6 class="text-warning mb-3">Видимост</h6>
+
+                        <div class="form-check form-switch mb-2">
+                            <input id="edit-is-public" asp-for="IsPublic" class="form-check-input" />
+                            <label class="form-check-label">
+                                Показвай в публичния сайт
+                            </label>
+                        </div>
+
+                        <div class="form-check form-switch">
+                            <input id="edit-is-active" asp-for="IsActive" class="form-check-input" />
+                            <label class="form-check-label">
+                                Активна част
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- SECTION: Описание -->
+                    <div>
+                        <label class="form-label">Описание</label>
+                        <textarea id="edit-description" asp-for="Description"
+                                  rows="3"
+                                  class="form-control">
+                        </textarea>
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer border-top border-secondary d-flex justify-content-between">
+
+                    <div class="small">
+                        ❗ Изтриване не се препоръчва. Използвайте „Скрита / Неактивна“.
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                            Отказ
+                        </button>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-save"></i> Запази промените
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
         </div>
     </div>
 </div>
+
+<style>
+    /* Ensure modal inputs have dark theme */
+    #editPartModal .form-control,
+    #editPartModal .form-select,
+    #editPartModal .form-check-input {
+        background-color: #343a40;
+        color: #ffffff;
+        border: 1px solid #6c757d;
+    }
+
+    #editPartModal .form-control::placeholder {
+        color: #adb5bd;
+    }
+    #editPartModal .form-control:focus,
+    #editPartModal .form-select:focus {
+        background-color: #343a40;
+        color: #ffffff;
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    }
+    #editPartModal .form-check-input:checked {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+    small{
+        color: #ced4da; !important;
+    }
+</style>

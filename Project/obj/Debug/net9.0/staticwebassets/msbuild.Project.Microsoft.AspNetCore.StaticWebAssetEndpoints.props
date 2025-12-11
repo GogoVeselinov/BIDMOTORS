@@ -1,16 +1,16 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAssetEndpoint Include="_content/Project/css/admin/admin-layout.290qfuh1yq.css">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\admin\admin-layout.css'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"290qfuh1yq"},{"Name":"integrity","Value":"sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="},{"Name":"label","Value":"_content/Project/css/admin/admin-layout.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2305"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 21:38:21 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Project/css/admin/admin-layout.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\admin\admin-layout.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2305"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 21:38:21 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-KgbWOpGKG88Qd7Cfjs4OYsgod5C\u002Bn8efCM5a41KIp6I="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2991"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022KgbWOpGKG88Qd7Cfjs4OYsgod5C\u002Bn8efCM5a41KIp6I=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 22:11:14 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Project/css/admin/admin-layout.mxvywovfx0.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\admin\admin-layout.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"mxvywovfx0"},{"Name":"integrity","Value":"sha256-KgbWOpGKG88Qd7Cfjs4OYsgod5C\u002Bn8efCM5a41KIp6I="},{"Name":"label","Value":"_content/Project/css/admin/admin-layout.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2991"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022KgbWOpGKG88Qd7Cfjs4OYsgod5C\u002Bn8efCM5a41KIp6I=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 22:11:14 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Project/css/site.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>

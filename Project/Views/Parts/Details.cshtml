@@ -1,0 +1,385 @@
+@model Project.Models.ViewModels.Parts.PartListViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "_Layout";
+}
+
+<div class="part-details-page">
+    <div class="container py-5">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Начало</a></li>
+                <li class="breadcrumb-item"><a asp-controller="PartsPublic" asp-action="Index">Части</a></li>
+                <li class="breadcrumb-item active">@Model.Name</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <!-- Image Section -->
+            <div class="col-md-6 mb-4">
+                <div class="part-image-container">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow" />
+                    }
+                    else
+                    {
+                        <div class="no-image-placeholder">
+                            <i class="bi bi-box-seam"></i>
+                            <p>Няма налична снимка</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Details Section -->
+            <div class="col-md-6">
+                <h1 class="part-title">@Model.Name</h1>
+
+                @if (!string.IsNullOrEmpty(Model.Category))
+                {
+                    <span class="badge bg-warning text-dark mb-3">@Model.Category</span>
+                }
+
+                <div class="part-price mb-4">
+                    <span class="price-label">Цена:</span>
+                    <span class="price-value">@Model.Price.ToString("F2") лв.</span>
+                </div>
+
+                <div class="part-availability mb-4">
+                    @if (Model.StockQuantity > 5)
+                    {
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle"></i> В наличност (@Model.StockQuantity бр.)
+                        </span>
+                    }
+                    else if (Model.StockQuantity > 0)
+                    {
+                        <span class="badge bg-warning text-dark">
+                            <i class="bi bi-exclamation-triangle"></i> Ограничена наличност (@Model.StockQuantity бр.)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            <i class="bi bi-x-circle"></i> Няма в наличност
+                        </span>
+                    }
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="part-description mb-4">
+                        <h5>Описание</h5>
+                        <p>@Model.Description</p>
+                    </div>
+                }
+
+                <!-- Specifications -->
+                <div class="part-specifications">
+                    <h5 class="mb-3">Технически данни</h5>
+                    <table class="table table-bordered">
+                        <tbody>
+                            @if (!string.IsNullOrEmpty(Model.OemNumber))
+                            {
+                                <tr>
+                                    <th style="width: 40%;">OEM номер</th>
+                                    <td>@Model.OemNumber</td>
+                                </tr>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Manufacturer))
+                            {
+                                <tr>
+                                    <th>Производител</th>
+                                    <td>@Model.Manufacturer</td>
+                                </tr>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Supplier))
+                            {
+                                <tr>
+                                    <th>Доставчик</th>
+                                    <td>@Model.Supplier</td>
+                                </tr>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.PartType))
+                            {
+                                <tr>
+                                    <th>Тип</th>
+                                    <td>@Model.PartType</td>
+                                </tr>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.CarBrand))
+                            {
+                                <tr>
+                                    <th>Съвместимост</th>
+                                    <td>
+                                        @Model.CarBrand
+                                        @if (!string.IsNullOrEmpty(Model.CarModel))
+                                        {
+                                            @: @Model.CarModel
+                                        }
+                                        @if (Model.CarYear.HasValue)
+                                        {
+                                            @: (@Model.CarYear)
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="part-actions mt-4">
+                    <a asp-controller="ServiceRequests" asp-action="Create" class="btn btn-warning btn-lg">
+                        <i class="bi bi-tools"></i> Заяви услуга
+                    </a>
+                    <a asp-controller="PartsPublic" asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-arrow-left"></i> Назад към частите
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* PAGE BASE */
+    .part-details-page {
+        background: #111;
+        color: #e5e5e5;
+        min-height: 100vh;
+    }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 30px;
+    }
+
+    .breadcrumb a {
+        color: var(--yellow);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+    .breadcrumb-item.active {
+        color: #aaa;
+    }
+
+    /* IMAGE AREA */
+    .part-image-container {
+        border: 1px solid #2a2a2a;
+        padding: 30px;
+        min-height: 420px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0d0d0d;
+    }
+
+    .part-image-container img {
+        max-height: 460px;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    /* NO IMAGE */
+    .no-image-placeholder {
+        text-align: center;
+        color: #666;
+    }
+
+    .no-image-placeholder i {
+        font-size: 64px;
+        margin-bottom: 10px;
+    }
+
+    /* TITLE */
+    .part-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 12px;
+        line-height: 1.2;
+    }
+
+    /* CATEGORY BADGE */
+    .badge.bg-warning {
+        background: transparent !important;
+        border: 1px solid var(--yellow);
+        color: var(--yellow) !important;
+        font-weight: 600;
+        padding: 6px 14px;
+    }
+
+    /* PRICE */
+    .part-price {
+        margin-top: 30px;
+        padding: 20px 0;
+        border-top: 2px solid var(--yellow);
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .price-label {
+        font-size: 14px;
+        color: #aaa;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .price-value {
+        font-size: 34px;
+        font-weight: 800;
+        color: var(--yellow);
+    }
+
+    /* AVAILABILITY */
+    .part-availability {
+        margin-top: 20px;
+    }
+
+    .part-availability .badge {
+        background: transparent !important;
+        border-width: 1px;
+        border-style: solid;
+        font-size: 13px;
+        padding: 8px 14px;
+    }
+
+    .badge.bg-success {
+        border-color: #4caf50;
+        color: #4caf50;
+    }
+
+    .badge.bg-warning {
+        border-color: #ffc107;
+        color: #ffc107;
+    }
+
+    .badge.bg-danger {
+        border-color: #f44336;
+        color: #f44336;
+    }
+
+    /* DESCRIPTION */
+    .part-description {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #2a2a2a;
+    }
+
+    .part-description h5 {
+        color: var(--yellow);
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .part-description p {
+        color: #ccc;
+        line-height: 1.7;
+    }
+
+    /* SPECIFICATIONS */
+    .part-specifications {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #2a2a2a;
+    }
+
+    .part-specifications h5 {
+        color: var(--yellow);
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .part-specifications table {
+        border-collapse: collapse;
+    }
+
+    .part-specifications table th,
+    .part-specifications table td {
+        border: none;
+        padding: 12px 0;
+        vertical-align: top;
+    }
+
+    .part-specifications table th {
+        width: 40%;
+        color: #aaa;
+        font-weight: 600;
+    }
+
+    .part-specifications table td {
+        color: #e5e5e5;
+    }
+
+    /* ACTIONS */
+    .part-actions {
+        margin-top: 40px;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .part-actions .btn {
+        border-radius: 0;
+        font-weight: 700;
+        padding: 14px 28px;
+        transition: 0.25s ease;
+    }
+
+    /* PRIMARY ACTION */
+    .btn-warning {
+        background: var(--yellow);
+        border: none;
+        color: black;
+    }
+
+    .btn-warning:hover {
+        background: black;
+        color: var(--yellow);
+        border: 1px solid var(--yellow);
+    }
+
+    /* SECONDARY ACTION */
+    .btn-outline-secondary {
+        background: transparent;
+        border: 1px solid #555;
+        color: #ddd;
+    }
+
+    .btn-outline-secondary:hover {
+        border-color: var(--yellow);
+        color: var(--yellow);
+    }
+
+    /* RESPONSIVE */
+    @@media
+    (max-width: 768px) {
+        .part-title {
+            font-size: 24px;
+        }
+
+        .price-value {
+            font-size: 26px;
+        }
+
+        .part-actions {
+            flex-direction: column;
+        }
+
+        .part-actions .btn {
+            width: 100%;
+        }
+    }
+</style>

@@ -18,11 +18,65 @@ namespace Project.Areas.Admin.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? requestId,
+            [FromQuery] string? client,
+            [FromQuery] string? phone,
+            [FromQuery] string? email,
+            [FromQuery] string? brand,
+            [FromQuery] string? model,
+            [FromQuery] string? registration,
+            [FromQuery] string? serviceType,
+            [FromQuery] string? status,
+            [FromQuery] DateTime? dateFrom,
+            [FromQuery] DateTime? dateTo)
         {
-            var requests = await _context.ServiceRequests
+            var query = _context.ServiceRequests
                 .Include(sr => sr.Client)
                 .Include(sr => sr.Car)
+                .AsQueryable();
+
+            // Apply filters
+            if (!string.IsNullOrEmpty(requestId))
+            {
+                // Search by first 8 characters of ID
+                query = query.Where(sr => sr.Id.ToString().StartsWith(requestId.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(client))
+                query = query.Where(sr => sr.Client.Name.Contains(client));
+
+            if (!string.IsNullOrEmpty(phone))
+                query = query.Where(sr => sr.Client.Phone.Contains(phone));
+
+            if (!string.IsNullOrEmpty(email))
+                query = query.Where(sr => sr.Client.Email != null && sr.Client.Email.Contains(email));
+
+            if (!string.IsNullOrEmpty(brand))
+                query = query.Where(sr => sr.Car.Brand.Contains(brand));
+
+            if (!string.IsNullOrEmpty(model))
+                query = query.Where(sr => sr.Car.Model.Contains(model));
+
+            if (!string.IsNullOrEmpty(registration))
+                query = query.Where(sr => sr.Car.RegistrationNumber.Contains(registration));
+
+            if (!string.IsNullOrEmpty(serviceType))
+                query = query.Where(sr => sr.ServiceType == serviceType);
+
+            if (!string.IsNullOrEmpty(status))
+                query = query.Where(sr => sr.Status == status);
+
+            if (dateFrom.HasValue)
+                query = query.Where(sr => sr.CreatedOn >= dateFrom.Value);
+
+            if (dateTo.HasValue)
+            {
+                var dateToEnd = dateTo.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(sr => sr.CreatedOn <= dateToEnd);
+            }
+
+            var requests = await query
                 .OrderByDescending(sr => sr.CreatedOn)
                 .Select(sr => new
                 {
@@ -33,6 +87,7 @@ namespace Project.Areas.Admin.Controllers.Api
                     sr.CreatedOn,
                     ClientName = sr.Client.Name,
                     ClientPhone = sr.Client.Phone,
+                    ClientEmail = sr.Client.Email,
                     CarInfo = sr.Car.Brand + " " + sr.Car.Model + " (" + sr.Car.Year + ")",
                     sr.Car.RegistrationNumber
                 })

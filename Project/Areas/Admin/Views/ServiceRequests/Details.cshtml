@@ -449,6 +449,27 @@
     }
 
     /* =========================================================
+   VIBER LINK
+   ========================================================= */
+    .viber-link {
+        color: #7360f2;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .viber-link:hover {
+        color: #9b8bf4;
+        transform: translateX(2px);
+    }
+
+    .viber-link i {
+        font-size: 18px;
+    }
+
+    /* =========================================================
    RESPONSIVE
    ========================================================= */
     @@media
@@ -481,7 +502,13 @@
                 document.getElementById('request-id').textContent = data.id.substring(0, 8);
                 document.getElementById('client-name').textContent = data.client.name;
                 document.getElementById('client-email').textContent = data.client.email || 'Няма';
-                document.getElementById('client-phone').textContent = data.client.phone;
+                
+                // Make phone a Viber link
+                const phoneElement = document.getElementById('client-phone');
+                const phone = data.client.phone.replace(/\s+/g, ''); // Remove spaces
+                phoneElement.innerHTML = `<a href="viber://chat?number=${phone}" class="viber-link" title="Отвори в Viber">
+                    <i class="bi bi-phone"></i> ${data.client.phone}
+                </a>`;
 
                 document.getElementById('car-brand').textContent = data.car.brand;
                 document.getElementById('car-model').textContent = data.car.model;

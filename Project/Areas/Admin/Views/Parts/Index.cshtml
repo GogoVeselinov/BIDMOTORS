@@ -1,11 +1,61 @@
+@model List<Project.Models.Entities.Part>
+
 @{
-    ViewData["Title"] = "Parts Management";
+    ViewData["Title"] = "Управление на части";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
-    <h1>Parts Management</h1>
-    
-    <partial name="_PartsTablePartial" />
-    <partial name="_CreatePartModalPartial" />
-    <partial name="_EditPartModalPartial" />
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-warning">Управление на части</h2>
+            <p class="text-white mb-0">Части, които се показват в публичния сайт</p>
+        </div>
+        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#createPartModal">
+            <i class="bi bi-plus-circle"></i> Добави част
+        </button>
+    </div>
+
+    @await Html.PartialAsync("_PartsTablePartial", Model)
+    @await Html.PartialAsync("_CreatePartModalPartial", new Part())
+    @await Html.PartialAsync("_EditPartModalPartial", new Part())
+
 </div>
+
+@section Scripts {
+    <script>
+        // Handle Edit button click
+        document.addEventListener('click', async function(e) {
+            if (e.target.closest('.edit-part-btn')) {
+                e.preventDefault();
+                const btn = e.target.closest('.edit-part-btn');
+                const partId = btn.dataset.id;
+                
+                try {
+                    const response = await fetch(`/api/admin/parts/${partId}`);
+                    if (!response.ok) throw new Error('Failed to load part');
+                    
+                    const part = await response.json();
+                    
+                    // Populate the form
+                    document.getElementById('edit-part-id').value = part.id;
+                    document.getElementById('edit-name').value = part.name;
+                    document.getElementById('edit-category').value = part.category || '';
+                    document.getElementById('edit-manufacturer').value = part.manufacturer || '';
+                    document.getElementById('edit-oem-number').value = part.oemNumber || '';
+                    document.getElementById('edit-image-url').value = part.imageUrl || '';
+                    document.getElementById('edit-price').value = part.price;
+                    document.getElementById('edit-stock-quantity').value = part.stockQuantity;
+                    document.getElementById('edit-is-public').checked = part.isPublic;
+                    document.getElementById('edit-is-active').checked = part.isActive;
+                    document.getElementById('edit-description').value = part.description || '';
+                    
+                } catch (error) {
+                    console.error('Error loading part:', error);
+                    alert('Грешка при зареждане на данните');
+                }
+            }
+        });
+    </script>
+}

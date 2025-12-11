@@ -37,7 +37,7 @@ namespace Project.Controllers
                 return NotFound();
             }
 
-            return View(part);
+            return View("~/Views/Parts/Details.cshtml", part);
         }
     }
 }
