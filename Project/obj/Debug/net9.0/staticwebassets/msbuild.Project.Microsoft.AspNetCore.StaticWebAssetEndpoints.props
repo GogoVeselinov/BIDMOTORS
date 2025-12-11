@@ -1,5 +1,17 @@
 ﻿<Project>
   <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/Project/css/admin/admin-layout.290qfuh1yq.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\admin\admin-layout.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"290qfuh1yq"},{"Name":"integrity","Value":"sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="},{"Name":"label","Value":"_content/Project/css/admin/admin-layout.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2305"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 21:38:21 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Project/css/admin/admin-layout.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\admin\admin-layout.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2305"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 21:38:21 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Project/css/site.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
@@ -599,6 +611,18 @@
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"p5yfe7mmmj"},{"Name":"integrity","Value":"sha256-rYTjR8nkpwEcNCKlFMOEJv02DBESMSVFmkdp3w5IDPE="},{"Name":"label","Value":"_content/Project/img/Hero.jpg"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"4113748"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022rYTjR8nkpwEcNCKlFMOEJv02DBESMSVFmkdp3w5IDPE=\u0022"},{"Name":"Last-Modified","Value":"Fri, 05 Dec 2025 16:05:28 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Project/js/admin/crud-dynamic.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\admin\crud-dynamic.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-tLDJVTjVrE9bqVFSt0har\u002ByW0DqBm6yoZfnmqkHbvPI="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"5700"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022tLDJVTjVrE9bqVFSt0har\u002ByW0DqBm6yoZfnmqkHbvPI=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 21:47:11 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Project/js/admin/crud-dynamic.wh734xgjqq.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\admin\crud-dynamic.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"wh734xgjqq"},{"Name":"integrity","Value":"sha256-tLDJVTjVrE9bqVFSt0har\u002ByW0DqBm6yoZfnmqkHbvPI="},{"Name":"label","Value":"_content/Project/js/admin/crud-dynamic.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"5700"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022tLDJVTjVrE9bqVFSt0har\u002ByW0DqBm6yoZfnmqkHbvPI=\u0022"},{"Name":"Last-Modified","Value":"Thu, 11 Dec 2025 21:47:11 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Project/js/site.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>

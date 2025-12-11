@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Заявки за сервиз";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Заявки за сервиз</h2>
+    </div>
+
+    <!-- Alert Messages -->
+    <div id="alert-container"></div>
+
+    <div class="crm-section">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover" id="requests-table">
+                <thead>
+                    <tr>
+                        <th>Клиент</th>
+                        <th>Телефон</th>
+                        <th>Автомобил</th>
+                        <th>Тип услуга</th>
+                        <th>Статус</th>
+                        <th>Дата</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="visually-hidden">Зареждане...</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        async function loadRequests() {
+            try {
+                const response = await fetch('/api/admin/servicerequests');
+                if (!response.ok) throw new Error('Failed to load');
+                
+                const data = await response.json();
+                renderTable(data);
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                showAlert('Грешка при зареждане на заявките', 'danger');
+            }
+        }
+
+        function renderTable(data) {
+            const tbody = document.querySelector('#requests-table tbody');
+            tbody.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Няма заявки</td></tr>';
+                return;
+            }
+
+            data.forEach(request => {
+                const statusBadge = getStatusBadge(request.status);
+                const row = `
+                    <tr>
+                        <td>${request.clientName}</td>
+                        <td>${request.clientPhone}</td>
+                        <td>${request.carInfo}</td>
+                        <td>${request.serviceType}</td>
+                        <td>${statusBadge}</td>
+                        <td>${new Date(request.createdOn).toLocaleDateString('bg-BG')}</td>
+                        <td>
+                            <a href="/Admin/ServiceRequests/Details/${request.id}" class="btn btn-sm btn-outline-warning">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'Pending': '<span class="badge bg-warning">Чакаща</span>',
+                'InReview': '<span class="badge bg-info">В преглед</span>',
+                'InProgress': '<span class="badge bg-primary">В процес</span>',
+                'WaitingForParts': '<span class="badge bg-secondary">Чака части</span>',
+                'Completed': '<span class="badge bg-success">Завършена</span>',
+                'Canceled': '<span class="badge bg-danger">Отказана</span>'
+            };
+            return badges[status] || status;
+        }
+
+        function showAlert(message, type) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            document.getElementById('alert-container').innerHTML = alertHtml;
+            setTimeout(() => {
+                document.getElementById('alert-container').innerHTML = '';
+            }, 5000);
+        }
+
+        // Load on page ready
+        document.addEventListener('DOMContentLoaded', loadRequests);
+    </script>
+}

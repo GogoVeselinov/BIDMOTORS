@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8yUctQk6LjcgxyQ1nr/OH+v0iIBXe6LnHkMqW8b9uiI=",
+  "Hash": "MU1oaFz9kaNbPXx1yglhIlRt1IqdFWE5xDgz7Z7lL5Y=",
   "Source": "Project",
   "BasePath": "_content/Project",
   "Mode": "Default",
@@ -393,6 +393,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\cadillac.svg"
+    },
+    {
+      "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\5k66gcvtls-290qfuh1yq.gz",
+      "SourceId": "Project",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Project",
+      "RelativePath": "css/admin/admin-layout#[.{fingerprint=290qfuh1yq}]?.css.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\admin\\admin-layout.css",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "thn0p7l4la",
+      "Integrity": "DwQSAp1YbnKvZ1nvrsYKV4rfx3D0PwPIMcglT7slzYA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\admin\\admin-layout.css"
     },
     {
       "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\69clqi8giy-0j3bgjxly4.gz",
@@ -939,6 +960,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\CarLogos\\kia.svg"
+    },
+    {
+      "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\egedyhnm9s-wh734xgjqq.gz",
+      "SourceId": "Project",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\",
+      "BasePath": "_content/Project",
+      "RelativePath": "js/admin/crud-dynamic#[.{fingerprint=wh734xgjqq}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\admin\\crud-dynamic.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "65a52lec2c",
+      "Integrity": "ZqdpLeLdE76B866894UCjBTzqtACWi8/zuyDNeNpjFI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\admin\\crud-dynamic.js"
     },
     {
       "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\fefm2nbef8-ylapudb0gp.gz",
@@ -2390,6 +2432,27 @@
       "OriginalItemSpec": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\Project.bundle.scp.css"
     },
     {
+      "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\admin\\admin-layout.css",
+      "SourceId": "Project",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\",
+      "BasePath": "_content/Project",
+      "RelativePath": "css/admin/admin-layout#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "290qfuh1yq",
+      "Integrity": "xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\admin\\admin-layout.css"
+    },
+    {
       "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\site.css",
       "SourceId": "Project",
       "SourceType": "Discovered",
@@ -3438,6 +3501,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\Hero.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\admin\\crud-dynamic.js",
+      "SourceId": "Project",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\",
+      "BasePath": "_content/Project",
+      "RelativePath": "js/admin/crud-dynamic#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wh734xgjqq",
+      "Integrity": "tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\admin\\crud-dynamic.js"
     },
     {
       "Identity": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\site.js",
@@ -4722,6 +4806,304 @@
     }
   ],
   "Endpoints": [
+    {
+      "Route": "css/admin/admin-layout.290qfuh1yq.css",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\5k66gcvtls-290qfuh1yq.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001424501425"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "701"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"DwQSAp1YbnKvZ1nvrsYKV4rfx3D0PwPIMcglT7slzYA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:38:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "290qfuh1yq"
+        },
+        {
+          "Name": "label",
+          "Value": "css/admin/admin-layout.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="
+        }
+      ]
+    },
+    {
+      "Route": "css/admin/admin-layout.290qfuh1yq.css",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\admin\\admin-layout.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2305"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:38:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "290qfuh1yq"
+        },
+        {
+          "Name": "label",
+          "Value": "css/admin/admin-layout.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="
+        }
+      ]
+    },
+    {
+      "Route": "css/admin/admin-layout.290qfuh1yq.css.gz",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\5k66gcvtls-290qfuh1yq.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "701"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"DwQSAp1YbnKvZ1nvrsYKV4rfx3D0PwPIMcglT7slzYA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:38:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "290qfuh1yq"
+        },
+        {
+          "Name": "label",
+          "Value": "css/admin/admin-layout.css.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-DwQSAp1YbnKvZ1nvrsYKV4rfx3D0PwPIMcglT7slzYA="
+        }
+      ]
+    },
+    {
+      "Route": "css/admin/admin-layout.css",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\5k66gcvtls-290qfuh1yq.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.001424501425"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "701"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"DwQSAp1YbnKvZ1nvrsYKV4rfx3D0PwPIMcglT7slzYA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:38:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="
+        }
+      ]
+    },
+    {
+      "Route": "css/admin/admin-layout.css",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\admin\\admin-layout.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2305"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:38:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-xno6KVHg8Zx1/fIcUwUa5ZEqBXtzpOX7tsdflCqf44w="
+        }
+      ]
+    },
+    {
+      "Route": "css/admin/admin-layout.css.gz",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\5k66gcvtls-290qfuh1yq.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "701"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"DwQSAp1YbnKvZ1nvrsYKV4rfx3D0PwPIMcglT7slzYA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:38:21 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-DwQSAp1YbnKvZ1nvrsYKV4rfx3D0PwPIMcglT7slzYA="
+        }
+      ]
+    },
     {
       "Route": "css/site.css",
       "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\ydb8vxti1i-n4e3qfy1lp.gz",
@@ -19403,6 +19785,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-rYTjR8nkpwEcNCKlFMOEJv02DBESMSVFmkdp3w5IDPE="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin/crud-dynamic.js",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\egedyhnm9s-wh734xgjqq.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000656167979"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1523"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZqdpLeLdE76B866894UCjBTzqtACWi8/zuyDNeNpjFI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:47:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin/crud-dynamic.js",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\admin\\crud-dynamic.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5700"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:47:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin/crud-dynamic.js.gz",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\egedyhnm9s-wh734xgjqq.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1523"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZqdpLeLdE76B866894UCjBTzqtACWi8/zuyDNeNpjFI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:47:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZqdpLeLdE76B866894UCjBTzqtACWi8/zuyDNeNpjFI="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin/crud-dynamic.wh734xgjqq.js",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\egedyhnm9s-wh734xgjqq.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000656167979"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1523"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZqdpLeLdE76B866894UCjBTzqtACWi8/zuyDNeNpjFI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:47:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wh734xgjqq"
+        },
+        {
+          "Name": "label",
+          "Value": "js/admin/crud-dynamic.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin/crud-dynamic.wh734xgjqq.js",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\admin\\crud-dynamic.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5700"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:47:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wh734xgjqq"
+        },
+        {
+          "Name": "label",
+          "Value": "js/admin/crud-dynamic.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-tLDJVTjVrE9bqVFSt0har+yW0DqBm6yoZfnmqkHbvPI="
+        }
+      ]
+    },
+    {
+      "Route": "js/admin/crud-dynamic.wh734xgjqq.js.gz",
+      "AssetFile": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\obj\\Debug\\net9.0\\compressed\\egedyhnm9s-wh734xgjqq.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1523"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZqdpLeLdE76B866894UCjBTzqtACWi8/zuyDNeNpjFI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 11 Dec 2025 21:47:11 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wh734xgjqq"
+        },
+        {
+          "Name": "label",
+          "Value": "js/admin/crud-dynamic.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZqdpLeLdE76B866894UCjBTzqtACWi8/zuyDNeNpjFI="
         }
       ]
     },

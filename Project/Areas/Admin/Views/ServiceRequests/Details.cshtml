@@ -1,0 +1,597 @@
+@{
+    ViewData["Title"] = "Детайли на заявка";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid" id="request-details-container">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 crm-page-header">
+        <div>
+            <h2 class="crm-title">
+                Заявка <span class="crm-request-id">#<span id="request-id"></span></span>
+            </h2>
+            <span class="crm-subtitle">Детайлен преглед и управление</span>
+        </div>
+
+        <a asp-action="Index" class="crm-back-btn">
+            <i class="bi bi-arrow-left"></i> Назад
+        </a>
+    </div>
+
+    <!-- Alert Messages -->
+    <div id="alert-container"></div>
+
+    <div class="row">
+        <!-- Client Info -->
+        <div class="col-md-4">
+            <div class="crm-section mb-4">
+                <h5 class="text-warning mb-3"><i class="bi bi-person"></i> Клиент</h5>
+                <div class="mb-2">
+                    <strong>Име:</strong> <span id="client-name"></span>
+                </div>
+                <div class="mb-2">
+                    <strong>Имейл:</strong> <span id="client-email"></span>
+                </div>
+                <div class="mb-2">
+                    <strong>Телефон:</strong> <span id="client-phone"></span>
+                </div>
+            </div>
+
+            <!-- Car Info -->
+            <div class="crm-section">
+                <h5 class="text-warning mb-3"><i class="bi bi-car-front"></i> Автомобил</h5>
+                <div class="mb-2">
+                    <strong>Марка:</strong> <span id="car-brand"></span>
+                </div>
+                <div class="mb-2">
+                    <strong>Модел:</strong> <span id="car-model"></span>
+                </div>
+                <div class="mb-2">
+                    <strong>Година:</strong> <span id="car-year"></span>
+                </div>
+                <div class="mb-2">
+                    <strong>Рег. номер:</strong> <span id="car-registration"></span>
+                </div>
+                <div class="mb-2">
+                    <strong>VIN:</strong> <span id="car-vin"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Request Details -->
+        <div class="col-md-8">
+            <div class="crm-section mb-4">
+                <h5 class="text-warning mb-3"><i class="bi bi-clipboard-check"></i> Информация за заявката</h5>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Тип услуга:</strong> <span id="service-type"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Дата:</strong> <span id="created-date"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Статус:</strong>
+                    <select id="status-select" class="form-select form-select-sm d-inline-block w-auto ms-2">
+                        <option value="Pending">Чакаща</option>
+                        <option value="InReview">В преглед</option>
+                        <option value="InProgress">В процес</option>
+                        <option value="WaitingForParts">Чака части</option>
+                        <option value="Completed">Завършена</option>
+                        <option value="Canceled">Отказана</option>
+                    </select>
+                    <button id="update-status-btn" class="btn btn-sm btn-warning ms-2">
+                        <i class="bi bi-check"></i> Запази
+                    </button>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Описание:</strong>
+                    <p id="description" class="mt-2 p-3 bg-dark rounded"></p>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Коментар към клиента:</strong>
+                    <textarea id="comment-text" class="form-control mt-2" rows="3"></textarea>
+                    <button id="update-comment-btn" class="btn btn-sm btn-warning mt-2">
+                        <i class="bi bi-check"></i> Запази коментар
+                    </button>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Вътрешни бележки:</strong>
+                    <textarea id="internal-notes" class="form-control mt-2" rows="3"></textarea>
+                </div>
+            </div>
+
+            <!-- Linked Repair -->
+            <div class="crm-section" id="repair-section" style="display: none;">
+                <h5 class="text-warning mb-3"><i class="bi bi-tools"></i> Свързан ремонт</h5>
+                <div class="mb-2">
+                    <strong>Статус:</strong> <span id="repair-status"></span>
+                </div>
+                <div class="mb-2">
+                    <strong>Цена:</strong> <span id="repair-price"></span>
+                </div>
+                <a id="repair-link" class="btn btn-sm btn-outline-warning mt-2">
+                    <i class="bi bi-arrow-right"></i> Виж ремонт
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    /* =========================================================
+   ROOT VARIABLES
+   ========================================================= */
+    :root {
+        --yellow: #f6d201;
+        --dark: #111;
+        --dark-2: #1a1a1a;
+        --dark-3: #222;
+        --border: #2a2a2a;
+        --text-muted: #aaa;
+        --danger: #f44336;
+        --success: #4caf50;
+        --info: #2196f3;
+    }
+
+    /* =========================================================
+   BASE
+   ========================================================= */
+    .admin-body {
+        margin: 0;
+        background: var(--dark);
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .admin-wrapper {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* =========================================================
+   SIDEBAR
+   ========================================================= */
+    .admin-sidebar {
+        width: 240px;
+        background: var(--dark-2);
+        border-right: 2px solid var(--yellow);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin-logo {
+        font-size: 22px;
+        font-weight: 800;
+        padding: 20px;
+        text-align: center;
+        color: var(--yellow);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .admin-logo span {
+        color: white;
+    }
+
+    .admin-nav {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .admin-nav a {
+        color: white;
+        text-decoration: none;
+        padding: 12px 16px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: 0.25s;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+        background: #2a2a2a;
+        color: var(--yellow);
+    }
+
+    /* =========================================================
+   MAIN + TOPBAR
+   ========================================================= */
+    .admin-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin-topbar {
+        height: 64px;
+        background: var(--dark-3);
+        border-bottom: 1px solid var(--border);
+        padding: 0 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .admin-page-title {
+        font-size: 20px;
+        margin: 0;
+        color: var(--yellow);
+    }
+
+    .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .topbar-icon {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .topbar-icon:hover {
+        color: var(--yellow);
+    }
+
+    .admin-user {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-muted);
+    }
+
+    .logout-btn {
+        color: #ff4d4d;
+        font-size: 18px;
+    }
+
+    .logout-btn:hover {
+        color: #ff8080;
+    }
+
+    /* =========================================================
+   CONTENT
+   ========================================================= */
+    .admin-content {
+        padding: 30px;
+    }
+
+    /* =========================================================
+   PAGE HEADER
+   ========================================================= */
+    .crm-page-header {
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+    }
+
+    .crm-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--yellow);
+        margin: 0;
+    }
+
+    .crm-request-id {
+        color: white;
+    }
+
+    .crm-subtitle {
+        font-size: 13px;
+        color: var(--text-muted);
+    }
+
+    .crm-back-btn {
+        background: transparent;
+        border: 1px solid var(--border);
+        padding: 8px 14px;
+        border-radius: 6px;
+        color: white;
+        text-decoration: none;
+        transition: 0.25s;
+    }
+
+    .crm-back-btn:hover {
+        border-color: var(--yellow);
+        color: var(--yellow);
+    }
+
+    /* =========================================================
+   CRM SECTION (GLOBAL)
+   ========================================================= */
+    .crm-section {
+        border-radius: 10px;
+        padding: 22px 24px;
+    }
+
+    .crm-section h5 {
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--yellow);
+    }
+
+    .crm-section strong {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    .crm-section span {
+        font-weight: 600;
+        color: white;
+    }
+
+    /* =========================================================
+   KPI BLOCKS
+   ========================================================= */
+    .crm-kpi {
+        background: var(--dark-2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: 0.25s;
+    }
+
+    .crm-kpi:hover {
+        border-color: var(--yellow);
+        transform: translateY(-2px);
+    }
+
+    .crm-kpi-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 8px;
+        background: rgba(246, 210, 1, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--yellow);
+        font-size: 22px;
+    }
+
+    .crm-kpi-label {
+        font-size: 14px;
+        color: var(--text-muted);
+    }
+
+    .crm-kpi-value {
+        font-size: 26px;
+        font-weight: 800;
+    }
+
+    /* =========================================================
+   FORMS
+   ========================================================= */
+    .form-control,
+    .form-select {
+        background: #111;
+        border: 1px solid #333;
+        color: white;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--yellow);
+        box-shadow: 0 0 0 2px rgba(246, 210, 1, 0.15);
+    }
+
+    /* =========================================================
+   DESCRIPTION BLOCK
+   ========================================================= */
+    #description {
+        background: #111;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: #ddd;
+        line-height: 1.6;
+    }
+
+    /* =========================================================
+   BUTTONS
+   ========================================================= */
+    .btn-warning {
+        background: var(--yellow);
+        color: black;
+        border: none;
+        font-weight: 600;
+    }
+
+    .btn-warning:hover {
+        background: black;
+        color: var(--yellow);
+        border: 1px solid var(--yellow);
+    }
+
+    /* =========================================================
+   LINKED REPAIR
+   ========================================================= */
+    #repair-section {
+        border-left: 3px solid var(--yellow);
+        margin-top: 24px;
+    }
+
+    /* =========================================================
+   ALERTS
+   ========================================================= */
+    .alert {
+        background: #1f1f1f;
+        border: 1px solid var(--border);
+        color: white;
+    }
+
+    .alert-success {
+        border-left: 4px solid var(--success);
+    }
+
+    .alert-danger {
+        border-left: 4px solid var(--danger);
+    }
+
+    .alert-info {
+        border-left: 4px solid var(--info);
+    }
+
+    /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+    @@media
+    (max-width: 768px) {
+        .admin-sidebar {
+            display: none;
+        }
+
+        .admin-content {
+            padding: 20px;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        const requestId = '@ViewBag.RequestId';
+        let connection;
+
+        // Load request data
+        async function loadRequestData() {
+            try {
+                const response = await fetch(`/api/admin/servicerequests/${requestId}`);
+                if (!response.ok) throw new Error('Failed to load data');
+
+                const data = await response.json();
+
+                // Update UI
+                document.getElementById('request-id').textContent = data.id.substring(0, 8);
+                document.getElementById('client-name').textContent = data.client.name;
+                document.getElementById('client-email').textContent = data.client.email || 'Няма';
+                document.getElementById('client-phone').textContent = data.client.phone;
+
+                document.getElementById('car-brand').textContent = data.car.brand;
+                document.getElementById('car-model').textContent = data.car.model;
+                document.getElementById('car-year').textContent = data.car.year;
+                document.getElementById('car-registration').textContent = data.car.registrationNumber;
+                document.getElementById('car-vin').textContent = data.car.vin || 'Няма';
+
+                document.getElementById('service-type').textContent = data.serviceType;
+                document.getElementById('created-date').textContent = new Date(data.createdOn).toLocaleDateString('bg-BG');
+                document.getElementById('status-select').value = data.status;
+                document.getElementById('description').textContent = data.description;
+                document.getElementById('comment-text').value = data.comment || '';
+                document.getElementById('internal-notes').value = data.internalNotes || '';
+
+                // Show repair section if exists
+                if (data.linkedRepair) {
+                    document.getElementById('repair-section').style.display = 'block';
+                    document.getElementById('repair-status').textContent = data.linkedRepair.status;
+                    document.getElementById('repair-price').textContent = data.linkedRepair.price.toFixed(2) + ' лв.';
+                    document.getElementById('repair-link').href = `/Admin/Repairs/Details?id=${data.linkedRepair.id}`;
+                }
+            } catch (error) {
+                showAlert('Грешка при зареждане на данните', 'danger');
+                console.error(error);
+            }
+        }
+
+        // Update status
+        document.getElementById('update-status-btn').addEventListener('click', async () => {
+            const status = document.getElementById('status-select').value;
+            const internalNotes = document.getElementById('internal-notes').value;
+
+            try {
+                const response = await fetch(`/api/admin/servicerequests/${requestId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status, internalNotes })
+                });
+
+                if (!response.ok) throw new Error('Failed to update');
+
+                const result = await response.json();
+                showAlert(result.message, 'success');
+
+                // Notify via SignalR
+                if (connection) {
+                    await connection.invoke("NotifyRequestStatusChange", requestId, status);
+                }
+            } catch (error) {
+                showAlert('Грешка при актуализиране на статуса', 'danger');
+                console.error(error);
+            }
+        });
+
+        // Update comment
+        document.getElementById('update-comment-btn').addEventListener('click', async () => {
+            const comment = document.getElementById('comment-text').value;
+
+            try {
+                const response = await fetch(`/api/admin/servicerequests/${requestId}/comment`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ comment })
+                });
+
+                if (!response.ok) throw new Error('Failed to update');
+
+                const result = await response.json();
+                showAlert(result.message, 'success');
+            } catch (error) {
+                showAlert('Грешка при актуализиране на коментара', 'danger');
+                console.error(error);
+            }
+        });
+
+        // SignalR connection
+        function setupSignalR() {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/notifyHub")
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on("ReceiveRequestUpdate", (id) => {
+                if (id === requestId) {
+                    loadRequestData();
+                    showAlert('Заявката беше актуализирана', 'info');
+                }
+            });
+
+            connection.start().catch(err => console.error(err));
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertHtml = `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+            document.getElementById('alert-container').innerHTML = alertHtml;
+            setTimeout(() => {
+                document.getElementById('alert-container').innerHTML = '';
+            }, 5000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRequestData();
+            setupSignalR();
+        });
+    </script>
+}

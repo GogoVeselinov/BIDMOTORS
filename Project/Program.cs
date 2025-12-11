@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Project;
+using Project.Areas.Admin.Services;
 using Project.Data;
 using Project.Services;
 using Project.Services.Interfaces;
@@ -31,9 +33,24 @@ builder.Services.AddScoped<ServiceRequestService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<NotificationService>();
+
+// Admin Services
+builder.Services.AddScoped<ServiceTypeService>();
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<AdminPartService>();
+builder.Services.AddScoped<AdminSettingsService>();
+
 builder.Services.AddSignalR();
 
 var app = builder.Build();
+
+// Seed Admin Account
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    SeedAdmin.Initialize(context);
+}
 
 app.MapHub<NotificationHub>("/notifyHub");
 // Configure the HTTP request pipeline.
@@ -53,6 +70,11 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+// Admin Area route
+app.MapControllerRoute(
+    name: "admin",
+    pattern: "{area:exists}/{controller=Index}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

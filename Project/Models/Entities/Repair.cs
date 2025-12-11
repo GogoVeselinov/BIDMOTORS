@@ -30,15 +30,9 @@ namespace Project.Models.Entities
         public DateTime? FinishedOn { get; set; }
 
         // Navigation properties
-        [ForeignKey(nameof(ClientId))]
         public Client Client { get; set; } = null!;
-        
-        [ForeignKey(nameof(CarId))]
         public Car Car { get; set; } = null!;
-        
-        [ForeignKey(nameof(RequestId))]
         public ServiceRequest ServiceRequest { get; set; } = null!;
-        
         public ICollection<UsedPart> UsedParts { get; set; } = new List<UsedPart>();
     }
 }

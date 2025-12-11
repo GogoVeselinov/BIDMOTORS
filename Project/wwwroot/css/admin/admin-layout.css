@@ -1,0 +1,136 @@
+:root {
+    --yellow: #f6d201;
+    --dark: #111;
+    --dark-2: #1a1a1a;
+    --dark-3: #222;
+    --text-muted: #aaa;
+}
+
+/* BASE */
+.admin-body {
+    margin: 0;
+    background: var(--dark);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+    width: 240px;
+    background: var(--dark-2);
+    border-right: 2px solid var(--yellow);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-logo {
+    font-size: 22px;
+    font-weight: 800;
+    padding: 20px;
+    text-align: center;
+    color: var(--yellow);
+    border-bottom: 1px solid #333;
+}
+
+.admin-logo span {
+    color: white;
+}
+
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.admin-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.25s;
+}
+
+.admin-nav a:hover {
+    background: #2a2a2a;
+    color: var(--yellow);
+}
+
+.admin-nav a i {
+    font-size: 18px;
+}
+
+/* MAIN */
+.admin-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOPBAR */
+.admin-topbar {
+    height: 64px;
+    background: var(--dark-3);
+    border-bottom: 1px solid #333;
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-page-title {
+    font-size: 20px;
+    margin: 0;
+    color: var(--yellow);
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.topbar-icon {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.topbar-icon:hover {
+    color: var(--yellow);
+}
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+}
+
+.logout-btn {
+    color: #ff4d4d;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.logout-btn:hover {
+    color: #ff8080;
+    text-decoration: none;
+}
+
+/* CONTENT */
+.admin-content {
+    padding: 30px;
+}
+.admin-content h1, .admin-content h2, .admin-content h3, .admin-content h4, .admin-content h5, .admin-content h6 {
+    color: var(--yellow);
+}

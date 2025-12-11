@@ -71,7 +71,7 @@ namespace Project.Controllers
                 // Ако е Admin, препращаме към Admin panel
                 if (employeeResult.Employee.Role == "Admin")
                 {
-                    return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+                    return RedirectToAction("Index", "AdminDashboard", new { area = "Admin" });
                 }
 
                 return RedirectToAction("Index", "Home");

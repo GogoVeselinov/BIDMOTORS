@@ -1,10 +1,34 @@
+@model List<Project.Models.Entities.ServiceType>
+
 @{
-    ViewData["Title"] = "Service Types";
+    ViewData["Title"] = "Видове услуги";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
-    <h1>Service Types Management</h1>
     
-    <partial name="_ServiceTypesTablePartial" />
-    <partial name="_CreateServiceTypeModalPartial" />
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Видове услуги</h2>
+        <a asp-action="Create" class="btn btn-warning">
+            <i class="bi bi-plus-lg"></i> Добави тип услуга
+        </a>
+    </div>
+    
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    
+    <partial name="_ServiceTypesTablePartial" model="Model" />
 </div>

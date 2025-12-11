@@ -268,3 +268,5 @@ C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\refint\Project.dll
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\Project.pdb
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\Project.genruntimeconfig.cache
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\ref\Project.dll
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\5k66gcvtls-290qfuh1yq.gz
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\egedyhnm9s-wh734xgjqq.gz

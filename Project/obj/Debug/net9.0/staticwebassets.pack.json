@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\Project.652sibzhpw.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\admin\\admin-layout.css",
+      "PackagePath": "staticwebassets\\css\\admin\\admin-layout.css"
+    },
+    {
       "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -203,6 +207,10 @@
     {
       "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\img\\Hero.jpg",
       "PackagePath": "staticwebassets\\img\\Hero.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\admin\\crud-dynamic.js",
+      "PackagePath": "staticwebassets\\js\\admin\\crud-dynamic.js"
     },
     {
       "Id": "C:\\Users\\Go6ko\\Desktop\\BIDMOTORS\\Project\\wwwroot\\js\\site.js",

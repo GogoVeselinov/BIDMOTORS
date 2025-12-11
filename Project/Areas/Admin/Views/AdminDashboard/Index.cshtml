@@ -1,10 +1,13 @@
+@model Project.Models.ViewModels.Admin.AdminDashboardViewModel
+
 @{
-    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Title"] = "Табло";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
-    <h1>Admin Dashboard</h1>
     
-    <partial name="_StatsCardsPartial" />
-    <partial name="_RecentRequestsPartial" />
+    <partial name="_StatsCardsPartial" model="Model" />
+    <partial name="_RecentRequestsPartial" model="ViewBag.RecentRequests" />
+    
 </div>

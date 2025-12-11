@@ -1,13 +1,47 @@
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Service Type</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+@model List<Project.Models.Entities.ServiceType>
+
+<div class="crm-section">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>Име</th>
+                    <th>Описание</th>
+                    <th>Дата на създаване</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var serviceType in Model)
+                    {
+                        <tr>
+                            <td>@serviceType.Name</td>
+                            <td>@serviceType.Description</td>
+                            <td>@serviceType.CreatedOn.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@serviceType.Id" class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form asp-action="Delete" asp-route-id="@serviceType.Id" method="post" class="d-inline"
+                                      onsubmit="return confirm('Сигурни ли сте, че искате да изтриете този тип услуга?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">Няма добавени типове услуги</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

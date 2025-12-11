@@ -32,13 +32,8 @@ namespace Project.Models.Entities
         public Guid? LinkedRepairId { get; set; }
 
         // Navigation properties
-        [ForeignKey(nameof(ClientId))]
         public Client Client { get; set; } = null!;
-        
-        [ForeignKey(nameof(CarId))]
         public Car Car { get; set; } = null!;
-        
-        [ForeignKey(nameof(LinkedRepairId))]
         public Repair? LinkedRepair { get; set; }
     }
 }

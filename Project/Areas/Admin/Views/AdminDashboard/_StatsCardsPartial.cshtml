@@ -1,9 +1,101 @@
-<div class="row">
+@model Project.Models.ViewModels.Admin.AdminDashboardViewModel
+
+<div class="row mt-4">
     <div class="col-md-3">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Statistics</h5>
+        <section class="crm-kpi">
+            <div class="crm-kpi-icon">
+                <i class="bi bi-people"></i>
             </div>
-        </div>
+            <div class="crm-kpi-content">
+                <span class="crm-kpi-label">Клиенти</span>
+                <span class="crm-kpi-value">@Model.TotalClients</span>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-3">
+        <section class="crm-kpi">
+            <div class="crm-kpi-icon">
+                <i class="bi bi-clipboard-check"></i>
+            </div>
+            <div class="crm-kpi-content">
+                <span class="crm-kpi-label">Заявки</span>
+                <span class="crm-kpi-value">@Model.TotalServiceRequests</span>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-3">
+        <section class="crm-kpi">
+            <div class="crm-kpi-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div class="crm-kpi-content">
+                <span class="crm-kpi-label">Чакащи</span>
+                <span class="crm-kpi-value">@Model.PendingRequests</span>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-3">
+        <section class="crm-kpi">
+            <div class="crm-kpi-icon">
+                <i class="bi bi-cash-stack"></i>
+            </div>
+            <div class="crm-kpi-content">
+                <span class="crm-kpi-label">Приходи</span>
+                <span class="crm-kpi-value">@Model.TotalRevenue.ToString("C")</span>
+            </div>
+        </section>
     </div>
 </div>
+<style>
+    /* CRM KPI CARD */
+    /* KPI BLOCK */
+    .crm-kpi {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: 0.25s ease;
+        height: 100%;
+    }
+
+    .crm-kpi:hover {
+        border-color: var(--yellow);
+        transform: translateY(-2px);
+    }
+
+    /* ICON */
+    .crm-kpi-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 8px;
+        background: rgba(246, 210, 1, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--yellow);
+        font-size: 22px;
+    }
+
+    /* CONTENT */
+    .crm-kpi-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .crm-kpi-label {
+        font-size: 14px;
+        color: var(--text-muted);
+    }
+
+    .crm-kpi-value {
+        font-size: 26px;
+        font-weight: 800;
+        color: white;
+    }
+</style>
