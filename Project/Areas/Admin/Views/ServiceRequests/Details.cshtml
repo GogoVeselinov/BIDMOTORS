@@ -103,6 +103,9 @@
                 <div class="mb-3">
                     <strong>Вътрешни бележки:</strong>
                     <textarea id="internal-notes" class="form-control mt-2" rows="3"></textarea>
+                    <button id="update-notes-btn" class="btn btn-sm btn-warning mt-2">
+                        <i class="bi bi-check"></i> Запази бележки
+                    </button>
                 </div>
             </div>
 
@@ -580,6 +583,27 @@
                 showAlert(result.message, 'success');
             } catch (error) {
                 showAlert('Грешка при актуализиране на коментара', 'danger');
+                console.error(error);
+            }
+        });
+
+        // Update internal notes
+        document.getElementById('update-notes-btn').addEventListener('click', async () => {
+            const internalNotes = document.getElementById('internal-notes').value;
+
+            try {
+                const response = await fetch(`/api/admin/servicerequests/${requestId}/internalnotes`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ internalNotes })
+                });
+
+                if (!response.ok) throw new Error('Failed to update');
+
+                const result = await response.json();
+                showAlert(result.message, 'success');
+            } catch (error) {
+                showAlert('Грешка при актуализиране на бележките', 'danger');
                 console.error(error);
             }
         });

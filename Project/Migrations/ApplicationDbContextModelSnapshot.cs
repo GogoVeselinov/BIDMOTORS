@@ -307,6 +307,89 @@ namespace Project.Migrations
                     b.ToTable("Repairs");
                 });
 
+            modelBuilder.Entity("Project.Models.Entities.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AssignedEmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CompletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Result")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<Guid>("ServiceRequestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ServiceTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("StartedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedEmployeeId");
+
+                    b.HasIndex("ServiceRequestId");
+
+                    b.HasIndex("ServiceTypeId");
+
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Project.Models.Entities.ServicePartLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Supplier")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServicePartLinks");
+                });
+
             modelBuilder.Entity("Project.Models.Entities.ServiceRequest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -361,6 +444,47 @@ namespace Project.Migrations
                         .HasFilter("[LinkedRepairId] IS NOT NULL");
 
                     b.ToTable("ServiceRequests");
+                });
+
+            modelBuilder.Entity("Project.Models.Entities.ServiceTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CompletedByEmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CompletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsCompleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompletedByEmployeeId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServiceTasks");
                 });
 
             modelBuilder.Entity("Project.Models.Entities.ServiceType", b =>
@@ -468,6 +592,43 @@ namespace Project.Migrations
                     b.Navigation("Client");
                 });
 
+            modelBuilder.Entity("Project.Models.Entities.Service", b =>
+                {
+                    b.HasOne("Project.Models.Entities.Employee", "AssignedEmployee")
+                        .WithMany()
+                        .HasForeignKey("AssignedEmployeeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Project.Models.Entities.ServiceRequest", "ServiceRequest")
+                        .WithMany("Services")
+                        .HasForeignKey("ServiceRequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Project.Models.Entities.ServiceType", "ServiceType")
+                        .WithMany()
+                        .HasForeignKey("ServiceTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AssignedEmployee");
+
+                    b.Navigation("ServiceRequest");
+
+                    b.Navigation("ServiceType");
+                });
+
+            modelBuilder.Entity("Project.Models.Entities.ServicePartLink", b =>
+                {
+                    b.HasOne("Project.Models.Entities.Service", "Service")
+                        .WithMany("PartLinks")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("Project.Models.Entities.ServiceRequest", b =>
                 {
                     b.HasOne("Project.Models.Entities.Car", "Car")
@@ -492,6 +653,24 @@ namespace Project.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("LinkedRepair");
+                });
+
+            modelBuilder.Entity("Project.Models.Entities.ServiceTask", b =>
+                {
+                    b.HasOne("Project.Models.Entities.Employee", "CompletedByEmployee")
+                        .WithMany()
+                        .HasForeignKey("CompletedByEmployeeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Project.Models.Entities.Service", "Service")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompletedByEmployee");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Project.Models.Entities.UsedPart", b =>
@@ -547,6 +726,18 @@ namespace Project.Migrations
                         .IsRequired();
 
                     b.Navigation("UsedParts");
+                });
+
+            modelBuilder.Entity("Project.Models.Entities.Service", b =>
+                {
+                    b.Navigation("PartLinks");
+
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("Project.Models.Entities.ServiceRequest", b =>
+                {
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

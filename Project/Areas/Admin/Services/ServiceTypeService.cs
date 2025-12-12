@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models.Entities;
+using Project.Models.ViewModels.Services;
 
 namespace Project.Areas.Admin.Services
 {
@@ -13,6 +14,7 @@ namespace Project.Areas.Admin.Services
             _context = context;
         }
 
+        // Entity methods (за backward compatibility)
         public async Task<List<ServiceType>> GetAllAsync()
         {
             return await _context.ServiceTypes
@@ -23,6 +25,79 @@ namespace Project.Areas.Admin.Services
         public async Task<ServiceType?> GetByIdAsync(Guid id)
         {
             return await _context.ServiceTypes.FindAsync(id);
+        }
+
+        // ViewModel methods (нови)
+        public async Task<List<ServiceTypeListItemViewModel>> GetAllViewModelsAsync()
+        {
+            return await _context.ServiceTypes
+                .OrderBy(st => st.Name)
+                .Select(st => new ServiceTypeListItemViewModel
+                {
+                    Id = st.Id,
+                    Name = st.Name,
+                    Description = st.Description,
+                    IsActive = true, // TODO: Add IsActive to entity
+                    CreatedOn = st.CreatedOn
+                })
+                .ToListAsync();
+        }
+
+        public async Task<ServiceTypeDetailsViewModel?> GetByIdViewModelAsync(Guid id)
+        {
+            var entity = await _context.ServiceTypes.FindAsync(id);
+            if (entity == null) return null;
+
+            return new ServiceTypeDetailsViewModel
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                IsActive = true, // TODO: Add IsActive to entity
+                CreatedOn = entity.CreatedOn
+            };
+        }
+
+        public async Task<bool> CreateFromViewModelAsync(CreateServiceTypeViewModel model)
+        {
+            try
+            {
+                var entity = new ServiceType
+                {
+                    Id = Guid.NewGuid(),
+                    Name = model.Name,
+                    Description = model.Description,
+                    CreatedOn = DateTime.UtcNow
+                };
+
+                _context.ServiceTypes.Add(entity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateFromViewModelAsync(UpdateServiceTypeViewModel model)
+        {
+            try
+            {
+                var entity = await _context.ServiceTypes.FindAsync(model.Id);
+                if (entity == null) return false;
+
+                entity.Name = model.Name;
+                entity.Description = model.Description;
+
+                _context.ServiceTypes.Update(entity);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> CreateAsync(ServiceType serviceType)

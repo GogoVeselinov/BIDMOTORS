@@ -19,6 +19,9 @@ namespace Project.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<ServiceTask> ServiceTasks { get; set; }
+        public DbSet<ServicePartLink> ServicePartLinks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

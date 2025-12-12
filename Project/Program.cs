@@ -8,7 +8,11 @@ using Project.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
 
 // Session configuration
 builder.Services.AddDistributedMemoryCache();
@@ -39,6 +43,7 @@ builder.Services.AddScoped<ServiceTypeService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<AdminPartService>();
 builder.Services.AddScoped<AdminSettingsService>();
+builder.Services.AddScoped<ServiceService>();
 
 builder.Services.AddSignalR();
 
@@ -70,6 +75,9 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+// Map API Controllers
+app.MapControllers();
 
 // Admin Area route
 app.MapControllerRoute(

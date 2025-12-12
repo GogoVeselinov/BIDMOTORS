@@ -1,13 +1,100 @@
-<div class="modal fade" id="createServiceTypeModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create Service Type</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Form content -->
+@model Project.Models.ViewModels.Services.CreateServiceTypeViewModel
+
+<div class="crm-section">
+
+    <div class="crm-section-header mb-4">
+        <h5 class="crm-section-title">
+            <i class="bi bi-plus-circle"></i> Нов тип услуга
+        </h5>
+    </div>
+
+    <form asp-action="Create"
+          method="post"
+          class="crm-form">
+
+        @Html.AntiForgeryToken()
+
+        <!-- Name -->
+        <div class="form-group mb-4">
+            <label class="crm-label">
+                Име на услугата <span class="text-warning">*</span>
+            </label>
+            <input asp-for="Name"
+                   class="crm-input"
+                   placeholder="Напр. Диагностика на двигател"
+                   required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group mb-4">
+            <label class="crm-label">Описание</label>
+            <textarea asp-for="Description"
+                      rows="3"
+                      class="crm-input"
+                      placeholder="Кратко описание за какво се използва този тип услуга">
+            </textarea>
+        </div>
+
+        <!-- Active -->
+        <div class="form-group mb-4">
+            <label class="crm-label">Статус</label>
+            <div class="form-check form-switch">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label class="form-check-label">
+                    Активен тип услуга
+                </label>
             </div>
         </div>
-    </div>
+
+        <!-- Actions -->
+        <div class="crm-form-actions">
+            <button type="submit" class="btn btn-warning">
+                <i class="bi bi-check-circle"></i> Запази
+            </button>
+
+            <a asp-action="Index" class="btn btn-outline-light">
+                Отказ
+            </a>
+        </div>
+
+    </form>
+
 </div>
+
+<style>
+    .crm-form {
+    max-width: 720px;
+}
+
+.crm-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #dcdcdc;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.crm-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: 1px solid #3a3a3a;
+    background: #121212;
+    color: white;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.crm-input:focus {
+    outline: none;
+    border-color: var(--yellow);
+    background: #0f0f0f;
+}
+
+.crm-form-actions {
+    display: flex;
+    gap: 12px;
+}
+
+</style>

@@ -1,0 +1,140 @@
+@model Project.Models.ViewModels.Services.ServiceTypeDetailsViewModel
+
+@{
+    ViewData["Title"] = "Детайли за тип услуга";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="service-details-page">
+
+    <!-- HEADER -->
+    <div class="service-header">
+        <div>
+            <h2>@Model.Name</h2>
+            <span class="service-id">Услуга #@Model.Id.ToString().Substring(0, 8)</span>
+        </div>
+
+        <div class="service-meta">
+            <select class="form-select form-select-sm">
+                <option>Pending</option>
+                <option>InProgress</option>
+                <option>WaitingParts</option>
+                <option>Completed</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- CLIENT + CAR -->
+    <div class="service-info-grid">
+
+        <div class="info-block">
+            <h5>Клиент</h5>
+            <p><strong>N/A</strong></p>
+            <p>N/A</p>
+            <p>N/A</p>
+        </div>
+
+        <div class="info-block">
+            <h5>Автомобил</h5>
+            <p>N/A</p>
+            <p>Година: N/A</p>
+            <p>VIN: N/A</p>
+        </div>
+
+    </div>
+
+    <!-- TASKS -->
+    <div class="service-section">
+        <h4>Работни стъпки</h4>
+
+        <ul class="task-list">
+        </ul>
+
+        <div class="inline-add">
+            <input type="text" placeholder="Нова стъпка..." />
+            <button class="btn btn-warning btn-sm">Добави</button>
+        </div>
+    </div>
+
+    <!-- PART LINKS -->
+    <div class="service-section">
+        <h4>Части / линкове</h4>
+
+        <table class="table table-dark">
+            <tbody>
+            </tbody>
+        </table>
+
+        <div class="inline-add">
+            <input type="text" placeholder="Име на част" />
+            <input type="url" placeholder="Линк" />
+            <button class="btn btn-warning btn-sm">Добави</button>
+        </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="service-section">
+        <h4>Бележки / Резултат</h4>
+
+        <textarea class="form-control" rows="4" placeholder="Вътрешни бележки..."></textarea>
+
+        <textarea class="form-control mt-3" rows="3" placeholder="Резултат..."></textarea>
+    </div>
+
+</div>
+
+<style>
+    .service-details-page {
+        padding: 30px;
+        color: #e5e5e5;
+    }
+
+    .service-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--yellow);
+        padding-bottom: 16px;
+        margin-bottom: 30px;
+    }
+
+    .service-id {
+        font-size: 13px;
+        color: #aaa;
+    }
+
+    .service-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+
+    .info-block h5 {
+        color: var(--yellow);
+        margin-bottom: 10px;
+    }
+
+    .service-section {
+        margin-bottom: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #2a2a2a;
+    }
+
+    .task-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .task-list li {
+        display: flex;
+        gap: 12px;
+        padding: 8px 0;
+    }
+
+    .inline-add {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+    }
+</style>

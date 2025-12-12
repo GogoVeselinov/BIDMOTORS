@@ -43,6 +43,11 @@ namespace Project.Data.Configurations
                 .WithOne(r => r.ServiceRequest)
                 .HasForeignKey<ServiceRequest>(sr => sr.LinkedRepairId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasMany(sr => sr.Services)
+                .WithOne(s => s.ServiceRequest)
+                .HasForeignKey(s => s.ServiceRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

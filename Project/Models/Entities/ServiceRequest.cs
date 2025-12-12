@@ -35,5 +35,6 @@ namespace Project.Models.Entities
         public Client Client { get; set; } = null!;
         public Car Car { get; set; } = null!;
         public Repair? LinkedRepair { get; set; }
+        public ICollection<Service> Services { get; set; } = new List<Service>();
     }
 }

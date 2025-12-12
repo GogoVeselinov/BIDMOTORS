@@ -169,6 +169,19 @@ namespace Project.Areas.Admin.Controllers.Api
 
             return Ok(new { message = "Коментарът беше актуализиран успешно!" });
         }
+
+        [HttpPut("{id}/internalnotes")]
+        public async Task<IActionResult> UpdateInternalNotes(Guid id, [FromBody] InternalNotesUpdateModel model)
+        {
+            var request = await _context.ServiceRequests.FindAsync(id);
+            if (request == null)
+                return NotFound();
+
+            request.InternalNotes = model.InternalNotes;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Вътрешните бележки бяха актуализирани успешно!" });
+        }
     }
 
     public class StatusUpdateModel
@@ -180,5 +193,10 @@ namespace Project.Areas.Admin.Controllers.Api
     public class CommentUpdateModel
     {
         public string Comment { get; set; } = string.Empty;
+    }
+
+    public class InternalNotesUpdateModel
+    {
+        public string? InternalNotes { get; set; }
     }
 }

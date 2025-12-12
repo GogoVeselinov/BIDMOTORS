@@ -1,34 +1,89 @@
-@model List<Project.Models.Entities.ServiceType>
-
 @{
     ViewData["Title"] = "Видове услуги";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container-fluid">
-    
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Видове услуги</h2>
+@section Scripts {
+    <script src="~/js/admin/service-types-api.js"></script>
+    <script src="~/js/admin/service-types-index.js"></script>
+}
+
+<div class="container-fluid service-types-page">
+
+    <!-- HEADER -->
+    <div class="service-types-header">
+        <div>
+            <h2>Видове услуги</h2>
+            <p class="text-muted">
+                Управление на типовете услуги и работните процеси към тях
+            </p>
+        </div>
+
         <a asp-action="Create" class="btn btn-warning">
-            <i class="bi bi-plus-lg"></i> Добави тип услуга
+            <i class="bi bi-plus-lg"></i> Нов тип услуга
         </a>
     </div>
-    
+
+    <!-- ALERTS -->
     @if (TempData["SuccessMessage"] != null)
     {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show">
             @TempData["SuccessMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     }
-    
+
     @if (TempData["ErrorMessage"] != null)
     {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show">
             @TempData["ErrorMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     }
-    
-    <partial name="_ServiceTypesTablePartial" model="Model" />
+
+    <!-- NOTIFICATION CONTAINER -->
+    <div class="notification-container"></div>
+
+    <!-- TABLE -->
+    <div class="crm-section">
+        <div id="service-types-container">
+            <div class="text-center py-5">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="visually-hidden">Зареждане...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<style>
+    .service-types-page {
+        padding: 30px;
+    }
+
+    .service-types-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid var(--yellow);
+        padding-bottom: 15px;
+    }
+
+    .service-types-header h2 {
+        margin: 0;
+        color: #f1f1f1;
+    }
+
+    .service-types-header p {
+        margin: 4px 0 0;
+        font-size: 14px;
+    }
+
+    .crm-section {
+        background: #141414;
+        border: 1px solid #2a2a2a;
+        padding: 20px;
+    }
+</style>
