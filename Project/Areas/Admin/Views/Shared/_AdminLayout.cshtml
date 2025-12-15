@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/admin/admin-layout.css" />
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js" 
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
@@ -62,10 +63,26 @@
 
                 <div class="topbar-right">
 
-                    <!-- Notifications (future) -->
-                    <button class="topbar-icon">
-                        <i class="bi bi-bell"></i>
-                    </button>
+                    <!-- Notifications -->
+                    <div class="dropdown">
+                        <button class="topbar-icon dropdown-toggle" type="button" id="adminNotifDropdown" 
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bell"></i>
+                            <span id="notifCounter" class="admin-notif-badge d-none">0</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end admin-notif-dropdown" aria-labelledby="adminNotifDropdown">
+                            <li class="dropdown-header">Известия</li>
+                            <div id="notifList" class="admin-notif-list">
+                                <p class="text-center text-muted small p-2">Няма известия</p>
+                            </div>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item text-center small" href="/Notifications/All">
+                                    Виж всички
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
                     <!-- User -->
                     <div class="admin-user">
@@ -94,76 +111,145 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
     
-    <!-- SignalR Connection for Admin Notifications -->
+@RenderSection("Scripts", required: false)
+
     <script>
-        const notificationConnection = new signalR.HubConnectionBuilder()
+        // Зареждане на броя непрочетени известия при стартиране
+        @if (Context.Session.GetString("UserId") != null)
+        {
+            <text>
+            document.addEventListener('DOMContentLoaded', function() {
+                loadNotificationCount();
+                loadRecentNotifications();
+                
+                // Refresh every 30 seconds
+                setInterval(loadNotificationCount, 30000);
+                setInterval(loadRecentNotifications, 30000);
+
+                // Маркирай известията като прочетени когато се отвори dropdown-а
+                const notifDropdown = document.getElementById('adminNotifDropdown');
+                if (notifDropdown) {
+                    notifDropdown.addEventListener('show.bs.dropdown', function() {
+                        markNotificationsAsRead();
+                    });
+                }
+            });
+
+            function loadNotificationCount() {
+                const counter = document.getElementById('notifCounter');
+                if (!counter) return; // Елементът не съществува на тази страница
+                
+                fetch('/Notifications/GetUnreadCount')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.count > 0) {
+                            counter.innerText = data.count;
+                            counter.classList.remove('d-none');
+                            console.log('[Notifications] Unread count:', data.count);
+                        } else {
+                            counter.classList.add('d-none');
+                        }
+                    })
+                    .catch(err => console.error('Error loading notification count:', err));
+            }
+
+            function loadRecentNotifications() {
+                const list = document.getElementById('notifList');
+                if (!list) return; // Елементът не съществува на тази страница
+                
+                fetch('/Notifications/GetRecent')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.notifications && data.notifications.length > 0) {
+                            list.innerHTML = '';
+                            data.notifications.forEach(notif => {
+                                const item = document.createElement('a');
+                                item.classList.add('dropdown-item', 'notif-item');
+                                if (!notif.isRead) {
+                                    item.classList.add('unread');
+                                }
+                                item.href = '/Notifications/All';
+                                item.innerHTML = `
+                                    <div class="d-flex flex-column">
+                                        <small class="text-muted">${notif.createdOn}</small>
+                                        <span>${notif.message}</span>
+                                    </div>
+                                `;
+                                list.appendChild(item);
+                            });
+                        } else {
+                            list.innerHTML = '<p class="text-center text-white small p-2">Няма известия</p>';
+                        }
+                    })
+                    .catch(err => console.error('Error loading notifications:', err));
+            }
+
+            function markNotificationsAsRead() {
+                fetch('/Notifications/MarkAsRead', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('[Notifications] Marked', data.count, 'notifications as read');
+                        // Обнови брояча след 500ms
+                        setTimeout(() => {
+                            loadNotificationCount();
+                            loadRecentNotifications();
+                        }, 500);
+                    }
+                })
+                .catch(err => console.error('Error marking notifications as read:', err));
+            }
+            </text>
+        }
+
+        // SignalR connection за real-time известия
+        const connection = new signalR.HubConnectionBuilder()
             .withUrl("/notifyHub")
-            .configureLogging(signalR.LogLevel.Information)
             .build();
 
-        notificationConnection.on("ReceiveNotification", function (data) {
-            console.log("Notification received:", data);
+        connection.on("ReceiveNotification", function (message) {
+            console.log('[SignalR Admin] Received notification:', message);
             
-            const message = typeof data === 'string' ? data : data.message;
-            const type = typeof data === 'object' ? data.type : null;
+            // 1) Update counter
+            loadNotificationCount();
+            loadRecentNotifications();
+
+            // 2) Show browser notification
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification("BIDMOTORS - Admin", {
+                    body: message,
+                    icon: "/img/logo.png"
+                });
+            }
             
-            // Показване на toast известие
-            showToast(message, type);
-            
-            // Ако сме на Index страницата, презареждаме таблицата
-            if (typeof loadRequests === 'function') {
-                loadRequests();
+            // 3) Bell animation
+            const bell = document.querySelector('#adminNotifDropdown i');
+            if (bell) {
+                bell.classList.add('bi-bell-fill');
+                bell.classList.remove('bi-bell');
+                setTimeout(() => {
+                    bell.classList.remove('bi-bell-fill');
+                    bell.classList.add('bi-bell');
+                }, 3000);
             }
         });
 
-        notificationConnection.start()
+        connection.start()
             .then(() => {
-                console.log("SignalR connected for admin notifications");
+                console.log('[SignalR Admin] Connected successfully');
+                
+                // Request browser notification permission
+                if ("Notification" in window && Notification.permission === "default") {
+                    Notification.requestPermission();
+                }
             })
-            .catch(err => {
-                console.error("SignalR connection error:", err);
-            });
-
-        // Toast notification function
-        function showToast(message, type) {
-            const toastContainer = document.getElementById('toast-container') || createToastContainer();
-            
-            const toast = document.createElement('div');
-            toast.className = `toast align-items-center text-white bg-${type === 'NewServiceRequest' ? 'info' : 'warning'} border-0`;
-            toast.setAttribute('role', 'alert');
-            toast.setAttribute('aria-live', 'assertive');
-            toast.setAttribute('aria-atomic', 'true');
-            
-            toast.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <i class="bi bi-bell-fill me-2"></i>${message}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            `;
-            
-            toastContainer.appendChild(toast);
-            const bsToast = new bootstrap.Toast(toast, { delay: 5000 });
-            bsToast.show();
-            
-            toast.addEventListener('hidden.bs.toast', () => {
-                toast.remove();
-            });
-        }
-
-        function createToastContainer() {
-            const container = document.createElement('div');
-            container.id = 'toast-container';
-            container.className = 'toast-container position-fixed top-0 end-0 p-3';
-            container.style.zIndex = '9999';
-            document.body.appendChild(container);
-            return container;
-        }
+            .catch(err => console.error('[SignalR Admin] Connection error:', err));
     </script>
-    
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

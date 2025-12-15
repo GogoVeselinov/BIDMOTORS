@@ -75,6 +75,14 @@
                                             Моите заявки
                                         </a>
                                     </li>
+                                    @if (Context.Session.GetString("UserRole") == "Admin")
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">
+                                                Администрация
+                                            </a>
+                                        </li>
+                                    }
                                     <li>
                                         <a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">
                                             Изход
@@ -239,17 +247,42 @@
             .build();
 
         connection.on("ReceiveNotification", function (message) {
+            console.log('[SignalR] Received notification:', message);
+            
             // 1) Update counter
             loadNotificationCount();
             loadRecentNotifications();
 
-            // 2) Optional toast popup
-            if (typeof showToast === 'function') {
-                showToast(message);
+            // 2) Show browser notification if permitted
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification("BIDMOTORS", {
+                    body: message,
+                    icon: "/img/logo.png"
+                });
+            }
+            
+            // 3) Update bell icon animation
+            const bell = document.querySelector('.notification-bell i');
+            if (bell) {
+                bell.classList.add('bi-bell-fill');
+                bell.classList.remove('bi-bell');
+                setTimeout(() => {
+                    bell.classList.remove('bi-bell-fill');
+                    bell.classList.add('bi-bell');
+                }, 3000);
             }
         });
 
-        connection.start().catch(err => console.error('SignalR connection error:', err));
+        connection.start()
+            .then(() => {
+                console.log('[SignalR] Connected successfully');
+                
+                // Request browser notification permission
+                if ("Notification" in window && Notification.permission === "default") {
+                    Notification.requestPermission();
+                }
+            })
+            .catch(err => console.error('[SignalR] Connection error:', err));
     </script>
 </body>
 

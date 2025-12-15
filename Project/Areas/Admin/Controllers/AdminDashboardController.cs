@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
@@ -6,6 +7,7 @@ using Project.Models.ViewModels.Admin;
 namespace Project.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminDashboardController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -90,13 +90,7 @@ namespace Project.Services
         public async Task NotifyAdmins(string message, string? type = null, Guid? relatedEntityId = null)
         {
             // Изпращане на real-time известие към всички в групата Admins
-            await _hub.Clients.Group("Admins").SendAsync("ReceiveNotification", new 
-            { 
-                message = message, 
-                type = type, 
-                relatedEntityId = relatedEntityId,
-                timestamp = DateTime.Now 
-            });
+            await _hub.Clients.Group("Admins").SendAsync("ReceiveNotification", message);
             
             Console.WriteLine($"Notification sent to Admins group: {message}");
         }

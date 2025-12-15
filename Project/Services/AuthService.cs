@@ -23,6 +23,18 @@ namespace Project.Services
 
             if (existingClient != null)
             {
+                // Ако е гост акаунт без парола, надграждаме го до пълноценен акаунт
+                if (existingClient.IsGuest && string.IsNullOrEmpty(existingClient.PasswordHash))
+                {
+                    existingClient.Name = model.FullName;
+                    existingClient.PasswordHash = HashPassword(model.Password);
+                    existingClient.IsGuest = false;
+                    await _context.SaveChangesAsync();
+                    
+                    return (true, "Регистрацията е успешна! Вашият акаунт беше надграден.", existingClient);
+                }
+                
+                // Ако вече има парола, значи е пълноценен акаунт
                 return (false, "Потребител с този имейл вече съществува", null);
             }
 
@@ -61,15 +73,10 @@ namespace Project.Services
                 return (false, "Невалиден имейл или парола", null);
             }
             
-            // Проверка дали е гост акаунт
-            if (client.IsGuest)
+            // Проверка дали е гост акаунт без парола
+            if (client.IsGuest || string.IsNullOrEmpty(client.PasswordHash))
             {
-                return (false, "Този акаунт е създаден като гост. Моля, регистрирайте се за да влезете.", null);
-            }
-
-            if (string.IsNullOrEmpty(client.PasswordHash))
-            {
-                return (false, "Този акаунт няма зададена парола. Моля, регистрирайте се.", null);
+                return (false, "Този имейл е използван за бърза заявка. Моля, регистрирайте се за да създадете пълноценен акаунт.", null);
             }
 
             if (!VerifyPassword(model.Password, client.PasswordHash))
