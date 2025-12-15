@@ -10,5 +10,9 @@ namespace Project.Models.Entities
         
         [StringLength(500)]
         public string? Description { get; set; }
+
+        // Navigation properties
+        public ICollection<ServiceTypeTask> Tasks { get; set; } = new List<ServiceTypeTask>();
+        public ICollection<ServiceTypePart> Parts { get; set; } = new List<ServiceTypePart>();
     }
 }

@@ -1,7 +1,7 @@
 @model Project.Models.Entities.Part
 
 <div class="modal fade" id="createPartModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark text-white border border-warning">
 
             <form asp-area="Admin" asp-controller="Parts" asp-action="Create" method="post">
@@ -129,6 +129,37 @@
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     }
 
+    @@media (max-width: 768px) {
+        .modal-content {
+            border-radius: 0;
+            height: 100vh;
+        }
+
+        .modal-body {
+            padding: 16px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 14px 16px;
+        }
+
+        .modal-footer {
+            padding: 12px 16px;
+        }
+
+        .row.g-3 {
+            row-gap: 1rem !important;
+        }
+
+        .col-md-6,
+        .col-md-12 {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
     /* HEADER */
     .modal-header {
         padding: 18px 24px;
@@ -239,5 +270,56 @@
 
     .modal-footer .btn-outline-light:hover {
         background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* RESPONSIVE */
+    @@media (max-width: 1200px) {
+        .modal-dialog {
+            max-width: 95%;
+            margin: 1rem auto;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .modal-dialog {
+            max-width: 100%;
+            margin: 0;
+            height: 100vh;
+        }
+
+        .modal-content {
+            border-radius: 0;
+            height: 100vh;
+            border: none;
+        }
+
+        .modal-body {
+            padding: 16px;
+            overflow-y: auto;
+            max-height: calc(100vh - 130px);
+        }
+
+        .modal-header {
+            padding: 14px 16px;
+        }
+
+        .modal-footer {
+            padding: 12px 16px;
+        }
+
+        .row.g-3 {
+            row-gap: 1rem !important;
+        }
+
+        .col-md-6,
+        .col-md-12 {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .modal-footer .btn {
+            width: 100%;
+            margin-bottom: 8px;
+        }
     }
 </style>

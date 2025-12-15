@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models.Entities;
+using Project.Services;
 
 namespace Project.Areas.Admin.Controllers.Api
 {
@@ -181,6 +182,30 @@ namespace Project.Areas.Admin.Controllers.Api
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Вътрешните бележки бяха актуализирани успешно!" });
+        }
+
+        [HttpPost("{id}/start-repair")]
+        public async Task<IActionResult> StartRepair(Guid id, [FromServices] RepairService repairService)
+        {
+            try
+            {
+                var repair = await repairService.CreateFromServiceRequestAsync(id);
+                
+                if (repair == null)
+                {
+                    return NotFound(new { message = "Заявката не беше намерена" });
+                }
+
+                return Ok(new 
+                { 
+                    message = "Услугата беше започната успешно!",
+                    repairId = repair.Id
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Грешка при стартиране на услуга", error = ex.Message });
+            }
         }
     }
 

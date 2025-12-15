@@ -14,7 +14,7 @@
     <div class="service-types-header">
         <div>
             <h2>Видове услуги</h2>
-            <p class="text-muted">
+            <p class="text-white">
                 Управление на типовете услуги и работните процеси към тях
             </p>
         </div>
@@ -45,9 +45,9 @@
     <div class="notification-container"></div>
 
     <!-- TABLE -->
-    <div class="crm-section">
+    <div class="crm-section text-white">
         <div id="service-types-container">
-            <div class="text-center py-5">
+            <div class="text-center text-white py-5">
                 <div class="spinner-border text-warning" role="status">
                     <span class="visually-hidden">Зареждане...</span>
                 </div>
@@ -58,32 +58,100 @@
 </div>
 
 <style>
-    .service-types-page {
-        padding: 30px;
-    }
+/* PAGE */
+.service-types-page {
+    padding: 30px;
+}
 
-    .service-types-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        border-bottom: 2px solid var(--yellow);
-        padding-bottom: 15px;
-    }
+/* HEADER */
+.service-types-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--yellow);
+    padding-bottom: 15px;
+}
 
-    .service-types-header h2 {
-        margin: 0;
-        color: #f1f1f1;
-    }
+.service-types-header h2 {
+    margin: 0;
+    color: #f1f1f1;
+}
 
-    .service-types-header p {
-        margin: 4px 0 0;
-        font-size: 14px;
-    }
+.service-types-header p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #9a9a9a;
+}
 
-    .crm-section {
-        background: #141414;
-        border: 1px solid #2a2a2a;
-        padding: 20px;
-    }
+/* REMOVE CARD FEEL */
+.crm-section {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* TABLE BASE */
+#service-types-container table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #141414;
+    color: #e5e5e5;
+}
+
+/* HEADER */
+#service-types-container thead {
+    background: #1c1c1c;
+    border-bottom: 2px solid var(--yellow);
+}
+
+#service-types-container th {
+    padding: 14px 16px;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--yellow);
+    border: none;
+    background: transparent;
+}
+
+/* BODY */
+#service-types-container td {
+    padding: 16px;
+    border-bottom: 1px solid #2a2a2a;
+    background: transparent;
+    color: #e0e0e0;
+}
+
+/* HOVER */
+#service-types-container tbody tr:hover {
+    background: rgba(255, 215, 0, 0.04);
+}
+
+/* STATUS BADGES */
+#service-types-container .status-badge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* BUTTONS */
+#service-types-container .btn {
+    background: transparent;
+    border-color: #555;
+    color: #ddd;
+}
+
+#service-types-container .btn:hover {
+    border-color: var(--yellow);
+    color: var(--yellow);
+}
+
+/* LOADER */
+#service-types-container .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
 </style>

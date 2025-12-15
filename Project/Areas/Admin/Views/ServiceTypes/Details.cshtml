@@ -5,136 +5,330 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div id="notification-container" class="position-fixed top-0 end-0 p-3" style="z-index: 11"></div>
+
 <div class="service-details-page">
 
     <!-- HEADER -->
     <div class="service-header">
         <div>
             <h2>@Model.Name</h2>
-            <span class="service-id">Услуга #@Model.Id.ToString().Substring(0, 8)</span>
+            <span class="service-id">ID: @Model.Id.ToString().Substring(0, 8)</span>
         </div>
 
         <div class="service-meta">
-            <select class="form-select form-select-sm">
-                <option>Pending</option>
-                <option>InProgress</option>
-                <option>WaitingParts</option>
-                <option>Completed</option>
-            </select>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm">
+                <i class="bi bi-pencil"></i> Редактирай
+            </a>
+            <button type="button" class="btn btn-danger btn-sm" onclick="deleteServiceType()">
+                <i class="bi bi-trash"></i> Изтрий
+            </button>
+            <a asp-action="Index" class="btn btn-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Назад
+            </a>
         </div>
     </div>
 
-    <!-- CLIENT + CAR -->
+    <!-- INFO -->
     <div class="service-info-grid">
 
         <div class="info-block">
-            <h5>Клиент</h5>
-            <p><strong>N/A</strong></p>
-            <p>N/A</p>
-            <p>N/A</p>
+            <h5>Основна информация</h5>
+            <p><strong>Име:</strong> @Model.Name</p>
+            <p><strong>Описание:</strong> @(Model.Description ?? "Няма описание")</p>
+            <p><strong>Статус:</strong> 
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success">Активна</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Неактивна</span>
+                }
+            </p>
+            <p><strong>Създадена:</strong> @Model.CreatedOn.ToString("dd.MM.yyyy HH:mm")</p>
         </div>
 
         <div class="info-block">
-            <h5>Автомобил</h5>
-            <p>N/A</p>
-            <p>Година: N/A</p>
-            <p>VIN: N/A</p>
+            <h5>Допълнително</h5>
+            <p><strong>Пълен ID:</strong> <code style="font-size: 11px;">@Model.Id</code></p>
+            <p>Това е тип услуга който може да се използва при създаване на нови услуги.</p>
         </div>
 
     </div>
 
     <!-- TASKS -->
     <div class="service-section">
-        <h4>Работни стъпки</h4>
+        <h4>Работни стъпки (Шаблон)</h4>
 
-        <ul class="task-list">
+        <ul class="task-list" id="tasks-list">
+            <li class="text-muted">Няма добавени стъпки за този тип услуга</li>
         </ul>
 
         <div class="inline-add">
-            <input type="text" placeholder="Нова стъпка..." />
-            <button class="btn btn-warning btn-sm">Добави</button>
+            <input type="text" id="new-task-input" placeholder="Нова стъпка..." />
+            <button class="btn btn-warning btn-sm" onclick="addTask()">Добави</button>
         </div>
     </div>
 
     <!-- PART LINKS -->
     <div class="service-section">
-        <h4>Части / линкове</h4>
+        <h4>Части / линкове (Шаблон)</h4>
 
-        <table class="table table-dark">
-            <tbody>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th>Име</th>
+                        <th>Доставчик</th>
+                        <th>Линк</th>
+                        <th style="width: 100px;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="parts-list">
+                    <tr>
+                        <td colspan="4" class="text-muted text-center">Няма добавени части</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <div class="inline-add">
-            <input type="text" placeholder="Име на част" />
-            <input type="url" placeholder="Линк" />
-            <button class="btn btn-warning btn-sm">Добави</button>
+            <input type="text" id="new-part-title" placeholder="Име на част" />
+            <input type="text" id="new-part-supplier" placeholder="Доставчик" />
+            <input type="url" id="new-part-url" placeholder="Линк" />
+            <button class="btn btn-warning btn-sm" onclick="addPart()">Добави</button>
         </div>
     </div>
 
     <!-- NOTES -->
     <div class="service-section">
-        <h4>Бележки / Резултат</h4>
+        <h4>Бележки</h4>
 
-        <textarea class="form-control" rows="4" placeholder="Вътрешни бележки..."></textarea>
-
-        <textarea class="form-control mt-3" rows="3" placeholder="Резултат..."></textarea>
+        <textarea class="form-control" id="notes-area" rows="4" placeholder="Вътрешни бележки за този тип услуга...">@(Model.Description ?? "")</textarea>
+        
+        <button class="btn btn-warning mt-2" onclick="saveNotes()">
+            <i class="bi bi-save"></i> Запази бележки
+        </button>
     </div>
 
 </div>
 
+@section Scripts {
+    <script src="~/js/admin/service-types-api.js"></script>
+    <script src="~/js/admin/service-details.js"></script>
+    <script>
+        // Initialize service details with data from server
+        initServiceDetails(
+            '@Model.Id',
+            '@Model.Name',
+            @Model.IsActive.ToString().ToLower(),
+            @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Tasks)),
+            @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Parts))
+        );
+    </script>
+}
+
 <style>
-    .service-details-page {
-        padding: 30px;
-        color: #e5e5e5;
-    }
+/* PAGE BASE */
+.service-details-page {
+    padding: 30px;
+    color: #e5e5e5;
+}
 
-    .service-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 2px solid var(--yellow);
-        padding-bottom: 16px;
-        margin-bottom: 30px;
-    }
+/* HEADER */
+.service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--yellow);
+    padding-bottom: 16px;
+    margin-bottom: 30px;
+}
 
-    .service-id {
-        font-size: 13px;
-        color: #aaa;
-    }
+.service-id {
+    font-size: 13px;
+    color: #aaa;
+}
 
-    .service-info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        margin-bottom: 40px;
-    }
+/* INFO GRID */
+.service-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
 
-    .info-block h5 {
-        color: var(--yellow);
-        margin-bottom: 10px;
-    }
+.info-block h5 {
+    color: var(--yellow);
+    margin-bottom: 10px;
+}
 
-    .service-section {
-        margin-bottom: 40px;
-        padding-top: 20px;
-        border-top: 1px solid #2a2a2a;
-    }
+/* SECTION */
+.service-section {
+    margin-bottom: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #2a2a2a;
+}
 
-    .task-list {
-        list-style: none;
-        padding: 0;
-    }
+/* ===== INPUTS & TEXTAREAS ===== */
+.service-details-page input,
+.service-details-page textarea,
+.service-details-page select {
+    background: #121212 !important;
+    color: #f1f1f1 !important;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    padding: 10px 12px;
+}
 
-    .task-list li {
-        display: flex;
-        gap: 12px;
-        padding: 8px 0;
-    }
+.service-details-page input::placeholder,
+.service-details-page textarea::placeholder {
+    color: #888;
+}
 
+.service-details-page input:focus,
+.service-details-page textarea:focus,
+.service-details-page select:focus {
+    outline: none;
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 1px rgba(246, 210, 1, 0.25);
+    background: #101010;
+}
+
+/* INLINE ADD */
+.inline-add {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.inline-add input {
+    flex: 1;
+    min-width: 150px;
+}
+
+@@media (max-width: 768px) {
     .inline-add {
-        display: flex;
-        gap: 10px;
-        margin-top: 12px;
+        flex-direction: column;
     }
+    
+    .inline-add input {
+        width: 100%;
+    }
+    
+    .inline-add button {
+        width: 100%;
+    }
+}
+
+/* ===== TASK LIST ===== */
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.task-list li span {
+    color: #ddd;
+}
+
+/* ===== TABLE (PART LINKS) ===== */
+.service-section table {
+    width: 100%;
+    background: #141414;
+    border-collapse: collapse;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@@media (max-width: 992px) {
+    .service-section table {
+        font-size: 13px;
+    }
+    
+    .service-section table th,
+    .service-section table td {
+        padding: 8px;
+    }
+}
+
+@@media (max-width: 768px) {
+    .service-section table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+.service-section table thead {
+    background: #1c1c1c;
+    border-bottom: 2px solid var(--yellow);
+}
+
+.service-section table th {
+    padding: 12px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    border: none;
+}
+
+.service-section table td {
+    padding: 12px;
+    border-bottom: 1px solid #2a2a2a;
+    color: #e0e0e0;
+}
+
+.service-section table tbody tr:hover {
+    background: rgba(255, 215, 0, 0.04);
+}
+
+/* LINKS IN TABLE */
+.service-section table a {
+    color: var(--yellow);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.service-section table a:hover {
+    text-decoration: underline;
+}
+
+/* BADGES FIX */
+.badge {
+    font-size: 12px;
+}
+
+/* BUTTONS SMALL */
+.btn-sm {
+    padding: 4px 10px;
+}
+
+/* TEXTAREA NOTES */
+#notes-area {
+    background: #121212 !important;
+    color: #f1f1f1 !important;
+    border: 1px solid #3a3a3a;
+}
+
+/* RESPONSIVE */
+@@media (max-width: 992px) {
+    .service-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 </style>

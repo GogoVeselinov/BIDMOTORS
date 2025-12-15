@@ -107,6 +107,16 @@
                         <i class="bi bi-check"></i> Запази бележки
                     </button>
                 </div>
+
+                <!-- Start Repair Button -->
+                <div class="mb-3" id="start-repair-container" style="display: none;">
+                    <button id="start-repair-btn" class="btn btn-success">
+                        <i class="bi bi-play-circle"></i> Приеми и започни услуга
+                    </button>
+                    <small class="text-muted d-block mt-2">
+                        Това ще създаде нова услуга/ремонт автоматично и ще промени статуса на "В процес"
+                    </small>
+                </div>
             </div>
 
             <!-- Linked Repair -->
@@ -488,10 +498,9 @@
 </style>
 
 @section Scripts {
-    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
     <script>
         const requestId = '@ViewBag.RequestId';
-        let connection;
+        let connection = null;
 
         // Load request data
         async function loadRequestData() {
@@ -526,12 +535,23 @@
                 document.getElementById('comment-text').value = data.comment || '';
                 document.getElementById('internal-notes').value = data.internalNotes || '';
 
-                // Show repair section if exists
+                // Show repair section if exists, hide start button
                 if (data.linkedRepair) {
+                    console.log('Linked repair found:', data.linkedRepair);
                     document.getElementById('repair-section').style.display = 'block';
                     document.getElementById('repair-status').textContent = data.linkedRepair.status;
                     document.getElementById('repair-price').textContent = data.linkedRepair.price.toFixed(2) + ' лв.';
-                    document.getElementById('repair-link').href = `/Admin/Repairs/Details?id=${data.linkedRepair.id}`;
+                    document.getElementById('repair-link').href = `/Repairs/Details?id=${data.linkedRepair.id}`;
+                    document.getElementById('start-repair-container').style.display = 'none';
+                } else {
+                    console.log('No linked repair, status:', data.status);
+                    document.getElementById('repair-section').style.display = 'none';
+                    // Show start repair button only if status is Pending or InReview
+                    if (data.status === 'Pending' || data.status === 'InReview') {
+                        document.getElementById('start-repair-container').style.display = 'block';
+                    } else {
+                        document.getElementById('start-repair-container').style.display = 'none';
+                    }
                 }
             } catch (error) {
                 showAlert('Грешка при зареждане на данните', 'danger');
@@ -608,8 +628,52 @@
             }
         });
 
-        // SignalR connection
+        // Start repair
+        document.getElementById('start-repair-btn').addEventListener('click', async () => {
+            if (!confirm('Сигурни ли сте, че искате да започнете услугата? Това ще създаде нова услуга/ремонт автоматично.')) {
+                return;
+            }
+
+            const startBtn = document.getElementById('start-repair-btn');
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Създава се...';
+
+            try {
+                const response = await fetch(`/api/admin/servicerequests/${requestId}/start-repair`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Failed to start repair');
+                }
+
+                const result = await response.json();
+                showAlert(result.message + ' Презареждане на данните...', 'success');
+                
+                // Reload data immediately
+                await loadRequestData();
+                
+                // Hide start button and show repair section
+                document.getElementById('start-repair-container').style.display = 'none';
+            } catch (error) {
+                showAlert('Грешка при стартиране на услугата: ' + error.message, 'danger');
+                console.error(error);
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="bi bi-play-circle"></i> Приеми и започни услуга';
+            }
+        });
+
+        // SignalR connection (optional - will be enabled when SignalR is configured)
         function setupSignalR() {
+            // SignalR functionality disabled temporarily
+            // Uncomment when signalr.min.js is available
+            /*
+            if (typeof signalR === 'undefined') {
+                console.warn('SignalR not loaded, real-time updates disabled');
+                return;
+            }
+            
             connection = new signalR.HubConnectionBuilder()
                 .withUrl("/notifyHub")
                 .withAutomaticReconnect()
@@ -623,6 +687,7 @@
             });
 
             connection.start().catch(err => console.error(err));
+            */
         }
 
         // Show alert
