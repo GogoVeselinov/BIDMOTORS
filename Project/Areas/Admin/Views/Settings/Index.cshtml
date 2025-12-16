@@ -1,13 +1,182 @@
+@model Project.Models.Entities.PriceSettings
+
 @{
-    ViewData["Title"] = "Settings";
+    ViewData["Title"] = "Настройки на цени";
 }
 
-<div class="container-fluid">
-    <h1>Admin Settings</h1>
-    
-    <div class="card">
-        <div class="card-body">
-            <!-- Settings content -->
-        </div>
+<!-- PAGE HEADER -->
+<div class="crm-page-header">
+    <div>
+        <h2>Настройки на цени</h2>
+        <p class="text-muted">Управление на ценова политика и фирмена информация</p>
     </div>
 </div>
+
+<!-- ALERTS -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<form asp-action="Update" method="post" class="crm-form">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.CreatedOn)
+    @Html.HiddenFor(m => m.IsActive)
+
+    <div class="row">
+        <!-- PRICING SETTINGS -->
+        <div class="col-lg-6">
+            <div class="crm-section">
+                <h5 class="crm-section-title">
+                    <i class="bi bi-currency-exchange"></i> Ценова политика
+                </h5>
+
+                <div class="mb-3">
+                    <label asp-for="LaborCostPerHour" class="form-label">Цена на човекочас (лв)</label>
+                    <input asp-for="LaborCostPerHour" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="LaborCostPerHour" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PartsMarkupPercent" class="form-label">Надценка на части (%)</label>
+                    <input asp-for="PartsMarkupPercent" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="PartsMarkupPercent" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="VATPercent" class="form-label">ДДС (%)</label>
+                    <input asp-for="VATPercent" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="VATPercent" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DiagnosticFee" class="form-label">Такса диагностика (лв)</label>
+                    <input asp-for="DiagnosticFee" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="DiagnosticFee" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPANY INFO -->
+        <div class="col-lg-6">
+            <div class="crm-section">
+                <h5 class="crm-section-title">
+                    <i class="bi bi-building"></i> Фирмена информация
+                </h5>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyName" class="form-label">Име на фирмата</label>
+                    <input asp-for="CompanyName" class="form-control" />
+                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyAddress" class="form-label">Адрес</label>
+                    <textarea asp-for="CompanyAddress" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="CompanyAddress" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyPhone" class="form-label">Телефон</label>
+                    <input asp-for="CompanyPhone" class="form-control" />
+                    <span asp-validation-for="CompanyPhone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyEmail" class="form-label">Имейл</label>
+                    <input asp-for="CompanyEmail" class="form-control" type="email" />
+                    <span asp-validation-for="CompanyEmail" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyVATNumber" class="form-label">ДДС номер</label>
+                    <input asp-for="CompanyVATNumber" class="form-control" />
+                    <span asp-validation-for="CompanyVATNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyRegistrationNumber" class="form-label">Булстат</label>
+                    <input asp-for="CompanyRegistrationNumber" class="form-control" />
+                    <span asp-validation-for="CompanyRegistrationNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <button type="submit" class="btn btn-warning btn-lg">
+            <i class="bi bi-check-circle"></i> Запази настройките
+        </button>
+    </div>
+</form>
+
+<style>
+    .crm-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        border-bottom: 2px solid var(--yellow);
+        padding-bottom: 12px;
+    }
+
+    .crm-page-header h2 {
+        margin: 0;
+        color: #f1f1f1;
+    }
+
+    .crm-section {
+        border: 1px solid #2a2a2a;
+        background: #141414;
+        padding: 24px;
+        margin-bottom: 24px;
+        border-radius: 8px;
+    }
+
+    .crm-section-title {
+        color: var(--yellow);
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .form-label {
+        color: #888;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        background: #1a1a1a;
+        border: 1px solid #3a3a3a;
+        color: #e5e5e5;
+        padding: 10px 14px;
+    }
+
+    .form-control:focus {
+        background: #1a1a1a;
+        border-color: var(--yellow);
+        color: #e5e5e5;
+        box-shadow: 0 0 0 0.2rem rgba(246, 210, 1, 0.15);
+    }
+
+    .text-danger {
+        color: #ff4444 !important;
+        font-size: 12px;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

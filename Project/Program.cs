@@ -46,6 +46,7 @@ builder.Services.AddScoped<AdminPartService>();
 builder.Services.AddScoped<AdminSettingsService>();
 builder.Services.AddScoped<ServiceService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<SettingsService>();
 
 builder.Services.AddSignalR();
 

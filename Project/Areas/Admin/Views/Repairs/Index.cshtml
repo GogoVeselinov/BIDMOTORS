@@ -1,9 +1,180 @@
+@model List<Project.Models.Entities.Repair>
+
 @{
-    ViewData["Title"] = "Repairs";
+    ViewData["Title"] = "Ремонти";
 }
 
-<div class="container">
-    <h1>My Repairs</h1>
-    
-    <partial name="_RepairsTablePartial" />
+<!-- PAGE HEADER -->
+<div class="crm-page-header">
+    <div>
+        <h2>Ремонти</h2>
+        <p class="text-muted">Управление на ремонти</p>
+    </div>
 </div>
+
+<!-- TABLE -->
+<div class="crm-table-wrapper">
+    <div class="table-responsive">
+        <table class="table table-dark table-hover crm-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Клиент</th>
+                    <th>Автомобил</th>
+                    <th>Статус</th>
+                    <th>Работа (ч)</th>
+                    <th>Части</th>
+                    <th>Обща цена</th>
+                    <th>Създаден</th>
+                    <th class="text-end">Действия</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var repair in Model)
+                    {
+                        <tr>
+                            <td><strong>@repair.Id.ToString().Substring(0, 8)</strong></td>
+
+                            <td>@repair.Client.Name</td>
+
+                            <td>
+                                @repair.Car.Brand @repair.Car.Model
+                                <br />
+                                <small class="text-muted">@repair.Car.RegistrationNumber</small>
+                            </td>
+
+                            <td>
+                                @if (repair.Status == "Completed")
+                                {
+                                    <span class="crm-badge success">Завършен</span>
+                                }
+                                else if (repair.Status == "Active")
+                                {
+                                    <span class="crm-badge">Активен</span>
+                                }
+                                else
+                                {
+                                    <span class="crm-badge secondary">@repair.Status</span>
+                                }
+                            </td>
+
+                            <td>@repair.LaborHours.ToString("F1")</td>
+
+                            <td>@repair.UsedParts.Count</td>
+
+                            <td><strong>@repair.TotalCost.ToString("F2") лв</strong></td>
+
+                            <td>@repair.CreatedOn.ToString("dd.MM.yyyy")</td>
+
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@repair.Id" class="btn btn-sm btn-outline-light">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="crm-table-empty">
+                            <i class="bi bi-tools"></i>
+                            <p>Няма ремонти в системата</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .crm-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        border-bottom: 2px solid var(--yellow);
+        padding-bottom: 12px;
+    }
+
+    .crm-page-header h2 {
+        margin: 0;
+        color: #f1f1f1;
+    }
+
+    .crm-table-wrapper {
+        border: 1px solid #2a2a2a;
+        background: #141414;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .crm-table {
+        margin: 0 !important;
+        background-color: #141414 !important;
+    }
+
+    .crm-table thead {
+        background-color: #121212 !important;
+        border-bottom: 2px solid var(--yellow) !important;
+    }
+
+    .crm-table thead th {
+        color: var(--yellow) !important;
+        font-size: 12px;
+        text-transform: uppercase;
+        padding: 14px;
+        border: none !important;
+        background-color: #121212 !important;
+    }
+
+    .crm-table tbody tr {
+        border-bottom: 1px solid #2a2a2a !important;
+        background-color: #141414 !important;
+    }
+
+    .crm-table tbody tr:hover {
+        background-color: #1a1a1a !important;
+    }
+
+    .crm-table tbody td {
+        padding: 14px;
+        border: none !important;
+        color: #e5e5e5 !important;
+        background-color: transparent !important;
+    }
+
+    .crm-badge {
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 12px;
+        background: rgba(246, 210, 1, 0.15);
+        color: var(--yellow);
+    }
+
+    .crm-badge.success {
+        background: rgba(76, 175, 80, 0.15);
+        color: #4caf50;
+    }
+
+    .crm-badge.secondary {
+        background: rgba(158, 158, 158, 0.15);
+        color: #bdbdbd;
+    }
+
+    .crm-table-empty {
+        text-align: center;
+        padding: 40px;
+        color: #888;
+    }
+
+    .crm-table-empty i {
+        font-size: 32px;
+        display: block;
+        margin-bottom: 10px;
+    }
+</style>

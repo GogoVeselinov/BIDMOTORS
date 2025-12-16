@@ -17,6 +17,21 @@ namespace Project.Data.Configurations
             builder.Property(r => r.Price)
                 .HasPrecision(18, 2);
 
+            builder.Property(r => r.LaborHours)
+                .HasPrecision(18, 2);
+
+            builder.Property(r => r.LaborCost)
+                .HasPrecision(18, 2);
+
+            builder.Property(r => r.PartsCost)
+                .HasPrecision(18, 2);
+
+            builder.Property(r => r.TotalCost)
+                .HasPrecision(18, 2);
+
+            builder.Property(r => r.InvoiceNumber)
+                .HasMaxLength(50);
+
             builder.Property(r => r.Status)
                 .IsRequired()
                 .HasMaxLength(50)

@@ -24,6 +24,14 @@ namespace Project.Data
         public DbSet<Service> Services { get; set; }
         public DbSet<ServiceTask> ServiceTasks { get; set; }
         public DbSet<ServicePartLink> ServicePartLinks { get; set; }
+        public DbSet<PriceSettings> PriceSettings { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.ConfigureWarnings(warnings =>
+                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
