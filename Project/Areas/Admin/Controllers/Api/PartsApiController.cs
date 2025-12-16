@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Admin.Services;
+using Project.Filters;
 
 namespace Project.Areas.Admin.Controllers.Api
 {
     [Area("Admin")]
     [Route("api/admin/parts")]
     [ApiController]
+    [AdminAuthorization]
     public class PartsApiController : ControllerBase
     {
         private readonly AdminPartService _partService;

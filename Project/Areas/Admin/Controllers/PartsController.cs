@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Admin.Services;
 using Project.Models.Entities;
+using Project.Filters;
 
 namespace Project.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AdminAuthorization]
     public class PartsController : Controller
     {
         private readonly AdminPartService _adminPartService;

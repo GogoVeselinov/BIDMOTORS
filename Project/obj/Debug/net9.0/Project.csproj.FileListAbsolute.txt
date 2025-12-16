@@ -146,7 +146,6 @@ C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\rjsmcshtml.dswa.cache.
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\scopedcss\bundle\Project.styles.css
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\scopedcss\projectbundle\Project.bundle.scp.css
-C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\5k66gcvtls-mxvywovfx0.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\ydb8vxti1i-n4e3qfy1lp.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\ir86nxngkb-61n19gt1b8.gz
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\b6vn2r804p-kyimr70xc7.gz
@@ -272,3 +271,11 @@ C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\refint\Project.dll
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\Project.pdb
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\Project.genruntimeconfig.cache
 C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\ref\Project.dll
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\publish\web.config
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\publish\appsettings.Development.json
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\publish\appsettings.json
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\publish\appsettings.Production.json
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\publish\Project.deps.json
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\publish\Project.runtimeconfig.json
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\bin\Debug\net9.0\publish\Project.staticwebassets.endpoints.json
+C:\Users\Go6ko\Desktop\BIDMOTORS\Project\obj\Debug\net9.0\compressed\5k66gcvtls-bjumidp39p.gz

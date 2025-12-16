@@ -1,11 +1,17 @@
-@{
-    ViewData["Title"] = "Employees";
-}
+<partial name="_EmployeesTablePartial" model="Model" />
 
-<div class="container-fluid">
-    <h1>Employees Management</h1>
-    
-    <partial name="_EmployeesTablePartial" />
-    <partial name="_CreateEmployeeModalPartial" />
-    <partial name="_EditEmployeeModalPartial" />
-</div>
+<form id="deleteForm" method="post" style="display:none;">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    <script>
+        function confirmDelete(employeeId, employeeName) {
+            if (confirm(`Сигурни ли сте, че искате да изтриете служител "${employeeName}"?`)) {
+                const form = document.getElementById('deleteForm');
+                form.action = `/Admin/Employees/Delete/${employeeId}`;
+                form.submit();
+            }
+        }
+    </script>
+}

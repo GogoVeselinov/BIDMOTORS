@@ -1,0 +1,21 @@
+@model List<Project.Models.Entities.Client>
+
+@{
+    ViewData["Title"] = "Потребители";
+}
+
+<!-- PAGE HEADER -->
+<div class="crm-page-header">
+    <div>
+        <h2>Потребители</h2>
+        <p class="text-muted">Клиенти и гости, използващи системата</p>
+    </div>
+
+    <div class="crm-page-actions">
+        <a asp-area="Admin" asp-controller="Employees" asp-action="Index" class="btn btn-outline-light">
+            <i class="bi bi-person-badge"></i> Служители
+        </a>
+    </div>
+</div>
+
+<partial name="_UserTablePartial" model="Model" />

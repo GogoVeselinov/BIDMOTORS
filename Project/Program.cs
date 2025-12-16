@@ -4,6 +4,7 @@ using Project.Areas.Admin.Services;
 using Project.Data;
 using Project.Services;
 using Project.Services.Interfaces;
+using Project.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,7 @@ builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<AdminPartService>();
 builder.Services.AddScoped<AdminSettingsService>();
 builder.Services.AddScoped<ServiceService>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddSignalR();
 
@@ -71,6 +73,9 @@ app.UseRouting();
 
 // Добавяне на Session middleware
 app.UseSession();
+
+// Admin Authorization Middleware - must be after UseSession()
+app.UseMiddleware<AdminAuthorizationMiddleware>();
 
 app.UseAuthorization();
 

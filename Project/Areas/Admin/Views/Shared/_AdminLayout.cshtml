@@ -39,7 +39,11 @@
                 </a>
 
                 <a asp-area="Admin" asp-controller="Employees" asp-action="Index">
-                    <i class="bi bi-people"></i> Служители
+                    <i class="bi bi-person-badge"></i> Служители
+                </a>
+
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index">
+                    <i class="bi bi-people"></i> Потребители
                 </a>
 
                 <a asp-area="Admin" asp-controller="Settings" asp-action="Index">
@@ -87,13 +91,14 @@
                     <!-- User -->
                     <div class="admin-user">
                         <i class="bi bi-person-circle"></i>
-                        <span>Администратор</span>
+                        <span>@Context.Session.GetString("UserName")</span>
                     </div>
 
                     <a asp-area=""
                        asp-controller="Account"
                        asp-action="Logout"
-                       class="logout-btn">
+                       class="logout-btn"
+                       title="Изход">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
 

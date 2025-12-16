@@ -40,16 +40,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5EYXNoYm9hcmRcX1N0YXRzQ2FyZHNQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Employees/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRW1wbG95ZWVzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Employees/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRW1wbG95ZWVzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Employees/_CreateEmployeeModalPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRW1wbG95ZWVzXF9DcmVhdGVFbXBsb3llZU1vZGFsUGFydGlhbC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Employees/_EditEmployeeModalPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRW1wbG95ZWVzXF9FZGl0RW1wbG95ZWVNb2RhbFBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Employees/_EmployeesTablePartial.cshtml]
@@ -70,6 +66,30 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Parts/_PartsTablePartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUGFydHNcX1BhcnRzVGFibGVQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Repairs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwYWlyc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Repairs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwYWlyc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Repairs/_AddPartModalPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwYWlyc1xfQWRkUGFydE1vZGFsUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Repairs/_RepairsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwYWlyc1xfUmVwYWlyc1RhYmxlUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Repairs/_RepairSummaryPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwYWlyc1xfUmVwYWlyU3VtbWFyeVBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Repairs/_UsedPartsTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUmVwYWlyc1xfVXNlZFBhcnRzVGFibGVQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/ServiceRequests/Details.cshtml]
@@ -110,6 +130,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Users/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/Users/_UserTablePartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcX1VzZXJUYWJsZVBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Areas/Admin/Views/_ViewImports.cshtml]
@@ -202,30 +234,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Parts/_PublicPartsTablePartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydHNcX1B1YmxpY1BhcnRzVGFibGVQYXJ0aWFsLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Repairs/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyc1xEZXRhaWxzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Repairs/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyc1xJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Repairs/_AddPartModalPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyc1xfQWRkUGFydE1vZGFsUGFydGlhbC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Repairs/_RepairsTablePartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyc1xfUmVwYWlyc1RhYmxlUGFydGlhbC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Repairs/_RepairSummaryPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyc1xfUmVwYWlyU3VtbWFyeVBhcnRpYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/Repairs/_UsedPartsTablePartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyc1xfVXNlZFBhcnRzVGFibGVQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Go6ko/Desktop/BIDMOTORS/Project/Views/ServiceRequests/Confirmation.cshtml]

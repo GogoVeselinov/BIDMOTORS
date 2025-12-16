@@ -1,51 +1,18 @@
-@model List<Project.Models.Entities.Employee>
+@model List<Project.Models.Entities.Client>
+@using System.Linq
 
-<!-- PAGE HEADER -->
-<div class="crm-page-header text-center-sm-left mb-4 d-flex justify-content-between align-items-center  ">
-    <div class="">
-        <h2>Служители</h2>
-        <p>Управление на служители в системата</p>
-    </div>
-
-    <div class="crm-page-actions">
-        <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-outline-light">
-            <i class="bi bi-people"></i> Потребители
-        </a>
-
-        <a asp-area="Admin" asp-controller="Employees" asp-action="Create" class="btn btn-warning">
-            <i class="bi bi-plus-circle"></i> Добави служител
-        </a>
-    </div>
-</div>
-
-<!-- ALERTS -->
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show">
-        @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show">
-        @TempData["ErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
-
-<!-- TABLE -->
 <div class="crm-table-wrapper">
     <div class="table-responsive">
-        <table class="table table-dark crm-table">
+        <table class="table table-dark table-hover crm-table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Име</th>
                     <th>Имейл</th>
                     <th>Телефон</th>
-                    <th>Роля</th>
+                    <th>Тип</th>
+                    <th>Автомобили</th>
+                    <th>Ремонти</th>
                     <th>Създаден</th>
                     <th class="text-end">Действия</th>
                 </tr>
@@ -54,41 +21,55 @@
             <tbody>
                 @if (Model.Any())
                 {
-                    @foreach (var employee in Model)
+                    @foreach (var client in Model)
                     {
                         <tr>
-                            <td>@employee.Id.ToString().Substring(0, 4)</td>
-                            <td><strong>@employee.Name</strong></td>
+                            <td>@client.Id.ToString().Substring(0, 4)</td>
 
                             <td>
-                                <a href="mailto:@employee.Email" class="crm-link">
-                                    @employee.Email
+                                <strong>@client.Name</strong>
+                            </td>
+
+                            <td>
+                                <a href="mailto:@client.Email" class="crm-link">
+                                    @client.Email
                                 </a>
                             </td>
 
                             <td>
-                                <a href="tel:@employee.Phone" class="crm-link">
-                                    @employee.Phone
+                                <a href="tel:@client.Phone" class="crm-link">
+                                    @client.Phone
                                 </a>
                             </td>
 
                             <td>
-                                <span class="crm-badge">@employee.Role</span>
+                                @if (client.IsGuest)
+                                {
+                                    <span class="crm-badge secondary">Гост</span>
+                                }
+                                else
+                                {
+                                    <span class="crm-badge success">Регистриран</span>
+                                }
                             </td>
 
                             <td>
-                                @employee.CreatedOn.ToString("dd.MM.yyyy HH:mm")
+                                <span class="crm-counter">@client.Cars.Count</span>
+                            </td>
+
+                            <td>
+                                <span class="crm-counter warning">@client.Repairs.Count</span>
+                            </td>
+
+                            <td>
+                                @client.CreatedOn.ToString("dd.MM.yyyy HH:mm")
                             </td>
 
                             <td class="text-end">
-                                <a asp-action="Details" asp-route-id="@employee.Id" class="btn btn-sm btn-outline-light">
+                                <a asp-action="Details" asp-route-id="@client.Id" class="btn btn-sm btn-outline-light"
+                                    title="Детайли">
                                     <i class="bi bi-eye"></i>
                                 </a>
-
-                                <button class="btn btn-sm btn-outline-danger"
-                                    onclick="confirmDelete('@employee.Id','@employee.Name')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
                             </td>
                         </tr>
                     }
@@ -96,9 +77,9 @@
                 else
                 {
                     <tr>
-                        <td colspan="7" class="crm-table-empty">
-                            <i class="bi bi-person-x"></i>
-                            <p>Няма служители в системата</p>
+                        <td colspan="8" class="crm-table-empty">
+                            <i class="bi bi-people"></i>
+                            <p>Няма потребители в системата</p>
                         </td>
                     </tr>
                 }
@@ -132,8 +113,6 @@
     .crm-table-wrapper {
         border: 1px solid #2a2a2a;
         background: #141414;
-        border-radius: 8px;
-        overflow: hidden;
     }
 
     /* TABLE */
@@ -170,6 +149,7 @@
         border: none !important;
         color: #e5e5e5 !important;
         background-color: transparent !important;
+        vertical-align: middle;
     }
 
     /* LINKS */
@@ -182,11 +162,38 @@
         color: var(--yellow);
     }
 
-    /* BADGE */
+    /* BADGES */
     .crm-badge {
         padding: 4px 10px;
         font-size: 12px;
         border-radius: 12px;
+        background: rgba(246, 210, 1, 0.15);
+        color: var(--yellow);
+    }
+
+    .crm-badge.success {
+        background: rgba(76, 175, 80, 0.15);
+        color: #4caf50;
+    }
+
+    .crm-badge.secondary {
+        background: rgba(158, 158, 158, 0.15);
+        color: #bdbdbd;
+    }
+
+    /* COUNTERS */
+    .crm-counter {
+        display: inline-block;
+        min-width: 28px;
+        text-align: center;
+        padding: 4px 8px;
+        border-radius: 10px;
+        background: rgba(138, 180, 248, 0.15);
+        color: #8ab4f8;
+        font-size: 12px;
+    }
+
+    .crm-counter.warning {
         background: rgba(246, 210, 1, 0.15);
         color: var(--yellow);
     }

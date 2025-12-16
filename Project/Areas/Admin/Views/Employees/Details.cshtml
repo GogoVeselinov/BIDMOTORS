@@ -1,0 +1,404 @@
+@model Project.Models.Entities.Employee
+
+@{
+    ViewData["Title"] = "Детайли за служител";
+}
+
+<div id="notification-container"
+     class="position-fixed top-0 end-0 p-3"
+     style="z-index: 1055"></div>
+
+<div class="container-fluid employee-details-page">
+
+    <!-- HEADER -->
+    <div class="details-header">
+        <div>
+            <h2>@Model.Name</h2>
+            <span class="details-subtitle">Служител</span>
+        </div>
+
+        <div class="details-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Назад
+            </a>
+
+            <button id="edit-mode-btn"
+                    class="btn btn-warning"
+                    onclick="toggleEditMode()">
+                <i class="bi bi-pencil"></i> Редактирай
+            </button>
+
+            <button id="save-btn"
+                    class="btn btn-success d-none"
+                    onclick="saveEmployee()">
+                <i class="bi bi-check"></i> Запази
+            </button>
+
+            <button id="cancel-btn"
+                    class="btn btn-secondary d-none"
+                    onclick="cancelEdit()">
+                <i class="bi bi-x"></i> Отказ
+            </button>
+        </div>
+    </div>
+
+    <!-- INFO GRID -->
+    <div class="employee-info-grid">
+
+        <!-- BASIC INFO -->
+        <div class="info-block">
+            <h5>Основна информация</h5>
+
+            <div class="info-row">
+                <span>Име</span>
+                <span id="name-display">@Model.Name</span>
+                <input id="name-input" class="crm-input d-none" value="@Model.Name" />
+            </div>
+
+            <div class="info-row">
+                <span>Имейл</span>
+                <span id="email-display">@Model.Email</span>
+                <input id="email-input" class="crm-input d-none" value="@Model.Email" />
+            </div>
+
+            <div class="info-row">
+                <span>Телефон</span>
+                <span id="phone-display">@Model.Phone</span>
+                <input id="phone-input" class="crm-input d-none" value="@Model.Phone" />
+            </div>
+        </div>
+
+        <!-- ROLE -->
+        <div class="info-block">
+            <h5>Роля и достъп</h5>
+
+            <div class="info-row">
+                <span>Роля</span>
+                <span id="role-display" class="badge bg-warning text-dark">@Model.Role</span>
+
+                <select id="role-input"
+                        class="crm-input d-none">
+                    @if (Model.Role == "Admin")
+                    {
+                        <option value="Admin" selected>Admin</option>
+                    }
+                    else
+                    {
+                        <option value="Admin">Admin</option>
+                    }
+                    @if (Model.Role == "Manager")
+                    {
+                        <option value="Manager" selected>Manager</option>
+                    }
+                    else
+                    {
+                        <option value="Manager">Manager</option>
+                    }
+                    @if (Model.Role == "Mechanic")
+                    {
+                        <option value="Mechanic" selected>Mechanic</option>
+                    }
+                    else
+                    {
+                        <option value="Mechanic">Mechanic</option>
+                    }
+                </select>
+            </div>
+
+            <div class="info-row d-none" id="password-row">
+                <span>Нова парола</span>
+                <input id="password-input"
+                       type="password"
+                       class="crm-input"
+                       placeholder="Остави празно без промяна" />
+            </div>
+        </div>
+
+    </div>
+
+    <!-- META -->
+    <div class="employee-meta">
+        <div><strong>Създаден:</strong> @Model.CreatedOn.ToString("dd.MM.yyyy HH:mm")</div>
+        <div><strong>ID:</strong> <code>@Model.Id</code></div>
+    </div>
+
+    <!-- DANGER ZONE -->
+    <div class="danger-zone">
+        <h5>Опасна зона</h5>
+        <button class="btn btn-danger"
+                onclick="confirmDelete('@Model.Id', '@Model.Name')">
+            <i class="bi bi-trash"></i> Изтрий служител
+        </button>
+    </div>
+
+</div>
+
+<form id="deleteForm" method="post" style="display:none;">
+    @Html.AntiForgeryToken()
+</form>
+
+<style>
+    .employee-details-page {
+        padding: 30px;
+        color: #e5e5e5;
+    }
+
+    /* HEADER */
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--yellow);
+        padding-bottom: 16px;
+        margin-bottom: 30px;
+    }
+
+    .details-header h2 {
+        color: var(--yellow);
+        margin: 0;
+    }
+
+    .details-subtitle {
+        font-size: 13px;
+        color: #9a9a9a;
+    }
+
+    .details-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* GRID */
+    .employee-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+
+    /* BLOCK */
+    .info-block h5 {
+        color: var(--yellow);
+        margin-bottom: 16px;
+    }
+
+    /* ROW */
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+    .info-row span:first-child {
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    /* INPUT */
+    .crm-input {
+        background: #121212;
+        border: 1px solid #3a3a3a;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        width: 60%;
+    }
+
+    .crm-input:focus {
+        outline: none;
+        border-color: var(--yellow);
+    }
+
+    /* META */
+    .employee-meta {
+        margin-top: 30px;
+        font-size: 13px;
+        color: #999;
+        display: flex;
+        gap: 30px;
+    }
+
+    /* DANGER */
+    .danger-zone {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #2a2a2a;
+    }
+
+    .danger-zone h5 {
+        color: #ff6b6b;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+@section Scripts {
+
+    <script>
+        let isEditMode = false;
+        const employeeId = '@Model.Id';
+
+        // Original values for cancel
+        let originalValues = {
+            name: '@Model.Name',
+            email: '@Model.Email',
+            phone: '@Model.Phone',
+            role: '@Model.Role'
+        };
+
+        function toggleEditMode() {
+            isEditMode = true;
+
+            // Hide display elements, show input elements
+            document.getElementById('name-display').classList.add('d-none');
+            document.getElementById('name-input').classList.remove('d-none');
+
+            document.getElementById('email-display').classList.add('d-none');
+            document.getElementById('email-input').classList.remove('d-none');
+
+            document.getElementById('phone-display').classList.add('d-none');
+            document.getElementById('phone-input').classList.remove('d-none');
+
+            document.getElementById('role-display').classList.add('d-none');
+            document.getElementById('role-input').classList.remove('d-none');
+
+            document.getElementById('password-row').classList.remove('d-none');
+
+            // Toggle buttons
+            document.getElementById('edit-mode-btn').classList.add('d-none');
+            document.getElementById('save-btn').classList.remove('d-none');
+            document.getElementById('cancel-btn').classList.remove('d-none');
+        }
+
+        function cancelEdit() {
+            isEditMode = false;
+
+            // Restore original values
+            document.getElementById('name-input').value = originalValues.name;
+            document.getElementById('email-input').value = originalValues.email;
+            document.getElementById('phone-input').value = originalValues.phone;
+            document.getElementById('role-input').value = originalValues.role;
+            document.getElementById('password-input').value = '';
+
+            // Show display elements, hide input elements
+            document.getElementById('name-display').classList.remove('d-none');
+            document.getElementById('name-input').classList.add('d-none');
+
+            document.getElementById('email-display').classList.remove('d-none');
+            document.getElementById('email-input').classList.add('d-none');
+
+            document.getElementById('phone-display').classList.remove('d-none');
+            document.getElementById('phone-input').classList.add('d-none');
+
+            document.getElementById('role-display').classList.remove('d-none');
+            document.getElementById('role-input').classList.add('d-none');
+
+            document.getElementById('password-row').classList.add('d-none');
+
+            // Toggle buttons
+            document.getElementById('edit-mode-btn').classList.remove('d-none');
+            document.getElementById('save-btn').classList.add('d-none');
+            document.getElementById('cancel-btn').classList.add('d-none');
+        }
+
+        async function saveEmployee() {
+            const name = document.getElementById('name-input').value.trim();
+            const email = document.getElementById('email-input').value.trim();
+            const phone = document.getElementById('phone-input').value.trim();
+            const role = document.getElementById('role-input').value;
+            const password = document.getElementById('password-input').value;
+
+            // Validation
+            if (!name || !email || !phone || !role) {
+                showNotification('Моля попълнете всички полета!', 'danger');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            if (!emailRegex.test(email)) {
+                showNotification('Моля въведете валиден имейл адрес!', 'danger');
+                return;
+            }
+
+            const data = {
+                id: employeeId,
+                name: name,
+                email: email,
+                phone: phone,
+                role: role,
+                password: password || null
+            };
+
+            try {
+                // Disable save button
+                const saveBtn = document.getElementById('save-btn');
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Запазване...';
+
+                const response = await fetch(`/Admin/Employees/UpdateInline`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update displayed values
+                    originalValues.name = name;
+                    originalValues.email = email;
+                    originalValues.phone = phone;
+                    originalValues.role = role;
+
+                    document.getElementById('name-display').textContent = name;
+                    document.getElementById('email-display').innerHTML = `<a href="mailto:${email}">${email}</a>`;
+                    document.getElementById('phone-display').innerHTML = `<a href="tel:${phone}">${phone}</a>`;
+                    document.getElementById('role-display').innerHTML = `<span class="badge bg-primary">${role}</span>`;
+
+                    showNotification('Данните са успешно обновени!', 'success');
+                    cancelEdit();
+                } else {
+                    showNotification(result.message || 'Грешка при запазване на данните!', 'danger');
+                }
+            } catch (error) {
+                showNotification('Грешка при комуникация със сървъра!', 'danger');
+                console.error('Error:', error);
+            } finally {
+                // Re-enable save button
+                const saveBtn = document.getElementById('save-btn');
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="bi bi-check"></i> Запази';
+            }
+        }
+
+        function showNotification(message, type) {
+            const container = document.getElementById('notification-container');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+            container.appendChild(alertDiv);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function confirmDelete(employeeId, employeeName) {
+            if (confirm(`Сигурни ли сте, че искате да изтриете служител "${employeeName}"?`)) {
+                const form = document.getElementById('deleteForm');
+                form.action = `/Admin/Employees/Delete/${employeeId}`;
+                form.submit();
+            }
+        }
+    </script>
+}

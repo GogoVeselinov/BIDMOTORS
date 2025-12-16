@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Admin.Services;
+using Project.Filters;
 
 namespace Project.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AdminAuthorization]
     public class ServiceTypesController : Controller
     {
         private readonly ServiceTypeService _service;

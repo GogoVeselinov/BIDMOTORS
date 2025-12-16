@@ -3,11 +3,13 @@ using Project.Areas.Admin.Services;
 using Project.Models.Entities;
 using Project.Models.Enum;
 using Project.Models.ViewModels.Services;
+using Project.Filters;
 
 namespace Project.Areas.Admin.Controllers.Api
 {
     [ApiController]
     [Route("api/admin/services")]
+    [AdminAuthorization]
     public class ServicesApiController : ControllerBase
     {
         private readonly ServiceService _serviceService;

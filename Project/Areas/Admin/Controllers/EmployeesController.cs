@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Admin.Services;
 using Project.Models.Entities;
 using Project.Models.ViewModels.Admin;
+using Project.Filters;
 
 namespace Project.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AdminAuthorization]
     public class EmployeesController : Controller
     {
         private readonly EmployeeService _employeeService;
@@ -35,6 +37,12 @@ namespace Project.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+
+            if (string.IsNullOrEmpty(model.Password))
+            {
+                ModelState.AddModelError("Password", "Паролата е задължителна");
                 return View(model);
             }
 
@@ -115,6 +123,48 @@ namespace Project.Areas.Admin.Controllers
             return View(model);
         }
 
+        // GET: Admin/Employees/Details/5
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var employee = await _employeeService.GetByIdAsync(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return View(employee);
+        }
+
+        // POST: Admin/Employees/UpdateInline (API endpoint for inline editing)
+        [HttpPost]
+        public async Task<IActionResult> UpdateInline([FromBody] EmployeeInlineUpdateModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Невалидни данни" });
+            }
+
+            var employee = await _employeeService.GetByIdAsync(model.Id);
+            if (employee == null)
+            {
+                return Json(new { success = false, message = "Служителят не е намерен" });
+            }
+
+            employee.Name = model.Name;
+            employee.Email = model.Email;
+            employee.Phone = model.Phone;
+            employee.Role = model.Role;
+
+            var success = await _employeeService.UpdateAsync(employee, model.Password);
+            
+            if (success)
+            {
+                return Json(new { success = true, message = "Данните са обновени успешно" });
+            }
+
+            return Json(new { success = false, message = "Грешка при обновяване на данните" });
+        }
+
         // POST: Admin/Employees/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -131,5 +181,16 @@ namespace Project.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+    }
+
+    // Model for inline update
+    public class EmployeeInlineUpdateModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
+        public string? Password { get; set; }
     }
 }

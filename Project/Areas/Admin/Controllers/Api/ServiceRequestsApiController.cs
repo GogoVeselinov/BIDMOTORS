@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models.Entities;
 using Project.Services;
+using Project.Filters;
 
 namespace Project.Areas.Admin.Controllers.Api
 {
     [Area("Admin")]
     [Route("api/admin/servicerequests")]
     [ApiController]
+    [AdminAuthorization]
     public class ServiceRequestsApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

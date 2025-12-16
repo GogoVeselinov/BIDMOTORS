@@ -1,0 +1,424 @@
+@model Project.Models.Entities.Client
+
+@{
+    ViewData["Title"] = "Детайли за потребител";
+}
+
+<div id="notification-container" class="position-fixed top-0 end-0 p-3" style="z-index: 11"></div>
+
+<!-- PAGE HEADER -->
+<div class="crm-page-header">
+    <div>
+        <h2>@Model.Name</h2>
+        <p class="text-muted">Детайли за потребител</p>
+    </div>
+
+    <div class="crm-page-actions mb-2">
+        <a asp-action="Index" class="btn btn-outline-light">
+            <i class="bi bi-arrow-left"></i> Назад
+        </a>
+
+        <button id="edit-mode-btn" class="btn btn-warning" onclick="toggleEditMode()">
+            <i class="bi bi-pencil"></i> Редактирай
+        </button>
+
+        <button id="save-btn" class="btn btn-success d-none" onclick="saveUser()">
+            <i class="bi bi-check"></i> Запази
+        </button>
+
+        <button id="cancel-btn" class="btn btn-secondary d-none" onclick="cancelEdit()">
+            Отказ
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <!-- LEFT -->
+    <div class="col-lg-8">
+
+        <!-- BASIC INFO -->
+        <div class="crm-section">
+            <h5 class="crm-section-title">Основна информация</h5>
+
+            <div class="crm-info-grid">
+                <div>
+                    <label>Име</label>
+                    <span id="name-display">@Model.Name</span>
+                    <input id="name-input" class="crm-input d-none" value="@Model.Name" />
+                </div>
+
+                <div>
+                    <label>Имейл</label>
+                    <span id="email-display">
+                        <a href="mailto:@Model.Email" class="crm-link">@Model.Email</a>
+                    </span>
+                    <input id="email-input" class="crm-input d-none" value="@Model.Email" />
+                </div>
+
+                <div>
+                    <label>Телефон</label>
+                    <span id="phone-display">
+                        <a href="tel:@Model.Phone" class="crm-link">@Model.Phone</a>
+                    </span>
+                    <input id="phone-input" class="crm-input d-none" value="@Model.Phone" />
+                </div>
+
+                <div>
+                    <label>Тип профил</label>
+                    @if (Model.IsGuest)
+                    {
+                        <span class="crm-badge secondary">Гост</span>
+                    }
+                    else
+                    {
+                        <span class="crm-badge success">Регистриран</span>
+                    }
+                </div>
+
+                <div>
+                    <label>Създаден</label>
+                    <span>@Model.CreatedOn.ToString("dd.MM.yyyy HH:mm")</span>
+                </div>
+
+                <div>
+                    <label>ID</label>
+                    <code>@Model.Id</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARS -->
+        @if (Model.Cars.Any())
+        {
+            <div class="crm-section">
+                <h5 class="crm-section-title">
+                    <i class="bi bi-car-front"></i> Автомобили
+                </h5>
+
+                <table class="table table-dark table-hover crm-table">
+                    <thead>
+                        <tr>
+                            <th>Марка</th>
+                            <th>Модел</th>
+                            <th>Рег. №</th>
+                            <th>Година</th>
+                            <th class="text-end">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var car in Model.Cars)
+                        {
+                            <tr>
+                                <td>@car.Brand</td>
+                                <td>@car.Model</td>
+                                <td><code>@car.RegistrationNumber</code></td>
+                                <td>@car.Year</td>
+                                <td class="text-end">
+                                    <a asp-area="Admin" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-sm btn-outline-light">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        <!-- SERVICE REQUESTS -->
+        @if (Model.ServiceRequests.Any())
+        {
+            <div class="crm-section">
+                <h5 class="crm-section-title">
+                    <i class="bi bi-clipboard-check"></i> Заявки
+                </h5>
+
+                <table class="table table-dark table-hover crm-table">
+                    <thead>
+                        <tr>
+                            <th>Описание</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                            <th class="text-end">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model.ServiceRequests.Take(5))
+                        {
+                            <tr>
+                                <td>@r.Description</td>
+                                <td><span class="crm-badge">@r.Status</span></td>
+                                <td>@r.CreatedOn.ToString("dd.MM.yyyy")</td>
+                                <td class="text-end">
+                                    <a asp-area="Admin" asp-controller="ServiceRequests" asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-light">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        <!-- REPAIRS -->
+        @if (Model.Repairs.Any())
+        {
+            <div class="crm-section">
+                <h5 class="crm-section-title">
+                    <i class="bi bi-tools"></i> Ремонти
+                </h5>
+
+                <table class="table table-dark table-hover crm-table">
+                    <thead>
+                        <tr>
+                            <th>Описание</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                            <th class="text-end">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var repair in Model.Repairs.Take(5))
+                        {
+                            <tr>
+                                <td>@repair.WorkDescription</td>
+                                <td><span class="crm-badge">@repair.Status</span></td>
+                                <td>@repair.CreatedOn.ToString("dd.MM.yyyy")</td>
+                                <td class="text-end">
+                                    <a asp-area="Admin" asp-controller="Repairs" asp-action="Details" asp-route-id="@repair.Id" class="btn btn-sm btn-outline-light">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <!-- RIGHT -->
+    <div class="col-lg-4">
+        <div class="crm-section">
+            <h5 class="crm-section-title">Статистика</h5>
+
+            <div class="crm-stat">
+                <span>Автомобили</span>
+                <strong>@Model.Cars.Count</strong>
+            </div>
+
+            <div class="crm-stat">
+                <span>Заявки</span>
+                <strong>@Model.ServiceRequests.Count</strong>
+            </div>
+
+            <div class="crm-stat">
+                <span>Ремонти</span>
+                <strong>@Model.Repairs.Count</strong>
+            </div>
+
+            <div class="crm-stat">
+                <span>Известия</span>
+                <strong>@Model.Notifications.Count</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #notification-container .crm-notification {
+        min-width: 300px;
+    }
+
+    .crm-section {
+        border: 1px solid #2a2a2a;
+        background: #141414;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .crm-section-title {
+        color: var(--yellow);
+        margin-bottom: 16px;
+        font-weight: 600;
+    }
+
+    .crm-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px 32px;
+    }
+
+    .crm-info-grid label {
+        font-size: 12px;
+        color: #888;
+        display: block;
+    }
+
+    .crm-stat {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+
+    /* TABLE STYLING */
+    .crm-table {
+        margin: 0 !important;
+        background-color: #1a1a1a !important;
+    }
+
+    .crm-table thead {
+        background-color: #121212 !important;
+        border-bottom: 2px solid var(--yellow) !important;
+    }
+
+    .crm-table thead th {
+        color: var(--yellow) !important;
+        font-size: 12px;
+        text-transform: uppercase;
+        border: none !important;
+        background-color: #121212 !important;
+    }
+
+    .crm-table tbody tr {
+        border-bottom: 1px solid #2a2a2a !important;
+        background-color: #1a1a1a !important;
+    }
+
+    .crm-table tbody tr:hover {
+        background-color: #252525 !important;
+    }
+
+    .crm-table tbody td {
+        border: none !important;
+        color: #e5e5e5 !important;
+        background-color: transparent !important;
+    }
+
+    .crm-input {
+        background: #252525;
+        border: 1px solid #3a3a3a;
+        color: #e5e5e5;
+        padding: 8px 12px;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .crm-input:focus {
+        outline: none;
+        border-color: var(--yellow);
+    }
+</style>
+
+<script>
+    let originalData = {
+        name: '@Model.Name',
+        email: '@Model.Email',
+        phone: '@Model.Phone'
+    };
+
+    function toggleEditMode() {
+        document.getElementById('name-display').classList.add('d-none');
+        document.getElementById('name-input').classList.remove('d-none');
+
+        document.getElementById('email-display').classList.add('d-none');
+        document.getElementById('email-input').classList.remove('d-none');
+
+        document.getElementById('phone-display').classList.add('d-none');
+        document.getElementById('phone-input').classList.remove('d-none');
+
+        document.getElementById('edit-mode-btn').classList.add('d-none');
+        document.getElementById('save-btn').classList.remove('d-none');
+        document.getElementById('cancel-btn').classList.remove('d-none');
+    }
+
+    function cancelEdit() {
+        document.getElementById('name-input').value = originalData.name;
+        document.getElementById('email-input').value = originalData.email;
+        document.getElementById('phone-input').value = originalData.phone;
+
+        document.getElementById('name-display').classList.remove('d-none');
+        document.getElementById('name-input').classList.add('d-none');
+
+        document.getElementById('email-display').classList.remove('d-none');
+        document.getElementById('email-input').classList.add('d-none');
+
+        document.getElementById('phone-display').classList.remove('d-none');
+        document.getElementById('phone-input').classList.add('d-none');
+
+        document.getElementById('edit-mode-btn').classList.remove('d-none');
+        document.getElementById('save-btn').classList.add('d-none');
+        document.getElementById('cancel-btn').classList.add('d-none');
+    }
+
+    async function saveUser() {
+        const name = document.getElementById('name-input').value.trim();
+        const email = document.getElementById('email-input').value.trim();
+        const phone = document.getElementById('phone-input').value.trim();
+
+        if (!name || !email) {
+            showNotification('Името и имейлът са задължителни', 'danger');
+            return;
+        }
+
+        const emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Невалиден имейл адрес', 'danger');
+            return;
+        }
+
+        try {
+            const response = await fetch('/Admin/Users/UpdateInline', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({
+                    id: '@Model.Id',
+                    name: name,
+                    email: email,
+                    phone: phone
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                originalData = { name, email, phone };
+
+                document.getElementById('name-display').textContent = name;
+                document.getElementById('email-display').innerHTML = `<a href="mailto:${email}" class="crm-link">${email}</a>`;
+                document.getElementById('phone-display').innerHTML = `<a href="tel:${phone}" class="crm-link">${phone}</a>`;
+
+                cancelEdit();
+                showNotification('Промените са запазени успешно', 'success');
+            } else {
+                showNotification(result.message || 'Грешка при запазване', 'danger');
+            }
+        } catch (error) {
+            showNotification('Грешка при свързване със сървъра', 'danger');
+        }
+    }
+
+    function showNotification(message, type) {
+        const container = document.getElementById('notification-container');
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type} alert-dismissible fade show crm-notification`;
+        alert.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        container.appendChild(alert);
+
+        setTimeout(() => alert.remove(), 5000);
+    }
+</script>
+
+@Html.AntiForgeryToken()border-bottom: 1px solid #2a2a2a;
+    }
+
+    .crm-stat:last-child {
+        border-bottom: none;
+    }
+</style>

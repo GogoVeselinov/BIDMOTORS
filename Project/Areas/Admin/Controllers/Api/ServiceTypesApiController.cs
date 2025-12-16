@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Areas.Admin.Services;
 using Project.Models.ViewModels.Services;
+using Project.Filters;
 
 namespace Project.Areas.Admin.Controllers.Api
 {
     [Area("Admin")]
     [Route("api/admin/servicetypes")]
     [ApiController]
+    [AdminAuthorization]
     public class ServiceTypesApiController : ControllerBase
     {
         private readonly ServiceTypeService _serviceTypeService;
