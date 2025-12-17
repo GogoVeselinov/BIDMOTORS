@@ -76,6 +76,29 @@
                 </div>
 
                 <div>
+                    <label>Роля</label>
+                    <span id="role-display">
+                        @switch (Model.Role)
+                        {
+                            case "Admin":
+                                <span class="crm-badge danger">Администратор</span>
+                                break;
+                            case "Manager":
+                                <span class="crm-badge warning">Мениджър</span>
+                                break;
+                            default:
+                                <span class="crm-badge info">Потребител</span>
+                                break;
+                        }
+                    </span>
+                    <select id="role-input" class="crm-input d-none">
+                        <option value="User" selected="@(Model.Role == "User")">Потребител</option>
+                        <option value="Manager" selected="@(Model.Role == "Manager")">Мениджър</option>
+                        <option value="Admin" selected="@(Model.Role == "Admin")">Администратор</option>
+                    </select>
+                </div>
+
+                <div>
                     <label>Създаден</label>
                     <span>@Model.CreatedOn.ToString("dd.MM.yyyy HH:mm")</span>
                 </div>
@@ -114,7 +137,8 @@
                                 <td><code>@car.RegistrationNumber</code></td>
                                 <td>@car.Year</td>
                                 <td class="text-end">
-                                    <a asp-area="Admin" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-sm btn-outline-light">
+                                    <a asp-area="Admin" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
+                                        class="btn btn-sm btn-outline-light">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </td>
@@ -150,7 +174,8 @@
                                 <td><span class="crm-badge">@r.Status</span></td>
                                 <td>@r.CreatedOn.ToString("dd.MM.yyyy")</td>
                                 <td class="text-end">
-                                    <a asp-area="Admin" asp-controller="ServiceRequests" asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-light">
+                                    <a asp-area="Admin" asp-controller="ServiceRequests" asp-action="Details"
+                                        asp-route-id="@r.Id" class="btn btn-sm btn-outline-light">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </td>
@@ -186,7 +211,8 @@
                                 <td><span class="crm-badge">@repair.Status</span></td>
                                 <td>@repair.CreatedOn.ToString("dd.MM.yyyy")</td>
                                 <td class="text-end">
-                                    <a asp-area="Admin" asp-controller="Repairs" asp-action="Details" asp-route-id="@repair.Id" class="btn btn-sm btn-outline-light">
+                                    <a asp-area="Admin" asp-controller="Repairs" asp-action="Details" asp-route-id="@repair.Id"
+                                        class="btn btn-sm btn-outline-light">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                 </td>
@@ -261,60 +287,61 @@
         justify-content: space-between;
         padding: 10px 0;
 
-    /* TABLE STYLING */
-    .crm-table {
-        margin: 0 !important;
-        background-color: #1a1a1a !important;
-    }
+        /* TABLE STYLING */
+        .crm-table {
+            margin: 0 !important;
+            background-color: #1a1a1a !important;
+        }
 
-    .crm-table thead {
-        background-color: #121212 !important;
-        border-bottom: 2px solid var(--yellow) !important;
-    }
+        .crm-table thead {
+            background-color: #121212 !important;
+            border-bottom: 2px solid var(--yellow) !important;
+        }
 
-    .crm-table thead th {
-        color: var(--yellow) !important;
-        font-size: 12px;
-        text-transform: uppercase;
-        border: none !important;
-        background-color: #121212 !important;
-    }
+        .crm-table thead th {
+            color: var(--yellow) !important;
+            font-size: 12px;
+            text-transform: uppercase;
+            border: none !important;
+            background-color: #121212 !important;
+        }
 
-    .crm-table tbody tr {
-        border-bottom: 1px solid #2a2a2a !important;
-        background-color: #1a1a1a !important;
-    }
+        .crm-table tbody tr {
+            border-bottom: 1px solid #2a2a2a !important;
+            background-color: #1a1a1a !important;
+        }
 
-    .crm-table tbody tr:hover {
-        background-color: #252525 !important;
-    }
+        .crm-table tbody tr:hover {
+            background-color: #252525 !important;
+        }
 
-    .crm-table tbody td {
-        border: none !important;
-        color: #e5e5e5 !important;
-        background-color: transparent !important;
-    }
+        .crm-table tbody td {
+            border: none !important;
+            color: #e5e5e5 !important;
+            background-color: transparent !important;
+        }
 
-    .crm-input {
-        background: #252525;
-        border: 1px solid #3a3a3a;
-        color: #e5e5e5;
-        padding: 8px 12px;
-        border-radius: 4px;
-        width: 100%;
-    }
+        .crm-input {
+            background: #252525;
+            border: 1px solid #3a3a3a;
+            color: #e5e5e5;
+            padding: 8px 12px;
+            border-radius: 4px;
+            width: 100%;
+        }
 
-    .crm-input:focus {
-        outline: none;
-        border-color: var(--yellow);
-    }
+        .crm-input:focus {
+            outline: none;
+            border-color: var(--yellow);
+        }
 </style>
 
 <script>
     let originalData = {
         name: '@Model.Name',
         email: '@Model.Email',
-        phone: '@Model.Phone'
+        phone: '@Model.Phone',
+        role: '@Model.Role'
     };
 
     function toggleEditMode() {
@@ -327,6 +354,9 @@
         document.getElementById('phone-display').classList.add('d-none');
         document.getElementById('phone-input').classList.remove('d-none');
 
+        document.getElementById('role-display').classList.add('d-none');
+        document.getElementById('role-input').classList.remove('d-none');
+
         document.getElementById('edit-mode-btn').classList.add('d-none');
         document.getElementById('save-btn').classList.remove('d-none');
         document.getElementById('cancel-btn').classList.remove('d-none');
@@ -336,6 +366,7 @@
         document.getElementById('name-input').value = originalData.name;
         document.getElementById('email-input').value = originalData.email;
         document.getElementById('phone-input').value = originalData.phone;
+        document.getElementById('role-input').value = originalData.role;
 
         document.getElementById('name-display').classList.remove('d-none');
         document.getElementById('name-input').classList.add('d-none');
@@ -346,6 +377,9 @@
         document.getElementById('phone-display').classList.remove('d-none');
         document.getElementById('phone-input').classList.add('d-none');
 
+        document.getElementById('role-display').classList.remove('d-none');
+        document.getElementById('role-input').classList.add('d-none');
+
         document.getElementById('edit-mode-btn').classList.remove('d-none');
         document.getElementById('save-btn').classList.add('d-none');
         document.getElementById('cancel-btn').classList.add('d-none');
@@ -355,6 +389,7 @@
         const name = document.getElementById('name-input').value.trim();
         const email = document.getElementById('email-input').value.trim();
         const phone = document.getElementById('phone-input').value.trim();
+        const role = document.getElementById('role-input').value;
 
         if (!name || !email) {
             showNotification('Името и имейлът са задължителни', 'danger');
@@ -378,21 +413,46 @@
                     id: '@Model.Id',
                     name: name,
                     email: email,
-                    phone: phone
+                    phone: phone,
+                    role: role
                 })
             });
 
             const result = await response.json();
 
             if (result.success) {
-                originalData = { name, email, phone };
+                showNotification(result.message || 'Промените са запазени успешно', 'success');
+
+                // Ако акаунтът е преместен към служители, пренасочи
+                if (result.redirectToEmployees) {
+                    setTimeout(() => {
+                        window.location.href = '/Admin/Employees';
+                    }, 2000);
+                    return;
+                }
+
+                originalData = { name, email, phone, role };
 
                 document.getElementById('name-display').textContent = name;
                 document.getElementById('email-display').innerHTML = `<a href="mailto:${email}" class="crm-link">${email}</a>`;
                 document.getElementById('phone-display').innerHTML = `<a href="tel:${phone}" class="crm-link">${phone}</a>`;
+                
+                // Update role badge
+                let roleBadge = '';
+                switch (role) {
+                    case 'Admin':
+                        roleBadge = '<span class="crm-badge danger">Администратор</span>';
+                        break;
+                    case 'Manager':
+                        roleBadge = '<span class="crm-badge warning">Мениджър</span>';
+                        break;
+                    default:
+                        roleBadge = '<span class="crm-badge info">Потребител</span>';
+                        break;
+                }
+                document.getElementById('role-display').innerHTML = roleBadge;
 
                 cancelEdit();
-                showNotification('Промените са запазени успешно', 'success');
             } else {
                 showNotification(result.message || 'Грешка при запазване', 'danger');
             }
@@ -415,10 +475,4 @@
     }
 </script>
 
-@Html.AntiForgeryToken()border-bottom: 1px solid #2a2a2a;
-    }
-
-    .crm-stat:last-child {
-        border-bottom: none;
-    }
-</style>
+@Html.AntiForgeryToken()

@@ -23,6 +23,9 @@ namespace Project.Models.Entities
         
         public bool IsGuest { get; set; } = false;
 
+        [StringLength(50)]
+        public string Role { get; set; } = "User"; // User, Admin, Manager
+
         // Navigation properties
         public ICollection<Car> Cars { get; set; } = new List<Car>();
         public ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();

@@ -49,18 +49,38 @@ namespace Project.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Потребителят не е намерен" });
             }
 
-            user.Name = model.Name;
-            user.Email = model.Email;
-            user.Phone = model.Phone;
+            var oldRole = user.Role;
+            var newRole = model.Role;
 
-            var success = await _userService.UpdateAsync(user);
-            
-            if (success)
+            // Проверка дали ролята се променя към Admin или Manager
+            if ((newRole == "Admin" || newRole == "Manager") && oldRole != "Admin" && oldRole != "Manager")
             {
-                return Json(new { success = true, message = "Данните са обновени успешно" });
+                // Преместване от Clients към Employees
+                var (success, message) = await _userService.ConvertClientToEmployeeAsync(model.Id, newRole);
+                return Json(new { success, message, redirectToEmployees = success });
             }
+            // Проверка дали ролята се променя от Admin/Manager към User
+            else if ((oldRole == "Admin" || oldRole == "Manager") && newRole == "User")
+            {
+                return Json(new { success = false, message = "Не може да промените роля на служител към потребител от тази страница. Използвайте секцията Служители." });
+            }
+            else
+            {
+                // Обикновено обновяване без преместване
+                user.Name = model.Name;
+                user.Email = model.Email;
+                user.Phone = model.Phone;
+                user.Role = model.Role;
 
-            return Json(new { success = false, message = "Грешка при обновяване на данните" });
+                var success = await _userService.UpdateAsync(user);
+                
+                if (success)
+                {
+                    return Json(new { success = true, message = "Данните са обновени успешно" });
+                }
+
+                return Json(new { success = false, message = "Грешка при обновяване на данните" });
+            }
         }
     }
 
@@ -71,5 +91,6 @@ namespace Project.Areas.Admin.Controllers
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
+        public string Role { get; set; } = "User";
     }
 }
