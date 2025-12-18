@@ -179,11 +179,34 @@ namespace Project.Controllers
                     Console.WriteLine($"New client created with ID: {client.Id} (IsGuest: {client.IsGuest})");
                 }
 
-                // Проверка дали кола с този рег. номер вече съществува
-                Console.WriteLine($"Checking for existing car with RegistrationNumber: {viewModel.RegistrationNumber}");
-                var existingCar = _context.Cars
-                    .Where(c => c.RegistrationNumber == viewModel.RegistrationNumber)
-                    .FirstOrDefault();
+                // Проверка дали кола вече съществува
+                Car? existingCar = null;
+                
+                if (!string.IsNullOrEmpty(viewModel.RegistrationNumber))
+                {
+                    Console.WriteLine($"Checking for existing car with RegistrationNumber: {viewModel.RegistrationNumber}");
+                    existingCar = _context.Cars
+                        .Where(c => c.RegistrationNumber == viewModel.RegistrationNumber)
+                        .FirstOrDefault();
+                }
+                
+                // Ако няма рег. номер, проверяваме по VIN или по клиент+марка+модел+година
+                if (existingCar == null && !string.IsNullOrEmpty(viewModel.VIN))
+                {
+                    Console.WriteLine($"Checking for existing car with VIN: {viewModel.VIN}");
+                    existingCar = _context.Cars.FirstOrDefault(c => c.VIN == viewModel.VIN);
+                }
+                
+                if (existingCar == null)
+                {
+                    Console.WriteLine($"Checking for existing car by client+brand+model+year");
+                    existingCar = _context.Cars
+                        .Where(c => c.ClientId == client.Id 
+                               && c.Brand == viewModel.Brand 
+                               && c.Model == viewModel.Model 
+                               && c.Year == viewModel.Year)
+                        .FirstOrDefault();
+                }
                 
                 Car car;
 
@@ -238,14 +261,19 @@ namespace Project.Controllers
                 }
                 else
                 {
+                    // Генерираме временен рег. номер ако няма
+                    var registrationNumber = string.IsNullOrEmpty(viewModel.RegistrationNumber)
+                        ? $"{viewModel.Brand}-{viewModel.Model}-{Guid.NewGuid().ToString().Substring(0, 6).ToUpper()}"
+                        : viewModel.RegistrationNumber;
+                    
                     // Създаваме нова кола
-                    Console.WriteLine("Creating new car...");
+                    Console.WriteLine($"Creating new car with RegistrationNumber: {registrationNumber}");
                     car = new Car
                     {
                         Brand = viewModel.Brand,
                         Model = viewModel.Model,
                         Year = viewModel.Year,
-                        RegistrationNumber = viewModel.RegistrationNumber,
+                        RegistrationNumber = registrationNumber,
                         VIN = viewModel.VIN,
                         ClientId = client.Id
                     };
@@ -263,9 +291,24 @@ namespace Project.Controllers
                         
                         // Може би друг потребител е създал колата междувременно
                         // Опитваме да я намерим отново
-                        existingCar = _context.Cars
-                            .Where(c => c.RegistrationNumber == viewModel.RegistrationNumber)
-                            .FirstOrDefault();
+                        if (!string.IsNullOrEmpty(viewModel.RegistrationNumber))
+                        {
+                            existingCar = _context.Cars
+                                .Where(c => c.RegistrationNumber == viewModel.RegistrationNumber)
+                                .FirstOrDefault();
+                        }
+                        else if (!string.IsNullOrEmpty(viewModel.VIN))
+                        {
+                            existingCar = _context.Cars.FirstOrDefault(c => c.VIN == viewModel.VIN);
+                        }
+                        else
+                        {
+                            existingCar = _context.Cars
+                                .FirstOrDefault(c => c.ClientId == client.Id 
+                                    && c.Brand == viewModel.Brand 
+                                    && c.Model == viewModel.Model 
+                                    && c.Year == viewModel.Year);
+                        }
                             
                         if (existingCar != null)
                         {
@@ -326,7 +369,9 @@ namespace Project.Controllers
                 }
 
                 // Изпращаме имейл към админа за нова заявка
-                var carInfo = $"{viewModel.Brand} {viewModel.Model} ({viewModel.Year}) - {viewModel.RegistrationNumber}";
+                var carInfo = !string.IsNullOrEmpty(viewModel.RegistrationNumber)
+                    ? $"{viewModel.Brand} {viewModel.Model} ({viewModel.Year}) - {viewModel.RegistrationNumber}"
+                    : $"{viewModel.Brand} {viewModel.Model} ({viewModel.Year})";
                 await _emailService.SendAdminNotificationEmailAsync(
                     client.Name,
                     client.Phone,

@@ -40,23 +40,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Марка *</label>
-                    <input type="text" name="Brand" required placeholder="BMW, Mercedes, VW...">
-                </div>
-
-                <div class="form-group">
-                    <label>Модел *</label>
-                    <input type="text" name="Model" required placeholder="E60, C-Class, Golf...">
-                </div>
-
-                <div class="form-group">
-                    <label>Година *</label>
-                    <input type="text" name="Year" required placeholder="2015" maxlength="4">
-                </div>
-
-                <div class="form-group">
-                    <label>Рег. номер *</label>
-                    <input type="text" name="RegistrationNumber" required placeholder="CA1234AB" maxlength="20">
+                    <label>Автомобил (марка, модел, година) *</label>
+                    <input type="text" id="CarInfo" required placeholder="Например: BMW X5 2020">
+                    <input type="hidden" name="Brand" id="Brand">
+                    <input type="hidden" name="Model" id="Model">
+                    <input type="hidden" name="Year" id="Year">
                 </div>
 
                 <!-- Скрито VIN поле (не е задължително в бърза форма) -->
@@ -92,6 +80,32 @@
         const errorBox = document.getElementById("hero-error");
 
         form.addEventListener("submit", function (e) {
+            // Обработка на CarInfo полето преди изпращане
+            const carInfoField = document.getElementById('CarInfo');
+            const carInfo = carInfoField ? carInfoField.value.trim() : '';
+            
+            if (carInfo) {
+                const parts = carInfo.split(/\s+/);
+                
+                if (parts.length >= 2) {
+                    const lastPart = parts[parts.length - 1];
+                    const yearMatch = lastPart.match(/^(19|20)\d{2}$/);
+                    
+                    if (yearMatch) {
+                        document.getElementById('Year').value = yearMatch[0];
+                        document.getElementById('Brand').value = parts[0];
+                        document.getElementById('Model').value = parts.slice(1, -1).join(' ') || parts[1] || '';
+                    } else {
+                        document.getElementById('Brand').value = parts[0];
+                        document.getElementById('Model').value = parts.slice(1).join(' ');
+                        document.getElementById('Year').value = '';
+                    }
+                } else {
+                    document.getElementById('Brand').value = parts[0] || '';
+                    document.getElementById('Model').value = '';
+                    document.getElementById('Year').value = '';
+                }
+            }
 
             let isValid = true;
             errorBox.style.display = "none";
@@ -101,30 +115,35 @@
             form.querySelectorAll(".input-error")
                 .forEach(el => el.classList.remove("input-error"));
 
-            const name = form.querySelector("input[name='Name']");
+            const name = form.querySelector("input[name='ClientName']");
             const phone = form.querySelector("input[name='Phone']");
             const service = form.querySelector("select[name='ServiceType']");
-            const partName = form.querySelector("input[name='PartName']");
+            const description = form.querySelector("textarea[name='Description']");
 
             // Validation
-            if (name.value.trim() === "") {
+            if (name && name.value.trim() === "") {
                 isValid = false;
                 name.classList.add("input-error");
             }
 
-            if (phone.value.trim() === "") {
+            if (phone && phone.value.trim() === "") {
                 isValid = false;
                 phone.classList.add("input-error");
             }
 
-            if (service.value.trim() === "") {
+            if (service && service.value.trim() === "") {
                 isValid = false;
                 service.classList.add("input-error");
             }
 
-            if (partName.value.trim() === "") {
+            if (carInfoField && carInfoField.value.trim() === "") {
                 isValid = false;
-                partName.classList.add("input-error");
+                carInfoField.classList.add("input-error");
+            }
+
+            if (description && description.value.trim() === "") {
+                isValid = false;
+                description.classList.add("input-error");
             }
 
             if (!isValid) {

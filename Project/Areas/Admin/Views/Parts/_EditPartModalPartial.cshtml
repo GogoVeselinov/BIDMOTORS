@@ -78,23 +78,19 @@
                         </div>
                     </div>
 
-                    <!-- SECTION: Видимост -->
+                    <!-- SECTION: Статус -->
                     <div class="mb-4">
-                        <h6 class="text-warning mb-3">Видимост</h6>
-
-                        <div class="form-check form-switch mb-2">
-                            <input id="edit-is-public" asp-for="IsPublic" class="form-check-input" />
-                            <label class="form-check-label">
-                                Показвай в публичния сайт
-                            </label>
-                        </div>
+                        <h6 class="text-warning mb-3">Статус</h6>
 
                         <div class="form-check form-switch">
                             <input id="edit-is-active" asp-for="IsActive" class="form-check-input" />
                             <label class="form-check-label">
-                                Активна част
+                                Активна част (достъпна за добавяне в ремонти)
                             </label>
                         </div>
+                        <small class="text-white d-block mt-2">
+                            Неактивните части не могат да се добавят към нови ремонти
+                        </small>
                     </div>
 
                     <!-- SECTION: Описание -->

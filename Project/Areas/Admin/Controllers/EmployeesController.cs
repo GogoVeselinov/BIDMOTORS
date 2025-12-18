@@ -46,6 +46,20 @@ namespace Project.Areas.Admin.Controllers
                 return View(model);
             }
 
+            if (model.Password.Length < 6)
+            {
+                ModelState.AddModelError("Password", "Паролата трябва да съдържа минимум 6 символа");
+                return View(model);
+            }
+
+            // Check if email already exists
+            var existingEmployee = await _employeeService.GetAllAsync();
+            if (existingEmployee.Any(e => e.Email.Equals(model.Email, StringComparison.OrdinalIgnoreCase)))
+            {
+                ModelState.AddModelError("Email", "Служител с този имейл вече съществува");
+                return View(model);
+            }
+
             var employee = new Employee
             {
                 Name = model.Name,
@@ -57,11 +71,11 @@ namespace Project.Areas.Admin.Controllers
             var success = await _employeeService.CreateAsync(employee, model.Password);
             if (success)
             {
-                TempData["SuccessMessage"] = "Служителят беше създаден успешно!";
+                TempData["SuccessMessage"] = $"Служителят {employee.Name} беше създаден успешно!";
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["ErrorMessage"] = "Възникна грешка при създаването на служителя.";
+            TempData["ErrorMessage"] = "Възникна грешка при създаването на служителя. Моля, опитайте отново.";
             return View(model);
         }
 

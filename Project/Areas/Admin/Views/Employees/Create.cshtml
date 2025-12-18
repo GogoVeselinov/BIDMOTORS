@@ -1,0 +1,393 @@
+@model Project.Models.ViewModels.Admin.EmployeeFormViewModel
+
+@{
+    ViewData["Title"] = "Създай служител";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid employee-create-page">
+
+    <!-- HEADER -->
+    <div class="crm-page-header">
+        <div>
+            <h2>
+                <i class="bi bi-person-plus"></i> Добави нов член от персонала към системата
+            </h2>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-light m-2">
+            <i class="bi bi-arrow-left"></i> Назад
+        </a>
+    </div>
+
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+        <!-- SECTION: BASIC INFO -->
+        <div class="crm-section">
+            <h5 class="crm-section-title">Основна информация</h5>
+
+            <div class="crm-form-grid">
+                <div>
+                    <label asp-for="Name">Име и фамилия *</label>
+                    <input asp-for="Name" class="crm-input" placeholder="Иван Петров" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Email">Email адрес *</label>
+                    <input asp-for="Email" type="email" class="crm-input" placeholder="ivan.petrov@company.com" />
+                    <small class="crm-help">Използва се за вход в системата</small>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Phone">Телефон *</label>
+                    <input asp-for="Phone" type="tel" class="crm-input" placeholder="+359 888 123 456" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: ROLE -->
+        <div class="crm-section">
+            <h5 class="crm-section-title">Роля и достъп</h5>
+
+            <div class="crm-form-grid">
+                <div>
+                    <label asp-for="Role">Роля *</label>
+                    <select asp-for="Role" class="crm-input">
+                        <option value="">Избери роля...</option>
+                        <option value="Admin">Администратор</option>
+                        <option value="Manager">Мениджър</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+
+                <div class="crm-role-info">
+                    <p><strong>Администратор</strong> – пълен достъп</p>
+                    <p><strong>Мениджър</strong> – ремонти, клиенти, части</p>
+                    <p><strong>Механик</strong> – работа по ремонти</p>
+                    <p><strong>Рецепционист</strong> – заявки и клиенти</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: PASSWORD -->
+        <div class="crm-section">
+            <h5 class="crm-section-title">Парола</h5>
+
+            <div class="crm-form-grid">
+                <div>
+                    <label asp-for="Password">Парола *</label>
+
+                    <div class="crm-password-group">
+                        <input asp-for="Password" type="password" id="passwordInput" class="crm-input"
+                            placeholder="Минимум 6 символа" onkeyup="checkPasswordStrength()" />
+
+                        <button type="button" class="btn btn-outline-light" onclick="togglePassword()">
+                            <i class="bi bi-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+
+                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                    <div id="passwordStrength" class="password-strength d-none">
+                        <div class="progress">
+                            <div id="strengthBar" class="progress-bar"></div>
+                        </div>
+                        <small id="strengthText"></small>
+                    </div>
+                </div>
+
+                <div class="crm-password-tools">
+                    <button type="button" class="btn btn-outline-warning" onclick="generatePassword()">
+                        <i class="bi bi-key"></i> Генерирай сигурна парола
+                    </button>
+                    <p class="crm-help">
+                        Препоръчва се комбинация от букви, цифри и символи
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="crm-form-actions">
+            <a asp-action="Index" class="btn btn-secondary">
+                Отказ
+            </a>
+            <button type="submit" class="btn btn-warning">
+                <i class="bi bi-check-circle"></i> Създай служител
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Password Generated Modal -->
+<div class="modal fade" id="passwordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark border-warning">
+            <div class="modal-header border-warning">
+                <h5 class="modal-title text-warning">
+                    <i class="bi bi-check-circle-fill"></i> Парола генерирана успешно
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="password-display">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <label class="text-white mb-0">Вашата парола:</label>
+                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="copyPasswordToClipboard()">
+                            <i class="bi bi-clipboard"></i> Копирай
+                        </button>
+                    </div>
+                    <div class="generated-password" id="generatedPasswordDisplay"></div>
+                </div>
+                <div class="alert alert-warning mt-3 mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    <strong>Важно:</strong> Запишете тази парола на сигурно място. След затваряне на този прозорец няма да можете да я видите отново.
+                </div>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Разбрах
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .employee-create-page {
+        padding-bottom: 40px;
+    }
+
+    .crm-form-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
+    }
+
+    .crm-input {
+        width: 100%;
+        padding: 12px 14px;
+        background: #1a1a1a;
+        border: 1px solid #3a3a3a;
+        color: #e5e5e5;
+    }
+
+    .crm-input:focus {
+        border-color: var(--yellow);
+        outline: none;
+    }
+
+    .crm-help {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .crm-role-info p {
+        margin: 0 0 6px;
+        font-size: 13px;
+        color: #aaa;
+    }
+
+    .crm-password-group {
+        display: flex;
+        gap: 8px;
+    }
+
+    .crm-form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 20px;
+        border-top: 1px solid #2a2a2a;
+    }
+
+    .password-strength {
+        margin-top: 8px;
+    }
+
+    .password-strength .progress {
+        height: 5px;
+        background: #2a2a2a;
+    }
+
+    .password-strength small {
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+    }
+
+    /* Password Modal Styles */
+    .password-display {
+        padding: 20px;
+        background: #1a1a1a;
+        border: 2px dashed var(--yellow);
+        border-radius: 8px;
+    }
+
+    .generated-password {
+        font-family: 'Courier New', monospace;
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--yellow);
+        padding: 15px;
+        background: #0d0d0d;
+        border-radius: 6px;
+        text-align: center;
+        letter-spacing: 2px;
+        user-select: all;
+        word-break: break-all;
+    }
+
+    .modal-content.bg-dark {
+        background: #141414 !important;
+    }
+
+    .modal-header.border-warning {
+        border-bottom: 2px solid var(--yellow) !important;
+    }
+
+    .alert-warning {
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        color: #ffc107;
+    }
+
+    .alert-warning strong {
+        color: var(--yellow);
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        }
+
+        function generatePassword() {
+            const length = 12;
+            const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const lowercase = "abcdefghijklmnopqrstuvwxyz";
+            const numbers = "0123456789";
+            const symbols = "!*&^%$";
+            const all = uppercase + lowercase + numbers + symbols;
+            
+            let password = "";
+            
+            // Ensure at least one of each type
+            password += uppercase[Math.floor(Math.random() * uppercase.length)];
+            password += lowercase[Math.floor(Math.random() * lowercase.length)];
+            password += numbers[Math.floor(Math.random() * numbers.length)];
+            password += symbols[Math.floor(Math.random() * symbols.length)];
+            
+            // Fill the rest randomly
+            for (let i = password.length; i < length; i++) {
+                password += all[Math.floor(Math.random() * all.length)];
+            }
+            
+            // Shuffle the password
+            password = password.split('').sort(() => Math.random() - 0.5).join('');
+            
+            // Set the password and show it
+            document.getElementById('passwordInput').value = password;
+            document.getElementById('passwordInput').type = 'text';
+            document.getElementById('toggleIcon').classList.remove('bi-eye');
+            document.getElementById('toggleIcon').classList.add('bi-eye-slash');
+            
+            // Update strength indicator
+            checkPasswordStrength();
+            
+            // Show modal with password
+            document.getElementById('generatedPasswordDisplay').textContent = password;
+            const passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
+            passwordModal.show();
+            
+            // Copy to clipboard automatically
+            copyPasswordToClipboard();
+        }
+
+        function copyPasswordToClipboard() {
+            const password = document.getElementById('generatedPasswordDisplay').textContent;
+            navigator.clipboard.writeText(password).then(() => {
+                // Show success feedback
+                const btn = event.target.closest('button');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check"></i> Копирано!';
+                btn.classList.remove('btn-outline-warning');
+                btn.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-warning');
+                }, 2000);
+            });
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('passwordInput').value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+            
+            if (password.length === 0) {
+                strengthDiv.classList.add('d-none');
+                return;
+            }
+            
+            strengthDiv.classList.remove('d-none');
+            
+            let strength = 0;
+            let text = '';
+            let color = '';
+            
+            // Length check
+            if (password.length >= 6) strength += 25;
+            if (password.length >= 10) strength += 15;
+            
+            // Character variety checks
+            if (/[a-z]/.test(password)) strength += 15;
+            if (/[A-Z]/.test(password)) strength += 15;
+            if (/[0-9]/.test(password)) strength += 15;
+            if (/[^a-zA-Z0-9]/.test(password)) strength += 15;
+            
+            // Set color and text based on strength
+            if (strength < 30) {
+                color = 'bg-danger';
+                text = 'Слаба парола';
+            } else if (strength < 60) {
+                color = 'bg-warning';
+                text = 'Средна парола';
+            } else if (strength < 85) {
+                color = 'bg-info';
+                text = 'Добра парола';
+            } else {
+                color = 'bg-success';
+                text = 'Отлична парола';
+            }
+            
+            strengthBar.style.width = strength + '%';
+            strengthBar.className = 'progress-bar ' + color;
+            strengthText.textContent = text;
+            strengthText.className = 'text-' + (color.includes('danger') ? 'danger' : color.includes('warning') ? 'warning' : color.includes('info') ? 'info' : 'success');
+        }
+    </script>
+}

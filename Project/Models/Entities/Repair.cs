@@ -18,6 +18,9 @@ namespace Project.Models.Entities
         [StringLength(2000)]
         public string WorkDescription { get; set; } = string.Empty;
         
+        [StringLength(2000)]
+        public string? ManagerNotes { get; set; }
+        
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         [Range(0, 999999.99)]

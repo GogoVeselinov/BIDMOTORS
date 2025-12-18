@@ -17,6 +17,30 @@ namespace Project.Areas.Admin.Controllers.Api
             _partService = partService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? name,
+            [FromQuery] string? category,
+            [FromQuery] string? oem,
+            [FromQuery] string? manufacturer,
+            [FromQuery] string? brand,
+            [FromQuery] string? model,
+            [FromQuery] string? isActive,
+            [FromQuery] string? stock)
+        {
+            var parts = await _partService.GetFilteredAsync(
+                name, 
+                category, 
+                oem, 
+                manufacturer, 
+                brand, 
+                model, 
+                isActive, 
+                stock);
+            
+            return Ok(parts);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {

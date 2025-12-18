@@ -23,11 +23,12 @@
                 <thead>
                     <tr>
                         <th>Име</th>
+                        <th>Категория</th>
                         <th>OEM</th>
-                        <th>Доставчик</th>
+                        <th>Производител</th>
                         <th>Цена</th>
                         <th>Наличност</th>
-                        <th>За автомобил</th>
+                        <th>Статус</th>
                         <th class="text-end">Действия</th>
                     </tr>
                 </thead>
@@ -39,9 +40,22 @@
 
                             <td>
                                 <strong>@part.Name</strong>
+                                @if (!string.IsNullOrEmpty(part.Description))
+                                {
+                                    <small class="d-block text-white" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        @part.Description
+                                    </small>
+                                }
+                            </td>
+
+                            <td>
                                 @if (!string.IsNullOrEmpty(part.Category))
                                 {
-                                    <small class="d-block text-white">@part.Category</small>
+                                    <span class="badge bg-secondary">@part.Category</span>
+                                }
+                                else
+                                {
+                                    <span class="text-white">-</span>
                                 }
                             </td>
 
@@ -49,10 +63,10 @@
                                 @(string.IsNullOrWhiteSpace(part.OemNumber) ? "-" : part.OemNumber)
                             </td>
 
-                            <td>@(part.Supplier ?? "-")</td>
+                            <td>@(part.Manufacturer ?? "-")</td>
 
                             <td>
-                                <strong>@part.Price.ToString("F2") лв.</strong>
+                                <strong class="text-warning">@part.Price.ToString("F2") лв.</strong>
                             </td>
 
                             <td>
@@ -66,24 +80,28 @@
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger">Няма</span>
+                                    <span class="badge bg-danger">Изчерпано</span>
                                 }
                             </td>
 
                             <td>
-                                @if (!string.IsNullOrEmpty(part.CarBrand))
+                                @if (part.IsActive)
                                 {
-                                    <span>@part.CarBrand @part.CarModel @(part.CarYear.HasValue ? $"({part.CarYear})" : "")</span>
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle"></i> Активна
+                                    </span>
                                 }
                                 else
                                 {
-                                    <span class="text-white">Универсална</span>
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-x-circle"></i> Неактивна
+                                    </span>
                                 }
                             </td>
 
                             <td class="text-end">
                                 <button class="btn btn-sm btn-outline-warning edit-part-btn" data-id="@part.Id"
-                                    data-bs-toggle="modal" data-bs-target="#editPartModal">
+                                    data-bs-toggle="modal" data-bs-target="#editPartModal" title="Редактирай">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                             </td>

@@ -18,7 +18,7 @@ namespace Project.Services
         public async Task<List<PartListViewModel>> GetFilteredPartsAsync(PartFilterModel filters)
         {
             var query = _context.Parts
-                .Where(p => p.IsPublic && p.IsActive)
+                .Where(p => p.IsActive)
                 .AsQueryable();
 
             // Apply filters
@@ -79,7 +79,7 @@ namespace Project.Services
         public async Task<PartListViewModel?> GetPartByIdAsync(Guid id)
         {
             var part = await _context.Parts
-                .FirstOrDefaultAsync(p => p.Id == id && p.IsPublic && p.IsActive);
+                .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
             if (part == null) return null;
 
             return new PartListViewModel

@@ -31,9 +31,8 @@ namespace Project.Models.ViewModels.ServiceRequests
         [RegularExpression(@"^(19|20)\d{2}$", ErrorMessage = "Невалидна година")]
         public string Year { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Регистрационният номер е задължителен")]
         [StringLength(20)]
-        public string RegistrationNumber { get; set; } = string.Empty;
+        public string? RegistrationNumber { get; set; }
 
         [StringLength(17)]
         public string? VIN { get; set; }

@@ -51,7 +51,7 @@
                                 <label class="form-label">URL на снимка</label>
                                 <input asp-for="ImageUrl" class="form-control" type="url"
                                     placeholder="https://example.com/image.jpg" />
-                                <small class="text-muted">Пълен URL адрес към изображението на частта</small>
+                                <small class="text-white">Пълен URL адрес към изображението на частта</small>
                             </div>
                         </div>
                     </div>
@@ -76,23 +76,19 @@
                         </div>
                     </div>
 
-                    <!-- SECTION: Видимост -->
+                    <!-- SECTION: Статус -->
                     <div class="mb-3">
-                        <h6 class="text-warning mb-3">Видимост</h6>
-
-                        <div class="form-check form-switch mb-2">
-                            <input asp-for="IsPublic" class="form-check-input" />
-                            <label class="form-check-label">
-                                Показвай в публичния сайт
-                            </label>
-                        </div>
+                        <h6 class="text-warning mb-3">Статус</h6>
 
                         <div class="form-check form-switch">
-                            <input asp-for="IsActive" class="form-check-input" />
+                            <input asp-for="IsActive" class="form-check-input" checked />
                             <label class="form-check-label">
-                                Активна част
+                                Активна част (достъпна за добавяне в ремонти)
                             </label>
                         </div>
+                        <small class="text-white d-block mt-2">
+                            Неактивните части не могат да се добавят към нови ремонти
+                        </small>
                     </div>
 
                     <!-- SECTION: Описание -->

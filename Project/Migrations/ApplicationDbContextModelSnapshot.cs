@@ -330,7 +330,7 @@ namespace Project.Migrations
                             CompanyEmail = "office@bidmotors.bg",
                             CompanyName = "BidMotors",
                             CompanyPhone = "+359 888 123 456",
-                            CreatedOn = new DateTime(2025, 12, 17, 7, 25, 29, 628, DateTimeKind.Utc).AddTicks(1822),
+                            CreatedOn = new DateTime(2025, 12, 18, 11, 53, 30, 351, DateTimeKind.Utc).AddTicks(8476),
                             DiagnosticFee = 30.00m,
                             IsActive = true,
                             LaborCostPerHour = 50.00m,
@@ -371,6 +371,10 @@ namespace Project.Migrations
                     b.Property<decimal>("LaborHours")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ManagerNotes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<decimal>("PartsCost")
                         .HasPrecision(18, 2)

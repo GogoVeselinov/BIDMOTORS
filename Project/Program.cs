@@ -38,6 +38,7 @@ builder.Services.AddScoped<ServiceRequestService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<InvoiceService>();
 
 // Admin Services
 builder.Services.AddScoped<ServiceTypeService>();

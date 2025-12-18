@@ -12,11 +12,13 @@ namespace Project.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly RepairService _repairService;
+        private readonly InvoiceService _invoiceService;
 
-        public RepairsController(ApplicationDbContext context, RepairService repairService)
+        public RepairsController(ApplicationDbContext context, RepairService repairService, InvoiceService invoiceService)
         {
             _context = context;
             _repairService = repairService;
+            _invoiceService = invoiceService;
         }
 
         public async Task<IActionResult> Index()
@@ -69,6 +71,31 @@ namespace Project.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateManagerNotes(Guid id, string? managerNotes)
+        {
+            var repair = await _context.Repairs.FindAsync(id);
+
+            if (repair == null)
+            {
+                TempData["ErrorMessage"] = "Ремонтът не е намерен";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (repair.Status != "Active")
+            {
+                TempData["ErrorMessage"] = "Не може да редактирате описанието на завършен ремонт";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            repair.ManagerNotes = managerNotes;
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Описанието е запазено успешно";
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddPart([FromBody] AddPartModel model)
         {
             var success = await _repairService.AddPartToRepairAsync(model.RepairId, model.PartId, model.Quantity);
@@ -86,6 +113,59 @@ namespace Project.Areas.Admin.Controllers
             }
 
             return Json(new { success = false, message = "Грешка при добавяне на частта" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemovePart([FromBody] RemovePartModel model)
+        {
+            var success = await _repairService.RemovePartFromRepairAsync(model.UsedPartId);
+
+            if (success)
+            {
+                return Json(new
+                {
+                    success = true,
+                    message = "Частта е премахната успешно"
+                });
+            }
+
+            return Json(new { success = false, message = "Грешка при премахване на частта" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveDuplicates(Guid id)
+        {
+            var success = await _repairService.RemoveDuplicatePartsAsync(id);
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Дублираните части са премахнати успешно";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Грешка при премахване на дубликати";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RecalculateCosts(Guid id)
+        {
+            var success = await _repairService.RecalculateRepairCostsAsync(id);
+
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Цените са преизчислени успешно";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Грешка при преизчисляване на цените";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpPost]
@@ -109,20 +189,25 @@ namespace Project.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GenerateInvoice(Guid id)
         {
-            var repair = await _repairService.GetRepairDetailsAsync(id);
-
-            if (repair == null || repair.Status != "Completed")
+            try
             {
-                TempData["ErrorMessage"] = "Ремонтът не е завършен или не съществува";
+                var pdfBytes = await _invoiceService.GenerateInvoicePdfAsync(id);
+                
+                var repair = await _repairService.GetRepairDetailsAsync(id);
+                var fileName = $"Invoice_{repair?.InvoiceNumber ?? id.ToString().Substring(0, 8)}.pdf";
+                
+                return File(pdfBytes, "application/pdf", fileName);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
                 return RedirectToAction(nameof(Details), new { id });
             }
-
-            var settings = await _context.PriceSettings.FirstOrDefaultAsync(s => s.IsActive);
-
-            // TODO: Implement PDF generation using QuestPDF
-            // За момента връщаме view с данните за фактурата
-            ViewBag.Settings = settings;
-            return View("Invoice", repair);
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Грешка при генериране на фактура: " + ex.Message;
+                return RedirectToAction(nameof(Details), new { id });
+            }
         }
     }
 
@@ -131,5 +216,10 @@ namespace Project.Areas.Admin.Controllers
         public Guid RepairId { get; set; }
         public Guid PartId { get; set; }
         public int Quantity { get; set; }
+    }
+
+    public class RemovePartModel
+    {
+        public Guid UsedPartId { get; set; }
     }
 }

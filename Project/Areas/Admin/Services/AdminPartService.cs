@@ -87,5 +87,82 @@ namespace Project.Areas.Admin.Services
 
             return await query.OrderBy(p => p.Name).ToListAsync();
         }
+
+        public async Task<List<Part>> GetFilteredAsync(
+            string? name,
+            string? category,
+            string? oem,
+            string? manufacturer,
+            string? brand,
+            string? model,
+            string? isActive,
+            string? stock)
+        {
+            var query = _context.Parts.AsQueryable();
+
+            // Filter by name
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(p => p.Name.Contains(name));
+            }
+
+            // Filter by category
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                query = query.Where(p => p.Category != null && p.Category.Contains(category));
+            }
+
+            // Filter by OEM number
+            if (!string.IsNullOrWhiteSpace(oem))
+            {
+                query = query.Where(p => p.OemNumber != null && p.OemNumber.Contains(oem));
+            }
+
+            // Filter by manufacturer
+            if (!string.IsNullOrWhiteSpace(manufacturer))
+            {
+                query = query.Where(p => p.Manufacturer != null && p.Manufacturer.Contains(manufacturer));
+            }
+
+            // Filter by car brand
+            if (!string.IsNullOrWhiteSpace(brand))
+            {
+                query = query.Where(p => p.CarBrand != null && p.CarBrand.Contains(brand));
+            }
+
+            // Filter by car model
+            if (!string.IsNullOrWhiteSpace(model))
+            {
+                query = query.Where(p => p.CarModel != null && p.CarModel.Contains(model));
+            }
+
+            // Filter by active status
+            if (!string.IsNullOrWhiteSpace(isActive))
+            {
+                if (bool.TryParse(isActive, out bool activeStatus))
+                {
+                    query = query.Where(p => p.IsActive == activeStatus);
+                }
+            }
+
+            // Filter by stock availability
+            if (!string.IsNullOrWhiteSpace(stock))
+            {
+                switch (stock.ToLower())
+                {
+                    case "instock":
+                        query = query.Where(p => p.StockQuantity > 5);
+                        break;
+                    case "lowstock":
+                        query = query.Where(p => p.StockQuantity > 0 && p.StockQuantity <= 5);
+                        break;
+                    case "outofstock":
+                        query = query.Where(p => p.StockQuantity == 0);
+                        break;
+                }
+            }
+
+            return await query.OrderBy(p => p.Name).ToListAsync();
+        }
     }
 }

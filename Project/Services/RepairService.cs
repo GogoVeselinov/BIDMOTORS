@@ -138,13 +138,75 @@ namespace Project.Services
                 CreatedOn = DateTime.UtcNow
             };
 
+            // Изчисляване на текущата сума ПРЕДИ да добавим новата част
+            var currentPartsCost = repair.UsedParts.Sum(up => up.TotalPrice);
+
             _context.UsedParts.Add(usedPart);
 
             // Намаляване на количеството в склада
             part.StockQuantity -= quantity;
 
-            await RecalculatePartsCostAsync(repair);
-            await RecalculateTotalCostAsync(repair, settings);
+            // Добавяне само на новата цена към съществуващата
+            repair.PartsCost = currentPartsCost + usedPart.TotalPrice;
+
+            Console.WriteLine($"[AddPart] Part: {part.Name}, Base: {part.Price}, WithMarkup: {priceWithMarkup}, Qty: {quantity}, Total: {usedPart.TotalPrice}");
+            Console.WriteLine($"[AddPart] UsedParts count: {repair.UsedParts.Count}, PartsCost: {repair.PartsCost}");
+
+            // Преизчисляване на общата цена с ДДС
+            var subtotal = repair.LaborCost + repair.PartsCost;
+            var vatAmount = subtotal * (settings.VATPercent / 100);
+            repair.TotalCost = subtotal + vatAmount;
+            repair.Price = repair.TotalCost;
+
+            Console.WriteLine($"[AddPart] Subtotal: {subtotal}, VAT: {vatAmount}, Total: {repair.TotalCost}");
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Премахва част от ремонт
+        /// </summary>
+        public async Task<bool> RemovePartFromRepairAsync(Guid usedPartId)
+        {
+            var usedPart = await _context.UsedParts
+                .Include(up => up.Part)
+                .FirstOrDefaultAsync(up => up.Id == usedPartId);
+
+            if (usedPart == null) return false;
+
+            var repair = await _context.Repairs
+                .Include(r => r.UsedParts)
+                .FirstOrDefaultAsync(r => r.Id == usedPart.RepairId);
+
+            if (repair == null) return false;
+
+            var settings = await _context.PriceSettings.FirstOrDefaultAsync(s => s.IsActive);
+            if (settings == null) return false;
+
+            Console.WriteLine($"[RemovePart] Part: {usedPart.Part?.Name}, Qty: {usedPart.QuantityUsed}, Total: {usedPart.TotalPrice}");
+
+            // Връщане на количеството в склада
+            if (usedPart.Part != null)
+            {
+                usedPart.Part.StockQuantity += usedPart.QuantityUsed;
+            }
+
+            // Премахване на частта от ремонта
+            _context.UsedParts.Remove(usedPart);
+
+            // Изчисляване на текущата сума СЛЕД като премахнем частта
+            repair.PartsCost = repair.UsedParts.Where(up => up.Id != usedPartId).Sum(up => up.TotalPrice);
+
+            // Преизчисляване на общата цена с ДДС
+            var subtotal = repair.LaborCost + repair.PartsCost;
+            var vatAmount = subtotal * (settings.VATPercent / 100);
+            repair.TotalCost = subtotal + vatAmount;
+            repair.Price = repair.TotalCost;
+
+            Console.WriteLine($"[RemovePart] New PartsCost: {repair.PartsCost}, TotalCost: {repair.TotalCost}");
+
             await _context.SaveChangesAsync();
 
             return true;
@@ -213,6 +275,101 @@ namespace Project.Services
                 .Include(r => r.UsedParts)
                     .ThenInclude(up => up.Part)
                 .FirstOrDefaultAsync(r => r.Id == repairId);
+        }
+
+        /// <summary>
+        /// Преизчислява всички цени за съществуващ ремонт (за поправка на стари данни)
+        /// </summary>
+        public async Task<bool> RecalculateRepairCostsAsync(Guid repairId)
+        {
+            var repair = await _context.Repairs
+                .Include(r => r.UsedParts)
+                .FirstOrDefaultAsync(r => r.Id == repairId);
+
+            if (repair == null) return false;
+
+            var settings = await _context.PriceSettings.FirstOrDefaultAsync(s => s.IsActive);
+            if (settings == null) return false;
+
+            Console.WriteLine($"[Recalculate] Repair ID: {repairId}");
+            Console.WriteLine($"[Recalculate] UsedParts count: {repair.UsedParts.Count}");
+            
+            // Зареждане на Part данните
+            await _context.Entry(repair).Collection(r => r.UsedParts).Query().Include(up => up.Part).LoadAsync();
+            
+            // Показване на всички части
+            foreach (var up in repair.UsedParts)
+            {
+                var partName = up.Part?.Name ?? "Unknown";
+                Console.WriteLine($"[Recalculate] Part: ID={up.Id.ToString().Substring(0,8)}, PartName={partName}, PartId={up.PartId.ToString().Substring(0,8)}, Qty={up.QuantityUsed}, Unit={up.UnitPriceAtMoment}, Total={up.TotalPrice}");
+            }
+            
+            // Преизчисляване на цената на частите от данните в базата
+            repair.PartsCost = repair.UsedParts.Sum(up => up.TotalPrice);
+            Console.WriteLine($"[Recalculate] PartsCost: {repair.PartsCost}");
+
+            // Изчисляване на цена за труд
+            repair.LaborCost = repair.LaborHours * settings.LaborCostPerHour;
+            Console.WriteLine($"[Recalculate] LaborCost: {repair.LaborCost}");
+
+            // Изчисляване на обща цена с ДДС
+            var subtotal = repair.LaborCost + repair.PartsCost;
+            var vatAmount = subtotal * (settings.VATPercent / 100);
+            repair.TotalCost = subtotal + vatAmount;
+            repair.Price = repair.TotalCost;
+
+            Console.WriteLine($"[Recalculate] Subtotal: {subtotal}, VAT: {vatAmount}, Total: {repair.TotalCost}");
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// Премахва дублирани части от ремонт
+        /// </summary>
+        public async Task<bool> RemoveDuplicatePartsAsync(Guid repairId)
+        {
+            var repair = await _context.Repairs
+                .Include(r => r.UsedParts)
+                    .ThenInclude(up => up.Part)
+                .FirstOrDefaultAsync(r => r.Id == repairId);
+
+            if (repair == null) return false;
+
+            Console.WriteLine($"[RemoveDuplicates] Total UsedParts: {repair.UsedParts.Count}");
+
+            // Групиране по PartId за намиране на дубликати
+            var duplicateGroups = repair.UsedParts
+                .GroupBy(up => up.PartId)
+                .Where(g => g.Count() > 1)
+                .ToList();
+
+            foreach (var group in duplicateGroups)
+            {
+                var partsToKeep = group.OrderBy(up => up.CreatedOn).First(); // Запазваме първата
+                var partsToRemove = group.OrderBy(up => up.CreatedOn).Skip(1).ToList(); // Изтриваме останалите
+
+                Console.WriteLine($"[RemoveDuplicates] Part '{partsToKeep.Part?.Name}' has {group.Count()} duplicates");
+
+                foreach (var dup in partsToRemove)
+                {
+                    Console.WriteLine($"[RemoveDuplicates] Removing duplicate: {dup.Id.ToString().Substring(0, 8)}");
+                    _context.UsedParts.Remove(dup);
+                    
+                    // Връщане на количеството в склада
+                    if (dup.Part != null)
+                    {
+                        dup.Part.StockQuantity += dup.QuantityUsed;
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            
+            // Преизчисляване след изтриване
+            await RecalculateRepairCostsAsync(repairId);
+
+            return true;
         }
     }
 }
