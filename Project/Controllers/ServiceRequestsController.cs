@@ -382,22 +382,30 @@ namespace Project.Controllers
                 );
                 Console.WriteLine("Admin notification email sent");
 
-                // Проверяваме дали клиентът вече е логнат
+                // Проверяваме дали клиентът беше логнат ПРЕДИ да подаде заявката
+                // (проверяваме сесията ПРЕДИ създаването на клиента)
                 var isLoggedIn = !string.IsNullOrEmpty(HttpContext.Session.GetString("UserId"));
                 
-                if (isLoggedIn)
+                Console.WriteLine($"=== REDIRECT LOGIC ===");
+                Console.WriteLine($"IsLoggedIn: {isLoggedIn}");
+                Console.WriteLine($"Client IsGuest: {client.IsGuest}");
+                
+                // Ако клиентът е маркиран като гост ИЛИ не е логнат, го пращаме към Confirmation
+                if (client.IsGuest || !isLoggedIn)
                 {
-                    // Ако е логнат, го пращаме към неговите заявки
-                    TempData["SuccessMessage"] = "Вашата заявка е изпратена успешно!";
-                    return RedirectToAction("MyRequests");
-                }
-                else
-                {
-                    // Ако НЕ е логнат (гост), го пращаме към потвърдителна страница
+                    // Гост заявка - пращаме към потвърдителна страница
                     TempData["SuccessMessage"] = "Вашата заявка е изпратена успешно! Ще се свържем с вас скоро.";
                     TempData["RequestId"] = serviceRequest.Id.ToString();
                     TempData["ClientEmail"] = viewModel.Email;
+                    Console.WriteLine($"Redirecting to Confirmation page");
                     return RedirectToAction("Confirmation");
+                }
+                else
+                {
+                    // Логнат потребител - пращаме към неговите заявки
+                    TempData["SuccessMessage"] = "Вашата заявка е изпратена успешно!";
+                    Console.WriteLine($"Redirecting to MyRequests page");
+                    return RedirectToAction("MyRequests");
                 }
             }
             catch (Exception ex)

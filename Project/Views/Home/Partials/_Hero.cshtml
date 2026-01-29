@@ -78,8 +78,17 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("heroRequestForm");
         const errorBox = document.getElementById("hero-error");
+        const submitButton = form.querySelector("button[type='submit']");
+        let isSubmitting = false;
 
         form.addEventListener("submit", function (e) {
+            // Предотвратяваме множествено изпращане
+            if (isSubmitting) {
+                e.preventDefault();
+                console.log("Form already submitting, prevented duplicate submission");
+                return;
+            }
+
             // Обработка на CarInfo полето преди изпращане
             const carInfoField = document.getElementById('CarInfo');
             const carInfo = carInfoField ? carInfoField.value.trim() : '';
@@ -150,7 +159,14 @@
                 e.preventDefault();
                 errorBox.innerHTML = "Моля, попълнете всички задължителни полета.";
                 errorBox.style.display = "block";
+                return;
             }
+
+            // Ако валидацията е успешна, маркираме че формата се изпраща
+            isSubmitting = true;
+            submitButton.disabled = true;
+            submitButton.textContent = "Изпращане...";
+            console.log("Form validation passed, submitting...");
         });
     });
 </script>
