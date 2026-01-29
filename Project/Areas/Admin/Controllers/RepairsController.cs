@@ -170,12 +170,31 @@ namespace Project.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CompleteRepair(Guid id)
+        public async Task<IActionResult> CompleteRepair(
+            Guid id,
+            [FromServices] EmailService emailService)
         {
+            // Вземаме информация за ремонта преди да го завършим
+            var repair = await _repairService.GetRepairDetailsAsync(id);
+            
             var success = await _repairService.CompleteRepairAsync(id);
 
             if (success)
             {
+                // Изпращаме email нотификация към клиента ако има имейл
+                if (repair?.Client != null && !string.IsNullOrEmpty(repair.Client.Email))
+                {
+                    await emailService.SendStatusUpdateEmailAsync(
+                        repair.Client.Email,
+                        repair.Client.Name,
+                        repair.ServiceRequest?.Id ?? Guid.Empty,
+                        repair.ServiceRequest?.ServiceType ?? "Ремонт",
+                        "InProgress",
+                        "Completed",
+                        $"Ремонтът е завършен. Окончателна цена: {repair.Price:F2} лв."
+                    );
+                }
+                
                 TempData["SuccessMessage"] = "Ремонтът е завършен успешно";
             }
             else

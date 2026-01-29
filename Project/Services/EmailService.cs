@@ -237,6 +237,211 @@ namespace Project.Services
 </body>
 </html>";
         }
+
+        public async Task SendStatusUpdateEmailAsync(
+            string toEmail,
+            string clientName,
+            Guid requestId,
+            string serviceType,
+            string oldStatus,
+            string newStatus,
+            string? additionalInfo = null)
+        {
+            try
+            {
+                var smtpHost = _configuration["Email:SmtpHost"] ?? "smtp.gmail.com";
+                var smtpPort = int.Parse(_configuration["Email:SmtpPort"] ?? "587");
+                var fromEmail = _configuration["Email:FromEmail"] ?? "noreply@bidmotors.com";
+                var fromPassword = _configuration["Email:FromPassword"] ?? "";
+
+                using var smtpClient = new SmtpClient(smtpHost, smtpPort)
+                {
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential(fromEmail, fromPassword)
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(fromEmail, "BIDMOTORS"),
+                    Subject = GetStatusEmailSubject(newStatus, requestId),
+                    Body = GetStatusUpdateEmailBody(clientName, requestId, serviceType, oldStatus, newStatus, additionalInfo),
+                    IsBodyHtml = true
+                };
+
+                mailMessage.To.Add(toEmail);
+
+                await smtpClient.SendMailAsync(mailMessage);
+                Console.WriteLine($"Status update email sent to {toEmail} - Status: {newStatus}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending status update email: {ex.Message}");
+            }
+        }
+
+        private string GetStatusEmailSubject(string status, Guid requestId)
+        {
+            var shortId = requestId.ToString().Substring(0, 8).ToUpper();
+            
+            return status switch
+            {
+                "InProgress" => $"🔧 Заявка #{shortId} - Работата започна",
+                "Completed" => $"✅ Заявка #{shortId} - Завършена",
+                "Cancelled" => $"❌ Заявка #{shortId} - Отказана",
+                _ => $"📋 Заявка #{shortId} - Актуализация на статус"
+            };
+        }
+
+        private string GetStatusUpdateEmailBody(
+            string clientName,
+            Guid requestId,
+            string serviceType,
+            string oldStatus,
+            string newStatus,
+            string? additionalInfo)
+        {
+            var shortId = requestId.ToString().Substring(0, 8).ToUpper();
+            var statusBg = GetStatusInBulgarian(newStatus);
+            var statusColor = GetStatusColor(newStatus);
+            var statusIcon = GetStatusIcon(newStatus);
+            var statusMessage = GetStatusMessage(newStatus);
+
+            return @"<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #1a1a1a; color: #F6D201; padding: 20px; text-align: center; }
+        .content { background: #f9f9f9; padding: 30px; border: 1px solid #ddd; }
+        .status-badge { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            background: " + statusColor + @"; 
+            color: white; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .info-row { margin: 15px 0; padding: 10px; background: white; border-left: 4px solid #F6D201; }
+        .label { font-weight: bold; color: #555; }
+        .message-box { 
+            background: #e7f3ff; 
+            border-left: 4px solid #0066cc; 
+            padding: 15px; 
+            margin: 20px 0; 
+        }
+        .footer { text-align: center; margin-top: 20px; padding: 20px; color: #777; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h1>" + statusIcon + @" BIDMOTORS</h1>
+            <p>Актуализация на статус на заявка</p>
+        </div>
+        
+        <div class='content'>
+            <h2>Здравейте, " + clientName + @"!</h2>
+            <p>" + statusMessage + @"</p>
+            
+            <div style='text-align: center;'>
+                <div class='status-badge'>" + statusIcon + @" " + statusBg + @"</div>
+            </div>
+            
+            <div class='info-row'>
+                <span class='label'>Номер на заявка:</span> #" + shortId + @"
+            </div>
+            
+            <div class='info-row'>
+                <span class='label'>Вид услуга:</span> " + serviceType + @"
+            </div>
+            
+            <div class='info-row'>
+                <span class='label'>Нов статус:</span> " + statusBg + @"
+            </div>"
+            + (string.IsNullOrEmpty(additionalInfo) ? "" : @"
+            
+            <div class='message-box'>
+                <strong>Допълнителна информация:</strong><br>" + additionalInfo + @"
+            </div>") + @"
+            
+            <p style='margin-top: 30px;'>
+                " + GetStatusActionMessage(newStatus) + @"
+            </p>
+            
+            <p style='color: #666; font-size: 14px;'>
+                При въпроси можете да се свържете с нас на телефон: <strong>+359 88 123 4567</strong>
+            </p>
+        </div>
+        
+        <div class='footer'>
+            <p>BIDMOTORS - Вашият доверен автосервиз</p>
+            <p>Този имейл е изпратен автоматично. Моля, не отговаряйте на него.</p>
+        </div>
+    </div>
+</body>
+</html>";
+        }
+
+        private string GetStatusInBulgarian(string status)
+        {
+            return status switch
+            {
+                "Pending" => "В изчакване",
+                "InProgress" => "В процес на изпълнение",
+                "Completed" => "Завършена",
+                "Cancelled" => "Отказана",
+                _ => status
+            };
+        }
+
+        private string GetStatusColor(string status)
+        {
+            return status switch
+            {
+                "Pending" => "#ffc107",
+                "InProgress" => "#007bff",
+                "Completed" => "#28a745",
+                "Cancelled" => "#dc3545",
+                _ => "#6c757d"
+            };
+        }
+
+        private string GetStatusIcon(string status)
+        {
+            return status switch
+            {
+                "Pending" => "⏳",
+                "InProgress" => "🔧",
+                "Completed" => "✅",
+                "Cancelled" => "❌",
+                _ => "📋"
+            };
+        }
+
+        private string GetStatusMessage(string status)
+        {
+            return status switch
+            {
+                "InProgress" => "Имаме добри новини! Нашият екип започна работа по Вашата заявка.",
+                "Completed" => "Отлични новини! Работата по Вашата заявка е завършена успешно.",
+                "Cancelled" => "За съжаление, Вашата заявка беше отказана.",
+                _ => "Статусът на Вашата заявка беше актуализиран."
+            };
+        }
+
+        private string GetStatusActionMessage(string status)
+        {
+            return status switch
+            {
+                "InProgress" => "Ще Ви уведомим, когато работата приключи. Благодарим за търпението!",
+                "Completed" => "Можете да вземете автомобила си. Очакваме Ви!",
+                "Cancelled" => "Моля, свържете се с нас за повече информация.",
+                _ => "Ще Ви държим в течение за напредъка."
+            };
+        }
     }
 }
 

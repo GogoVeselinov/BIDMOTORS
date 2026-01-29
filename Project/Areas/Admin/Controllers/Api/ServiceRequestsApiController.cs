@@ -146,16 +146,44 @@ namespace Project.Areas.Admin.Controllers.Api
         }
 
         [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] StatusUpdateModel model)
+        public async Task<IActionResult> UpdateStatus(
+            Guid id, 
+            [FromBody] StatusUpdateModel model,
+            [FromServices] EmailService emailService)
         {
-            var request = await _context.ServiceRequests.FindAsync(id);
+            var request = await _context.ServiceRequests
+                .Include(r => r.Client)
+                .FirstOrDefaultAsync(r => r.Id == id);
+                
             if (request == null)
                 return NotFound();
 
+            // Запазваме стария статус за email нотификацията
+            var oldStatus = request.Status;
+            
+            // Актуализираме статуса
             request.Status = model.Status;
             request.InternalNotes = model.InternalNotes;
             
             await _context.SaveChangesAsync();
+
+            // Изпращаме email ако клиентът има имейл и статусът се променя
+            if (!string.IsNullOrEmpty(request.Client.Email) && oldStatus != model.Status)
+            {
+                // Изпращаме email само за важни промени в статуса
+                if (model.Status == "InProgress" || model.Status == "Completed" || model.Status == "Cancelled")
+                {
+                    await emailService.SendStatusUpdateEmailAsync(
+                        request.Client.Email,
+                        request.Client.Name,
+                        request.Id,
+                        request.ServiceType,
+                        oldStatus,
+                        model.Status,
+                        model.InternalNotes
+                    );
+                }
+            }
 
             return Ok(new { message = "Статусът беше актуализиран успешно!" });
         }
@@ -187,10 +215,24 @@ namespace Project.Areas.Admin.Controllers.Api
         }
 
         [HttpPost("{id}/start-repair")]
-        public async Task<IActionResult> StartRepair(Guid id, [FromServices] RepairService repairService)
+        public async Task<IActionResult> StartRepair(
+            Guid id, 
+            [FromServices] RepairService repairService,
+            [FromServices] EmailService emailService)
         {
             try
             {
+                // Вземаме информацията за заявката преди да стартираме ремонта
+                var serviceRequest = await _context.ServiceRequests
+                    .Include(sr => sr.Client)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(sr => sr.Id == id);
+                
+                if (serviceRequest == null)
+                {
+                    return NotFound(new { message = "Заявката не беше намерена" });
+                }
+                
                 var repair = await repairService.CreateFromServiceRequestAsync(id);
                 
                 if (repair == null)
@@ -198,14 +240,30 @@ namespace Project.Areas.Admin.Controllers.Api
                     return NotFound(new { message = "Заявката не беше намерена" });
                 }
 
+                // Изпращаме имейл известие към клиента че работата е започнала
+                if (!string.IsNullOrEmpty(serviceRequest.Client?.Email))
+                {
+                    await emailService.SendStatusUpdateEmailAsync(
+                        serviceRequest.Client.Email,
+                        serviceRequest.Client.Name,
+                        serviceRequest.Id,
+                        serviceRequest.ServiceType,
+                        "Pending",
+                        "InProgress",
+                        "Нашият екип започна работа по Вашата заявка."
+                    );
+                }
+
                 return Ok(new 
                 { 
                     message = "Услугата беше започната успешно!",
-                    repairId = repair.Id
+                    repairId = repair.Id.ToString()
                 });
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error in StartRepair: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { message = "Грешка при стартиране на услуга", error = ex.Message });
             }
         }
