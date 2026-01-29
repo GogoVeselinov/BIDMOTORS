@@ -497,11 +497,9 @@ namespace Project.Controllers
         // Потвърждение за гост заявка
         public IActionResult Confirmation()
         {
-            var requestId = TempData["RequestId"]?.ToString();
-            var clientEmail = TempData["ClientEmail"]?.ToString();
-            
-            ViewBag.RequestId = requestId;
-            ViewBag.ClientEmail = clientEmail;
+            // Keep() запазва данните в TempData за повторно използване
+            ViewBag.RequestId = TempData.Peek("RequestId")?.ToString();
+            ViewBag.ClientEmail = TempData.Peek("ClientEmail")?.ToString();
             
             return View();
         }

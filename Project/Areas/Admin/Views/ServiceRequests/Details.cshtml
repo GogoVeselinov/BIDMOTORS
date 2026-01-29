@@ -128,7 +128,7 @@
                 <div class="mb-2">
                     <strong>Цена:</strong> <span id="repair-price"></span>
                 </div>
-                <a id="repair-link" class="btn btn-sm btn-outline-warning mt-2">
+                <a id="repair-link" href="#" class="btn btn-sm btn-outline-warning mt-2">
                     <i class="bi bi-arrow-right"></i> Виж ремонт
                 </a>
             </div>
@@ -547,7 +547,7 @@
                     document.getElementById('repair-section').style.display = 'block';
                     document.getElementById('repair-status').textContent = data.linkedRepair.status;
                     document.getElementById('repair-price').textContent = data.linkedRepair.price.toFixed(2) + ' лв.';
-                    document.getElementById('repair-link').href = `/Repairs/Details?id=${data.linkedRepair.id}`;
+                    document.getElementById('repair-link').href = `/Admin/Repairs/Details?id=${data.linkedRepair.id}`;
                     document.getElementById('start-repair-container').style.display = 'none';
                 } else {
                     console.log('No linked repair, status:', data.status);
